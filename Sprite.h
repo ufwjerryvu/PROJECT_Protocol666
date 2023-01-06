@@ -68,7 +68,7 @@ Sprite::Sprite() {
 	this->viewport = SDL_Rect();
 }
 
-Sprite::Sprite(SDL_Texture* texture, int x, int y) {
+Sprite::Sprite(int x, int y, SDL_Texture* texture) {
 	/*
 	NOTE:
 		- Setting attributes using the setter methods for
