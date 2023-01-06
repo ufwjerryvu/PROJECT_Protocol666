@@ -12,34 +12,29 @@ class Utilities {
 };
 
 vector<string> Utilities::split(string arg, string delimiter) {
-
-
-
-
 	/*
 	NOTE:
-	- Declare variables for iteration
-		+ `i` for iteration counter
-		+ retvec for the vector to be returned
+		- Declare variables for iteration
+			+ `i` for iteration counter
+			+ retvec for the vector to be returned
 	*/
-
-
+	
 	vector<string> retvec;
 	string temp = "";
 
-
 	/*
 	NOTE:
-	- Iterate over `arg` string
+		- Iterate over `arg` string
 
-	- Insert iterated characters into `temp`
+		- Insert iterated characters into `temp`
 
-	- If iterator encounters a character that equals to 1st character of delimiter, declare `test` string then insert
-	subsequent chars to `test` string. (length of `test` = length of `delimiter`)
-		+ Compare `test` to `delimiter`
-		+ If they are the same, insert `temp` into `retvec` and the iterator will skip over the delimiter
-		+ Else, continue to interate normally and populate temp
-	- When encounter last character of `arg`, insert current temp into retvec
+		- If iterator encounters a character that equals to 1st character of delimiter, declare `test` string then insert
+		subsequent chars to `test` string. (length of `test` = length of `delimiter`)
+			+ Compare `test` to `delimiter`
+			+ If they are the same, insert `temp` into `retvec` and the iterator will skip over the delimiter
+			+ Else, continue to interate normally and populate temp
+
+		- When encounter last character of `arg`, insert current temp into retvec
 
 	*/
 
@@ -72,4 +67,3 @@ vector<string> Utilities::split(string arg, string delimiter) {
 	}
 	return retvec;
 }
-
