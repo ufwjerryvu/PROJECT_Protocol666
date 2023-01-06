@@ -1,3 +1,7 @@
+/*
+@ COLLABORATORS: An Luu
+*/
+
 #pragma once
 
 #include "LIBDECLARATIONS.h"
