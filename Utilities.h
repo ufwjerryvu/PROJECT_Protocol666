@@ -44,20 +44,17 @@ vector<string> Utilities::split(string arg, string delimiter) {
 			for (int j = 0, k = i; j < delimiter.length(); j++) {
 				test += arg[k];
 				k++;
-
 			}
 
 			if (test == delimiter) {
 				retvec.push_back(temp);
 				temp = "";
 				i = i + delimiter.length();
-			}
-			else {
+			} else {
 				temp += arg[i];
 				i++;
 			}
-		}
-		else {
+		} else {
 			temp += arg[i];
 			if (i == arg.length() - 1) {
 				retvec.push_back(temp);
