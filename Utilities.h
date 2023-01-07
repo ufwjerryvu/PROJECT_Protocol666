@@ -39,6 +39,7 @@ vector<string> Utilities::split(string arg, string delimiter) {
 			+ Compare `test` to `delimiter`
 			+ If they are the same, insert `temp` into `retvec` and the iterator will skip over the delimiter
 			+ Else, continue to interate normally and populate temp
+			
 		- When encounter last character of `arg`, insert current temp into retvec
 
 	*/
@@ -93,8 +94,8 @@ bool Utilities::checkFloat(string arg) {
 		}
 	/*
 	NOTE:
-		- Else, if the charactert is `.` or `-`, count to see of there are duplicates. 
-		If there are, return false
+		- Else, if the character is `.` or `-`, count to see of there are duplicates. 
+		If there are, return false.
 	*/
 
 		else if (arg[i] == '-' || arg[i] == '.') {
