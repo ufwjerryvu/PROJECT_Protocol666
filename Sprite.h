@@ -1,5 +1,6 @@
 /*
 @ COLLABORATORS: Jerry Vu
+@ CLASS DESIGNERS: Jerry Vu
 */
 
 #pragma once
@@ -22,7 +23,7 @@ public:
 	SECTION 1: CONSTRUCTORS AND DESTRUCTORS
 	*/
 	Sprite();
-	Sprite(SDL_Texture* texture, int x, int y);
+	Sprite(int x, int y, SDL_Texture* texture);
 	~Sprite();
 
 	/*
@@ -79,23 +80,25 @@ Sprite::Sprite(int x, int y, SDL_Texture* texture) {
 
 	this->setTexture(texture);
 
-	/*
-	NOTE:
-		- Using SDL_QueryTexture() to get the dimensions of
-		the loaded texture.
-	*/
-	SDL_Point size;
-	SDL_QueryTexture(texture, NULL, NULL, &size.x, &size.y);
+	if (this->getTexture() != NULL) {
+		/*
+		NOTE:
+			- Using SDL_QueryTexture() to get the dimensions of
+			the loaded texture.
+		*/
+		SDL_Point size;
+		SDL_QueryTexture(texture, NULL, NULL, &size.x, &size.y);
 
-	this->width = size.x;
-	this->height = size.y;
+		this->width = size.x;
+		this->height = size.y;
 
-	/*
-	NOTE:
-		- Setting the viewport using the texture information 
-		as well as the constructor's arguments.
-	*/
-	this->viewport = { x, y, this->width, this->height };
+		/*
+		NOTE:
+			- Setting the viewport using the texture information
+			as well as the constructor's arguments.
+		*/
+		this->viewport = { x, y, this->width, this->height };
+	}
 }
 
 Sprite::~Sprite() {
@@ -125,10 +128,11 @@ bool Sprite::setY(int y) {
 
 	return success;
 }
+
 bool Sprite::setCoordinate(int x, int y) {
 	/*
 	NOTE:
-		- Since both setX() and setY() return boolean 
+		- Since both setX() and setY() return boolean
 		values, we could use those values to set the
 		coordinate.
 	*/
@@ -136,15 +140,33 @@ bool Sprite::setCoordinate(int x, int y) {
 
 	return success;
 }
+
 bool Sprite::setTexture(SDL_Texture* texture) {
 	bool success = true;
 
-	if (texture == NULL) {
-		success = false;
-		return success;
-	}
-
 	this->texture = texture;
+
+	if (this->getTexture() != NULL) {
+		/*
+		NOTE:
+			- We have to query for the size of the texture and 
+			set the viewport again because the texture is now different
+			or just in case it hasn't been initialized.
+		*/
+		SDL_Point size;
+		SDL_QueryTexture(texture, NULL, NULL, &size.x, &size.y);
+
+		this->width = size.x;
+		this->height = size.y;
+
+		this->viewport = { this->x, this->y, this->width, this->height };
+	}
+	else {
+		this->width = 0;
+		this->height = 0;
+
+		this->viewport = { 0, 0, this->width, this->height };
+	}
 
 	return success;
 }
@@ -167,9 +189,9 @@ bool Sprite::render(SDL_Renderer* renderer) {
 
 	/*
 	NOTE:
-		- According to the SDL documentation, SDL_RenderCopy() 
+		- According to the SDL documentation, SDL_RenderCopy()
 		returns a negative number if it has failed to copy the
-		texture to the renderer and a zero if it has successfully 
+		texture to the renderer and a zero if it has successfully
 		done so.
 	*/
 	if (SDL_RenderCopy(renderer, this->texture, NULL, &this->viewport) != 0) {
