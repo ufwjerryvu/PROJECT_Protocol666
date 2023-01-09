@@ -40,6 +40,7 @@ public:
     bool setAnimationFramesIdle(vector<SDL_Texture*> anm_frames_idle);
     bool setMovingState(bool is_moving);
     bool setAttackingState(bool is_attacking);
+    bool setDirectionFacing(Direction facing);
 
     /*
     SECTION 2B: GETTERS
@@ -48,6 +49,7 @@ public:
     vector<SDL_Texture*> getAnimationFramesIdle();
     bool isMoving();
     bool isAttacking();
+    Direction getDirectionFacing();
 
     /*
     SECTION 3: OTHER METHODS
@@ -130,6 +132,14 @@ bool Character::setAttackingState(bool is_attacking) {
     return success;
 }
 
+bool Character::setDirectionFacing(Direction facing) {
+    bool success = true;
+
+    this->facing_direction = facing;
+
+    return true;
+}
+
 /*
 SECTION 2B: GETTERS
 */
@@ -138,6 +148,7 @@ vector<SDL_Texture*> Character::getAnimationFramesMoving() { return this->anm_fr
 vector<SDL_Texture*> Character::getAnimationFramesIdle() { return this->anm_frames_idle; }
 bool Character::isMoving() { return this->is_moving; }
 bool Character::isAttacking() { return this->is_attacking; }
+Direction Character::getDirectionFacing() { return this->facing_direction; }
 
 /*
 SECTION 3: OTHER FUNCTIONS
