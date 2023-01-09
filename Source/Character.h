@@ -38,6 +38,9 @@ public:
     */
     bool setAnimationFramesMoving(vector<SDL_Texture*> anm_frames_moving);
     bool setAnimationFramesIdle(vector<SDL_Texture*> anm_frames_idle);
+    bool setMovingState(bool is_moving);
+    bool setAttackingState(bool is_attacking);
+
     /*
     SECTION 2B: GETTERS
     */
@@ -61,6 +64,10 @@ Character::Character() : Sprite() {
         - This constructor calls the default constructor of the base
         class `Sprite`, initializing everything to the default values.
     */
+    this->facing_direction = NONE;
+    this->is_attacking = false;
+    this->is_moving = false;
+
 }
 
 Character::Character(int x, int y, vector<SDL_Texture*> anm_frames_moving, vector<SDL_Texture*> anm_frames_idle) : Sprite(x, y, NULL) {
@@ -103,6 +110,22 @@ bool Character::setAnimationFramesIdle(vector<SDL_Texture*> anm_frames_idle) {
     }
 
     this->anm_frames_idle = anm_frames_idle;
+
+    return success;
+}
+
+bool Character::setMovingState(bool is_moving) {
+    bool success = true;
+
+    this->is_moving = is_moving;
+
+    return success;
+}
+
+bool Character::setAttackingState(bool is_attacking) {
+    bool success = true;
+
+    this->is_attacking = is_attacking;
 
     return success;
 }
