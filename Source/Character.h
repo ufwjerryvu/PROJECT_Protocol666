@@ -12,18 +12,33 @@
 enum Direction {
     NONE,
     LEFT, 
-    RIGHT
+    RIGHT,
+    UP,
+    DOWN
 };
 
 class Character : public Sprite {
 private:
+    vector<SDL_Texture*> anm_frames_moving;
+    vector<SDL_Texture*> anm_frames_idle;
+
     Direction facing_direction;
 
     bool is_moving;
     bool is_attacking;
 
-    vector<SDL_Texture*> anm_frames_moving;
-    vector<SDL_Texture*> anm_frames_idle;
+    /*
+    NOTE :
+        -Speed is in pixels per frame.
+
+        - Maximum jump height is in pixels.
+    */
+    int run_speed;
+    int max_jump_height;
+
+protected:
+    int current_frame_moving;
+    int current_frame_idle;
 
 public:
     /*
@@ -54,7 +69,18 @@ public:
     /*
     SECTION 3: OTHER METHODS
     */
+    
+    /*
+    NOTE:
+        - The move() function will contain the run() and
+        jump() functions.
+    */
+    virtual void run() = 0;
+    virtual void jump() = 0;
+    virtual void move() = 0;
+
     virtual void setNextFrame() = 0;
+    virtual void update() = 0;
 };
 
 /*
@@ -69,19 +95,39 @@ Character::Character() : Sprite() {
     this->facing_direction = NONE;
     this->is_attacking = false;
     this->is_moving = false;
+    
+    this->current_frame_idle = 0;
+    this->current_frame_moving = 0;
 
+    this->run_speed = 0;
+    this->max_jump_height = 0;
 }
 
 Character::Character(int x, int y, vector<SDL_Texture*> anm_frames_moving, vector<SDL_Texture*> anm_frames_idle) : Sprite(x, y, NULL) {
     this->setAnimationFramesMoving(anm_frames_moving);
     this->setAnimationFramesIdle(anm_frames_idle);
-
+    
+    /*
+    NOTE:
+        - Setting the character to the first idle
+        frame as soon as they are created.
+    */
     if (anm_frames_idle.size() > 0) {
         this->setTexture(anm_frames_idle[0]);
     }
+
+    this->current_frame_idle = 0;
+    this->current_frame_moving = 0;
+
+    this->run_speed = 0;
+    this->max_jump_height = 0;
 }
 
 Character::~Character() {
+    /*
+    NOTE:
+        - Empty for now.
+    */
 }
 
 /*
@@ -90,6 +136,23 @@ SECTION 2A: SETTERS
 bool Character::setAnimationFramesMoving(vector<SDL_Texture*> anm_frames_moving) {
     bool success = true;
 
+    /*
+    NOTE:
+        - If there are no textures in the vector then
+        the function will return a failure flag. I.e.,
+        the vector's size is 0.
+    */
+
+    if (anm_frames_moving.size() <= 0) {
+        success = false;
+        return success;
+    }
+
+    /*
+    NOTE:
+        - And if any of the textures in the vector is
+        NULL then the method returns false.
+    */
     for (int index = 0; index < this->anm_frames_moving.size(); index++) {
         if (this->anm_frames_moving[index] == NULL) {
             success = false;
@@ -104,6 +167,21 @@ bool Character::setAnimationFramesMoving(vector<SDL_Texture*> anm_frames_moving)
 bool Character::setAnimationFramesIdle(vector<SDL_Texture*> anm_frames_idle) {
     bool success = true;
 
+    /*
+    NOTE:
+        - Similar to setAnimationFramesMoving(), we 
+        add this layer of security.
+    */
+    if (anm_frames_idle.size() <= 0) {
+        success = false;
+        return success;
+    }
+
+    /*
+    NOTE:
+        - Again, if any of the textures in the vector is
+        NULL then the method returns false.
+    */
     for (int index = 0; index < this->anm_frames_idle.size(); index++) {
         if (this->anm_frames_idle[index] == NULL) {
             success = false;
@@ -119,6 +197,11 @@ bool Character::setAnimationFramesIdle(vector<SDL_Texture*> anm_frames_idle) {
 bool Character::setMovingState(bool is_moving) {
     bool success = true;
 
+    /*
+    NOTE:
+        - `is_moving` is synonymous with `is_running`.
+        They are interchangeable.
+    */
     this->is_moving = is_moving;
 
     return success;
