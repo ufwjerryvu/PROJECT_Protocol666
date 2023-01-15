@@ -9,7 +9,7 @@
 
 #include "Sprite.h"
 
-enum Direction {
+enum class Direction {
     NONE,
     LEFT, 
     RIGHT,
@@ -37,34 +37,39 @@ private:
     int max_jump_height;
 
 protected:
-    int current_frame_moving;
     int current_frame_idle;
+    int current_frame_moving;
 
 public:
     /*
     SECTION 1: CONSTRUCTORS AND DESTRUCTORS
     */
     Character();
-    Character(int x, int y, vector<SDL_Texture*> anm_frames_moving, vector<SDL_Texture*> anm_frames_idle);
+    Character(int x, int y, vector<SDL_Texture*> anm_frames_idle, 
+        vector<SDL_Texture*> anm_frames_moving);
     ~Character();
 
     /*
     SECTION 2A: SETTERS
     */
-    bool setAnimationFramesMoving(vector<SDL_Texture*> anm_frames_moving);
     bool setAnimationFramesIdle(vector<SDL_Texture*> anm_frames_idle);
+    bool setAnimationFramesMoving(vector<SDL_Texture*> anm_frames_moving);
     bool setMovingState(bool is_moving);
     bool setAttackingState(bool is_attacking);
     bool setDirectionFacing(Direction facing);
+    bool setRunSpeed(int pixels_per_frame);
+    bool setMaxJumpHeight(int pixels);
 
     /*
     SECTION 2B: GETTERS
     */
-    vector<SDL_Texture*> getAnimationFramesMoving();
     vector<SDL_Texture*> getAnimationFramesIdle();
+    vector<SDL_Texture*> getAnimationFramesMoving();
     bool isMoving();
     bool isAttacking();
     Direction getDirectionFacing();
+    int getRunSpeed();
+    int getMaxJumpHeight();
 
     /*
     SECTION 3: OTHER METHODS
@@ -91,21 +96,24 @@ Character::Character() : Sprite() {
     NOTE:
         - This constructor calls the default constructor of the base
         class `Sprite`, initializing everything to the default values.
+
+        - Do not call the default constructor if not needed.
     */
-    this->facing_direction = NONE;
-    this->is_attacking = false;
-    this->is_moving = false;
+    this->setDirectionFacing(Direction::NONE);
+
+    this->setMovingState(false);
+    this->setAttackingState(false);
+
+    this->setRunSpeed(0);
+    this->setMaxJumpHeight(0);
     
     this->current_frame_idle = 0;
     this->current_frame_moving = 0;
-
-    this->run_speed = 0;
-    this->max_jump_height = 0;
 }
 
-Character::Character(int x, int y, vector<SDL_Texture*> anm_frames_moving, vector<SDL_Texture*> anm_frames_idle) : Sprite(x, y, NULL) {
-    this->setAnimationFramesMoving(anm_frames_moving);
+Character::Character(int x, int y, vector<SDL_Texture*> anm_frames_idle, vector<SDL_Texture*> anm_frames_moving) : Sprite(x, y, NULL) {
     this->setAnimationFramesIdle(anm_frames_idle);
+    this->setAnimationFramesMoving(anm_frames_moving);
     
     /*
     NOTE:
@@ -116,11 +124,16 @@ Character::Character(int x, int y, vector<SDL_Texture*> anm_frames_moving, vecto
         this->setTexture(anm_frames_idle[0]);
     }
 
+    this->setDirectionFacing(Direction::NONE);
+
+    this->setMovingState(false);
+    this->setAttackingState(false);
+
+    this->setRunSpeed(0);
+    this->setMaxJumpHeight(0);
+
     this->current_frame_idle = 0;
     this->current_frame_moving = 0;
-
-    this->run_speed = 0;
-    this->max_jump_height = 0;
 }
 
 Character::~Character() {
@@ -133,46 +146,17 @@ Character::~Character() {
 /*
 SECTION 2A: SETTERS
 */
-bool Character::setAnimationFramesMoving(vector<SDL_Texture*> anm_frames_moving) {
-    bool success = true;
-
-    /*
-    NOTE:
-        - If there are no textures in the vector then
-        the function will return a failure flag. I.e.,
-        the vector's size is 0.
-    */
-
-    if (anm_frames_moving.size() <= 0) {
-        success = false;
-        return success;
-    }
-
-    /*
-    NOTE:
-        - And if any of the textures in the vector is
-        NULL then the method returns false.
-    */
-    for (int index = 0; index < this->anm_frames_moving.size(); index++) {
-        if (this->anm_frames_moving[index] == NULL) {
-            success = false;
-            return success;
-        }
-    }
-
-    this->anm_frames_moving = anm_frames_moving;
-
-    return success;
-}
 bool Character::setAnimationFramesIdle(vector<SDL_Texture*> anm_frames_idle) {
     bool success = true;
 
     /*
     NOTE:
-        - Similar to setAnimationFramesMoving(), we 
+        - Similar to setAnimationFramesMoving(), we
         add this layer of security.
     */
     if (anm_frames_idle.size() <= 0) {
+        cerr << "Error from Character::setAnimationFramesIdle(): no elements "
+            << "are present in the vector." << endl;
         success = false;
         return success;
     }
@@ -184,12 +168,49 @@ bool Character::setAnimationFramesIdle(vector<SDL_Texture*> anm_frames_idle) {
     */
     for (int index = 0; index < this->anm_frames_idle.size(); index++) {
         if (this->anm_frames_idle[index] == NULL) {
+            cerr << "Error from Character::setAnimationFramesMoving(): a null "
+                << "pointer has been detected." << endl;
             success = false;
             return success;
         }
     }
 
     this->anm_frames_idle = anm_frames_idle;
+
+    return success;
+}
+bool Character::setAnimationFramesMoving(vector<SDL_Texture*> anm_frames_moving) {
+    bool success = true;
+
+    /*
+    NOTE:
+        - If there are no textures in the vector then
+        the function will return a failure flag. I.e.,
+        the vector's size is 0.
+    */
+
+    if (anm_frames_moving.size() <= 0) {
+        cerr << "Error from Character::setAnimationFramesMoving(): no elements "
+            << "are present in the vector." << endl;
+        success = false;
+        return success;
+    }
+
+    /*
+    NOTE:
+        - And if any of the textures in the vector is
+        NULL then the method returns false.
+    */
+    for (int index = 0; index < this->anm_frames_moving.size(); index++) {
+        if (this->anm_frames_moving[index] == NULL) {
+            cerr << "Error from Character::setAnimationFramesMoving(): a null "
+                << "pointer has been detected." << endl;
+            success = false;
+            return success;
+        }
+    }
+
+    this->anm_frames_moving = anm_frames_moving;
 
     return success;
 }
@@ -223,15 +244,33 @@ bool Character::setDirectionFacing(Direction facing) {
     return true;
 }
 
+bool Character::setRunSpeed(int pixels_per_frame) {
+    bool success = true;
+
+    this->run_speed = pixels_per_frame;
+
+    return true;
+}
+
+bool Character::setMaxJumpHeight(int pixels) {
+    bool success = true;
+
+    this->max_jump_height = pixels;
+
+    return true;
+}
+
 /*
 SECTION 2B: GETTERS
 */
 
-vector<SDL_Texture*> Character::getAnimationFramesMoving() { return this->anm_frames_moving; }
 vector<SDL_Texture*> Character::getAnimationFramesIdle() { return this->anm_frames_idle; }
+vector<SDL_Texture*> Character::getAnimationFramesMoving() { return this->anm_frames_moving; }
 bool Character::isMoving() { return this->is_moving; }
 bool Character::isAttacking() { return this->is_attacking; }
 Direction Character::getDirectionFacing() { return this->facing_direction; }
+int Character::getRunSpeed() { return this->run_speed; }
+int Character::getMaxJumpHeight() { return this->max_jump_height; }
 
 /*
 SECTION 3: OTHER FUNCTIONS

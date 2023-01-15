@@ -12,6 +12,9 @@ private:
 	int x;
 	int y;
 
+	int render_x;
+	int render_y;
+
 	int width;
 	int height;
 
@@ -31,7 +34,10 @@ public:
 	*/
 	bool setX(int x);
 	bool setY(int y);
-	bool setCoordinate(int x, int y);
+	bool setCoordinates(int x, int y);
+	bool setRenderX(int camera_x);
+	bool setRenderY(int camera_y);
+	bool setRenderCoordinates(int camera_x, int camera_y);
 	bool setTexture(SDL_Texture* texture);
 
 	/*
@@ -39,6 +45,8 @@ public:
 	*/
 	int getX();
 	int getY();
+	int getRenderX();
+	int getRenderY();
 	int getWidth();
 	int getHeight();
 	SDL_Texture* getTexture();
@@ -47,7 +55,7 @@ public:
 	/*
 	SECTION 3: OTHER METHODS
 	*/
-	bool render(SDL_Renderer* renderer);
+	bool render(SDL_Renderer* renderer, bool camera_follow);
 };
 
 
@@ -58,9 +66,14 @@ Sprite::Sprite() {
 	/*
 	NOTE:
 		- Initializing everything to default values.
+
+		- Do not use default constructors if not needed.
 	*/
-	this->x = 0;
-	this->y = 0;
+	this->setX(0);
+	this->setY(0);
+
+	this->setRenderX(0);
+	this->setRenderY(0);
 
 	this->width = 0;
 	this->height = 0;
@@ -99,6 +112,9 @@ Sprite::Sprite(int x, int y, SDL_Texture* texture) {
 		*/
 		this->viewport = { x, y, this->width, this->height };
 	}
+	else {
+		this->viewport = { x, y, 0, 0 };
+	}
 }
 
 Sprite::~Sprite() {
@@ -129,7 +145,7 @@ bool Sprite::setY(int y) {
 	return success;
 }
 
-bool Sprite::setCoordinate(int x, int y) {
+bool Sprite::setCoordinates(int x, int y) {
 	/*
 	NOTE:
 		- Since both setX() and setY() return boolean
@@ -141,7 +157,45 @@ bool Sprite::setCoordinate(int x, int y) {
 	return success;
 }
 
+bool Sprite::setRenderX(int camera_x) {
+	/*
+	NOTE:
+		- The x-coordinate to which the camera follows
+		the character is different to that of the sprite's
+		true x-coordinate in the level.
+	*/
+	bool success = true;
+
+	this->render_x = this->getX() - camera_x;
+
+	return success;
+}
+
+bool Sprite::setRenderY(int camera_y) {
+	/*
+	NOTE:
+		- Similarly, the y-coordinate to which the camera 
+		follows the character is only relative to the level.
+	*/
+	bool success = true;
+
+	this->render_y = this->getY() - camera_y;
+
+	return success;
+}
+
+bool Sprite::setRenderCoordinates(int camera_x, int camera_y) {
+	bool success = this->setRenderX(camera_x) && this->setRenderY(camera_y);
+
+	return success;
+}
+
 bool Sprite::setTexture(SDL_Texture* texture) {
+	/*
+	NOTE:
+		- This method determines the current texture of
+		the sprite that is to be displayed.
+	*/
 	bool success = true;
 
 	this->texture = texture;
@@ -176,6 +230,8 @@ SECTION 2B: GETTERS
 */
 int Sprite::getX() { return this->x; }
 int Sprite::getY() { return this->y; }
+int Sprite::getRenderX() { return this->render_x; }
+int Sprite::getRenderY() { return this->render_y; }
 int Sprite::getWidth() { return this->width; }
 int Sprite::getHeight() { return this->height; }
 SDL_Texture* Sprite::getTexture() { return this->texture; }
@@ -184,7 +240,7 @@ SDL_Rect Sprite::getViewport() { return this->viewport; }
 /*
 SECTION 3: OTHER METHODS
 */
-bool Sprite::render(SDL_Renderer* renderer) {
+bool Sprite::render(SDL_Renderer* renderer, bool camera_follow = true) {
 	bool success = true;
 
 	/*
@@ -194,10 +250,23 @@ bool Sprite::render(SDL_Renderer* renderer) {
 		texture to the renderer and a zero if it has successfully
 		done so.
 	*/
-	if (SDL_RenderCopy(renderer, this->texture, NULL, &this->viewport) != 0) {
-		cerr << "Error from Sprite::render(): unable to render the sprite's current texture."
-			<< endl;
-		success = false;
+	if (!camera_follow) {
+		if (SDL_RenderCopy(renderer, this->texture, NULL, &this->viewport) != 0) {
+			cerr << "Error from Sprite::render(): unable to render the sprite's current texture."
+				<< endl;
+			success = false;
+		}
+	}
+	else {
+		SDL_Rect temp_viewport = this->viewport;
+		temp_viewport.x = render_x;
+		temp_viewport.y = render_y;
+
+		if (SDL_RenderCopy(renderer, this->texture, NULL, &temp_viewport) != 0) {
+			cerr << "Error from Sprite::render(): unable  to render the sprite's current texture."
+				<< endl;
+			success = false;
+		}
 	}
 
 	return success;
