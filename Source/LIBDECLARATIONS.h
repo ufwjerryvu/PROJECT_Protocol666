@@ -18,14 +18,12 @@ IMPORTING THE SDL LIBRARIES
 using namespace std;
 
 /*
-INITIALIZING GLOBAL VARIABLES
+DECLARING THE USER-EVENT STRUCTURE
 */
-const int SCREEN_WIDTH = 900;
-const int SCREEN_HEIGHT = 500;
+struct UserEvent {
+	bool* key_down, * key_up;
+	const Uint8* current_key_states;
 
-/*
-INITIALIZING SDL-RELATED INSTANCES
-*/
-SDL_Window* window = NULL;
-SDL_Renderer* renderer = NULL;
-
+	bool* mouse_down, * mouse_up;
+	int* mouse_x, * mouse_y;
+};
