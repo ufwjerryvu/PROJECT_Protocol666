@@ -1,11 +1,13 @@
 /*
-@ COLLABORATORS: Jerry Vu
+@ COLLABORATORS: Jerry Vu, An Luu
 @ CLASS DESIGNERS: Jerry Vu
 */
 
 #pragma once
 
 #include "LIBDECLARATIONS.h"
+
+#include "Utilities.h"
 
 #include "Sprite.h"
 
@@ -21,6 +23,8 @@ public:
 	SDL_Texture* loadTexture(SDL_Renderer* renderer, string path);
 
 	Player loadTestRagdoll(SDL_Renderer* renderer, UserEvent user_actions);
+
+	string parseTextFile(string path);
 };
 
 SDL_Texture* FileHandling::loadTexture(SDL_Renderer* renderer, string path) {
@@ -68,3 +72,34 @@ Player FileHandling::loadTestRagdoll(SDL_Renderer* renderer, UserEvent user_acti
 
 	return ragdolltest;
 }
+
+string FileHandling::parseTextFile(string path) {
+	/*
+	NOTE:
+		- Declare relevant variables
+	*/
+	ifstream input_file;
+	string temp;
+	string content;
+	input_file.open(path);
+
+	/*
+	NOTE:
+		- Loop through each line in file and assign each to `temp`.
+
+		- Add string in `temp` to `content`, add '\n' after each line until EOF is reached
+	*/
+
+	while (getline(input_file, temp)) {
+		content += temp;
+		if (!input_file.eof()) {
+			content += '\n';
+		}
+
+	}
+
+	return content;
+
+	input_file.close();
+}
+
