@@ -83,7 +83,9 @@ vector<string> FileHandling::parseLevelConfigPaths() {
 	/*
 	NOTE:
 		- Parse txt file into `file_content` using FileHandling::parseTextFile()
-		- split content of `file_content` line by line and return a vector<string> using Utilities::split()
+		
+		- Split content of `file_content` line by line and return a vector<string> using Utilities::split()
+		
 		- Add the paths in the `split_content` vector into paths_vector, ignoring comments and empty lines.
 	*/
 
