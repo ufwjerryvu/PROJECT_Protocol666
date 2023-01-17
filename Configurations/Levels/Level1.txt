@@ -1,0 +1,10 @@
+# NOTE: All paths are relative to the .exe (executable) file.
+
+# Dimensions format: level_width,level_height
+2400,500
+
+# Characters format: Object,initial_x,initial_y,animation_config_path
+Player,30,30,Configurations/Animation Paths/Ragdoll.txt
+
+# Other sprites format: Object,initial_x,initial_y,texture_path
+Sprite,0,0,Assets/Sprite/Background/backgroundlv1.png

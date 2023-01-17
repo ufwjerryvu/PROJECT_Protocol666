@@ -1,0 +1,3 @@
+# These are paths relative to the final .exe (executable) file.
+Configurations/Levels/Level1.txt
+Configurations/Levels/Level2.txt
