@@ -7,6 +7,7 @@ IMPORTING THE STANDARD LIBRARIES
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <fstream>
 
 /*
 IMPORTING THE SDL LIBRARIES
