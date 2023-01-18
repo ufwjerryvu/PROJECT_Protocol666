@@ -13,6 +13,7 @@ public:
 	bool checkFloat(string arg);
 	string strToUpper(string arg);
 	string strToLower(string arg);
+	double strToFloat(const string& arg);
 
 };
 
@@ -168,4 +169,78 @@ string Utilities::strToLower(string arg) {
 		}
 	}
 	return temp;
+}
+
+double Utilities::strToFloat(const string& arg) {
+	/*
+	NOTE:
+		- This function is manually written to convert a string into
+		an integer. This is based on the ASCII table where the
+		character '0' corresponds to the integer value of 48.
+	*/
+	if (!checkFloat(arg)) {
+		cerr << "Error: the input is not a floating point. Function strToFloat() returned 0." << endl;
+		return false;
+	}
+
+	const int TRANSLATION_FACTOR = '0';
+	const int BASE = 10;
+	double result = 0;
+	int decimal_point_pos = arg.length();
+
+	/*
+	NOTE:
+		-The part below is to check where the position of decimal point is
+		for the string to double conversion in the following parts.
+	*/
+	for (int index = 0; index < arg.length(); index++) {
+		if (arg[index] == '.') {
+			decimal_point_pos = index;
+		}
+	}
+
+	/*
+	NOTE:
+		- The part below is used to convert the string argument into an integer/double.
+		The whole woggly thing looks hideous and complicated but the idea behind the algorithm
+		is very simple.
+
+		- The first 'for' loop is used to convert the numbers BEFORE the decimal point into
+		a double. Therefore, it has an incrementing positive exponent for every digit to the left.
+		The base is 10 because decimal means 10. If there is a negative sign, the loop will exit
+		because if left there, it could yield very bizzare values. If the argument has the format
+		'.1339' or '-.231339' then the first 'for' loop will exit and the result will be set to 0.
+
+		- On the contrary, the second 'for' loop is used to convert the numbers AFTER the decimal point
+		into a double. Hence, it has a decrementing negative exponent for every digit to the right.
+	*/
+	for (int index = decimal_point_pos - 1, exponent = 0; index >= 0; index--, exponent++) {
+		if (decimal_point_pos == 0) {
+			result = 0;
+			break;
+		}
+		char temp = arg[index];
+		if (temp == '-') {
+			break;
+		}
+		temp -= TRANSLATION_FACTOR;
+		result += (temp * pow(BASE, exponent));
+	}
+	for (int index = decimal_point_pos + 1, exponent = -1; index < arg.length(); index++, exponent--) {
+		char temp = arg[index];
+		temp -= TRANSLATION_FACTOR;
+		result += (temp * pow(BASE, exponent));
+	}
+
+	/*
+	NOTE:
+		- The statement below is implemented to check for a negative
+		sign in the string and negate the result if a negative sign
+		is detected.
+	*/
+	if (arg[0] == '-') {
+		result = -result;
+	}
+
+	return result;
 }
