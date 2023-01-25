@@ -34,9 +34,9 @@ public:
 	*/
 	bool setX(int x);
 	bool setY(int y);
-	bool setCoordinates(int x, int y);
 	bool setRenderX(int camera_x);
 	bool setRenderY(int camera_y);
+	bool setCoordinates(int x, int y);
 	bool setRenderCoordinates(int camera_x, int camera_y);
 	bool setTexture(SDL_Texture* texture);
 
@@ -145,18 +145,6 @@ bool Sprite::setY(int y) {
 	return success;
 }
 
-bool Sprite::setCoordinates(int x, int y) {
-	/*
-	NOTE:
-		- Since both setX() and setY() return boolean
-		values, we could use those values to set the
-		coordinate.
-	*/
-	bool success = (this->setX(x) && this->setY(y));
-
-	return success;
-}
-
 bool Sprite::setRenderX(int camera_x) {
 	/*
 	NOTE:
@@ -170,7 +158,6 @@ bool Sprite::setRenderX(int camera_x) {
 
 	return success;
 }
-
 bool Sprite::setRenderY(int camera_y) {
 	/*
 	NOTE:
@@ -180,6 +167,18 @@ bool Sprite::setRenderY(int camera_y) {
 	bool success = true;
 
 	this->render_y = this->getY() - camera_y;
+
+	return success;
+}
+
+bool Sprite::setCoordinates(int x, int y) {
+	/*
+	NOTE:
+		- Since both setX() and setY() return boolean
+		values, we could use those values to set the
+		coordinate.
+	*/
+	bool success = (this->setX(x) && this->setY(y));
 
 	return success;
 }
