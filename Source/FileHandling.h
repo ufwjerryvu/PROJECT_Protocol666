@@ -159,9 +159,10 @@ Player FileHandling::loadTestRagdoll(SDL_Renderer* renderer, UserEvent user_acti
 	*/
 
 	int x = 0, y = 0;
+	const int INITIAL_FRAME = 0;
 
 	vector<SDL_Texture*> anm_frames_idle;
-	vector<SDL_Texture*> anm_frames_moving;
+	vector<SDL_Texture*> anm_frames_running;
 
 	anm_frames_idle.push_back(loadTexture(renderer, "Assets/Sprite/Character/Player/Ragdoll/idle1.png"));
 	anm_frames_idle.push_back(loadTexture(renderer, "Assets/Sprite/Character/Player/Ragdoll/idle2.png"));
@@ -169,16 +170,18 @@ Player FileHandling::loadTestRagdoll(SDL_Renderer* renderer, UserEvent user_acti
 	anm_frames_idle.push_back(loadTexture(renderer, "Assets/Sprite/Character/Player/Ragdoll/idle4.png"));
 
 
-	anm_frames_moving.push_back(loadTexture(renderer, "Assets/Sprite/Character/Player/Ragdoll/run1.png"));
-	anm_frames_moving.push_back(loadTexture(renderer, "Assets/Sprite/Character/Player/Ragdoll/run2.png"));
-	anm_frames_moving.push_back(loadTexture(renderer, "Assets/Sprite/Character/Player/Ragdoll/run3.png"));
-	anm_frames_moving.push_back(loadTexture(renderer, "Assets/Sprite/Character/Player/Ragdoll/run4.png"));
-	anm_frames_moving.push_back(loadTexture(renderer, "Assets/Sprite/Character/Player/Ragdoll/run5.png"));
-	anm_frames_moving.push_back(loadTexture(renderer, "Assets/Sprite/Character/Player/Ragdoll/run6.png"));
-	anm_frames_moving.push_back(loadTexture(renderer, "Assets/Sprite/Character/Player/Ragdoll/run7.png"));
-	anm_frames_moving.push_back(loadTexture(renderer, "Assets/Sprite/Character/Player/Ragdoll/run8.png"));
+	anm_frames_running.push_back(loadTexture(renderer, "Assets/Sprite/Character/Player/Ragdoll/run1.png"));
+	anm_frames_running.push_back(loadTexture(renderer, "Assets/Sprite/Character/Player/Ragdoll/run2.png"));
+	anm_frames_running.push_back(loadTexture(renderer, "Assets/Sprite/Character/Player/Ragdoll/run3.png"));
+	anm_frames_running.push_back(loadTexture(renderer, "Assets/Sprite/Character/Player/Ragdoll/run4.png"));
+	anm_frames_running.push_back(loadTexture(renderer, "Assets/Sprite/Character/Player/Ragdoll/run5.png"));
+	anm_frames_running.push_back(loadTexture(renderer, "Assets/Sprite/Character/Player/Ragdoll/run6.png"));
+	anm_frames_running.push_back(loadTexture(renderer, "Assets/Sprite/Character/Player/Ragdoll/run7.png"));
+	anm_frames_running.push_back(loadTexture(renderer, "Assets/Sprite/Character/Player/Ragdoll/run8.png"));
 
-	Player ragdolltest(x, y, anm_frames_idle, anm_frames_moving, user_actions);
+	Animation animation = { anm_frames_idle, anm_frames_running, INITIAL_FRAME, INITIAL_FRAME };
+
+	Player ragdolltest(x, y, animation, user_actions);
 
 	return ragdolltest;
 }

@@ -18,8 +18,7 @@ public:
 	SECTION 1: CONSTRUCTORS AND DESTRUCTORS
 	*/
 	Player();
-	Player(int x, int y, vector<SDL_Texture*> anm_frames_idle,
-		vector<SDL_Texture*> anm_frames_moving, UserEvent user_actions);
+	Player(int x, int y, Animation animation, UserEvent user_actions);
 	~Player();
 
 	/*
@@ -63,9 +62,8 @@ Player::Player() : Character() {
 	user_actions = { NULL, NULL, NULL, NULL, NULL, NULL };
 }
 
-Player::Player(int x, int y, vector<SDL_Texture*> anm_frames_idle, 
-	vector<SDL_Texture*> anm_frames_moving, UserEvent user_actions)
-	: Character(x, y, anm_frames_idle, anm_frames_moving) {
+Player::Player(int x, int y, Animation animation, UserEvent user_actions)
+	: Character(x, y, animation) {
 
 	/*
 	NOTE:
@@ -96,12 +94,12 @@ SECTION 3: OTHER FUNCTIONS
 */
 void Player::run() {
 	if (*user_actions.key_down) {
-		this->setMovingState(true);
+		this->setRunningState(true);
 
 		if (user_actions.current_key_states[SDL_SCANCODE_A]) {
 			/*
 			NOTE:
-				- The player is moving left.
+				- The player is running left.
 			*/
 			this->setX(this->getX() - this->getRunSpeed());
 			this->setDirectionFacing(Direction::LEFT);
@@ -109,7 +107,7 @@ void Player::run() {
 		else if (user_actions.current_key_states[SDL_SCANCODE_D]) {
 			/*
 			NOTE:
-				- The player is moving right.
+				- The player is running right.
 			*/
 			this->setX(this->getX() + this->getRunSpeed());
 			this->setDirectionFacing(Direction::RIGHT);
@@ -128,7 +126,7 @@ void Player::run() {
 		}
 	}
 	else {
-		this->setMovingState(false);
+		this->setRunningState(false);
 	}
 }
 
@@ -162,20 +160,22 @@ void Player::setNextFrame() {
 	*/
 	int frames_per_sequence = 10;
 
-	if (!this->isMoving()) {
+	if (!this->isRunning()) {
 		/*
 		NOTE:
 			- If the user isn't moving then the current moving frame
 			must be reset to 0.
 		*/
-		this->current_frame_moving = 0;
+		Animation temp = this->getAnimation();
+		temp.current_frame_running = 0;
+		this->setAnimation(temp);
 
 		/*
 		NOTE:
 			- Setting the texture to be rendered to the current moving frame.
 		*/
-		if (!(this->current_frame_idle % frames_per_sequence)) {
-			this->setTexture(this->getAnimationFramesIdle()[this->current_frame_idle / frames_per_sequence]);
+		if (!(temp.current_frame_idle % frames_per_sequence)) {
+			this->setTexture(temp.frames_idle[temp.current_frame_idle / frames_per_sequence]);
 		}
 
 		/*
@@ -183,12 +183,14 @@ void Player::setNextFrame() {
 			- Making sure the index doesn't access anything out of the
 			vector's range.
 		*/
-		if (this->current_frame_idle >= (this->getAnimationFramesIdle().size() - 1) * frames_per_sequence) {
-			this->current_frame_idle = 0;
+		if (temp.current_frame_idle >= (temp.frames_idle.size() - 1) * frames_per_sequence) {
+			temp.current_frame_idle = 0;
 		}
 		else {
-			this->current_frame_idle++;
+			temp.current_frame_idle++;
 		}
+
+		this->setAnimation(temp);
 	}
 	else {
 		/*
@@ -205,23 +207,27 @@ void Player::setNextFrame() {
 		*/
 
 		frames_per_sequence = 5;
+		Animation temp = this->getAnimation();
+		temp.current_frame_idle = 0;
 
-		this->current_frame_idle = 0;
+		this->setAnimation(temp);
 
 		/*
 		NOTE:
 			- Here's the modulo operation metioned earlier.
 		*/
-		if (!(this->current_frame_moving % frames_per_sequence)) {
-			this->setTexture(this->getAnimationFramesMoving()[this->current_frame_moving / frames_per_sequence]);
+		if (!(temp.current_frame_running % frames_per_sequence)) {
+			this->setTexture(temp.frames_running[temp.current_frame_running / frames_per_sequence]);
 		}
 
-		if (this->current_frame_moving >= ((this->getAnimationFramesMoving().size() - 1) * frames_per_sequence)) {
-			this->current_frame_moving = 0;
+		if (temp.current_frame_running >= ((temp.frames_running.size() - 1) * frames_per_sequence)) {
+			temp.current_frame_running = 0;
 		}
 		else {
-			this->current_frame_moving++;
+			temp.current_frame_running++;
 		}
+
+		this->setAnimation(temp);
 	}
 }
 
