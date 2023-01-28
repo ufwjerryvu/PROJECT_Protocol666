@@ -11,6 +11,9 @@
 #include "Character.h"
 
 class Player : public Character{
+private:
+	int current_horizontal_key;
+	bool simultaneous_horizontal_keys_pressed;
 protected:
 	UserEvent user_actions;
 public:
@@ -60,6 +63,9 @@ Player::Player() : Character() {
 	*/
 
 	user_actions = { NULL, NULL, NULL, NULL, NULL, NULL };
+
+	this->current_horizontal_key = 0;
+	this->simultaneous_horizontal_keys_pressed = false;
 }
 
 Player::Player(int x, int y, Animation animation, UserEvent user_actions)
@@ -70,6 +76,9 @@ Player::Player(int x, int y, Animation animation, UserEvent user_actions)
 		- Calling Character's parameterized constructor.
 	*/
 	this->user_actions = user_actions;
+
+	this->current_horizontal_key = 0;
+	this->simultaneous_horizontal_keys_pressed = false;
 
 	const int PIXELS_PER_FRAME = 4;
 	this->setRunSpeed(PIXELS_PER_FRAME);
@@ -93,18 +102,72 @@ SECTION 2B: GETTERS
 SECTION 3: OTHER FUNCTIONS
 */
 void Player::run() {
-	if (*user_actions.key_down) {
+	/*
+	NOTE:
+		- Checking if either of the horizontal running keys has been pressed 
+		(i.e., 'A' and/or 'D') to set the running state of the player to true 
+		for animation purposes.
+	*/
+	if (this->user_actions.current_key_states[SDL_SCANCODE_A] || this->user_actions.current_key_states[SDL_SCANCODE_D]) {
 		this->setRunningState(true);
 
-		if (user_actions.current_key_states[SDL_SCANCODE_A]) {
+		if (this->user_actions.current_key_states[SDL_SCANCODE_A] && !this->user_actions.current_key_states[SDL_SCANCODE_D]) {
+			/*
+			NOTE:
+				- This is what happens when only one key ('A') is pressed.
+			*/
+			this->simultaneous_horizontal_keys_pressed = false;
+			this->current_horizontal_key = SDL_SCANCODE_A;
+		}
+		else if (!this->user_actions.current_key_states[SDL_SCANCODE_A] && this->user_actions.current_key_states[SDL_SCANCODE_D]) {
+			/*
+			NOTE:
+				- This is what happens when only one key ('D') is pressed.
+			*/
+			this->simultaneous_horizontal_keys_pressed = false;
+			this->current_horizontal_key = SDL_SCANCODE_D;
+		}
+
+		if (this->user_actions.current_key_states[SDL_SCANCODE_A] && this->user_actions.current_key_states[SDL_SCANCODE_D]) {
+			/*
+			NOTE:
+				- If two keys are being pressed down then the subsequent key 
+				is the final input.
+
+				- For example, if 'D' was pressed first and 'A' is pressed
+				after then 'A' becomes the final processed input and the
+				player's character runs left.
+
+				- We only change the value of `current_horizontal_key` if the 
+				flag that notes the concurrence of the two horizontal keys 
+				is not set.
+			*/
+
+			if (this->current_horizontal_key == SDL_SCANCODE_D && !this->simultaneous_horizontal_keys_pressed) {
+				this->current_horizontal_key = SDL_SCANCODE_A;
+			}
+			else if (this->current_horizontal_key == SDL_SCANCODE_A && !this->simultaneous_horizontal_keys_pressed) {
+				this->current_horizontal_key = SDL_SCANCODE_D;
+			}
+
+			this->simultaneous_horizontal_keys_pressed = true;
+		}
+
+		/*
+		NOTE:
+			- The variable `current_horizontal_key` ultimately decides
+			the direction of the player's running motion and not 
+			`current_key_states`.
+		*/
+		if (this->current_horizontal_key == SDL_SCANCODE_A) {
 			/*
 			NOTE:
 				- The player is running left.
 			*/
 			this->setX(this->getX() - this->getRunSpeed());
 			this->setDirectionFacing(Direction::LEFT);
-		}
-		else if (user_actions.current_key_states[SDL_SCANCODE_D]) {
+		} 
+		if (this->current_horizontal_key == SDL_SCANCODE_D) {
 			/*
 			NOTE:
 				- The player is running right.
@@ -117,6 +180,9 @@ void Player::run() {
 		NOTE:
 			- This might be deleted later because the character
 			won't be moving diagonally across the screen.
+
+		UPDATE:
+			- Will delete.
 		*/
 		if (user_actions.current_key_states[SDL_SCANCODE_S]) {
 			this->setY(this->getY() + this->getRunSpeed());
