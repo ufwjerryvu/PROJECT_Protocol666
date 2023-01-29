@@ -23,8 +23,8 @@ public:
 	SDL_Window* window = NULL;
 	SDL_Renderer* renderer = NULL;
 
-	const int SCREEN_WIDTH = 900;
-	const int SCREEN_HEIGHT = 500;
+	static const int SCREEN_WIDTH = 900;
+	static const int SCREEN_HEIGHT = 500;
 
 	UserEvent user_actions;
 
@@ -87,18 +87,6 @@ Game::Game(UserEvent user_actions) {
 
 	/*
 	NOTE:
-		- Initializing current level configs.
-	*/
-	this->current_level = 0;
-
-	FileHandling file_io;
-	this->level_config_paths = file_io.parseLevelConfigPaths();
-	
-	this->level_width = file_io.parseLevelWidth(level_config_paths[this->current_level]);
-	this->level_height = file_io.parseLevelHeight(level_config_paths[this->current_level]);
-
-	/*
-	NOTE:
 		- Initializing the camera. 
 	*/
 	SDL_Rect camera = { 0, 0, this->SCREEN_WIDTH, this->SCREEN_HEIGHT };
@@ -112,6 +100,16 @@ Game::Game(UserEvent user_actions) {
 		cerr << "Error from Game(): cannot load some or all assets properly." << endl;
 	}
 
+	/*
+	NOTE:
+		- Loading the first level of the game 
+		as we are initializing the game.
+	*/
+	this->current_level = 0;
+
+	if (!this->loadCurrentLevel()) {
+		cerr << "Error from Game(): cannot load the current level configurations." << endl;
+	}
 }
 
 /*
@@ -211,6 +209,31 @@ bool Game::loadAllAssets() {
 	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER --------------------------------------------->
 	this->player = file_io.loadTestRagdoll(this->renderer, this->user_actions);
 	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER <---------------------------------------------
+
+	return success;
+}
+
+bool Game::loadCurrentLevel() {
+	bool success = true;
+	/*
+	NOTE:
+		- Initializing current level configs.
+	*/
+
+	FileHandling file_io;
+	this->level_config_paths = file_io.parseLevelConfigPaths();
+	
+	this->level_width = file_io.parseLevelWidth(level_config_paths[this->current_level]);
+	this->level_height = file_io.parseLevelHeight(level_config_paths[this->current_level]);
+
+	/*
+	NOTE:
+		- We kind of have to update the player regarding how big 
+		the level is everytime the level changes. This is purely
+		because of bad design.
+	*/
+	this->player.loadLevelWidth(this->level_width);
+	this->player.loadLevelHeight(this->level_height);
 
 	return success;
 }

@@ -12,6 +12,7 @@
 
 class Player : public Character{
 private:
+	int level_width, level_height;
 	int current_horizontal_key;
 	bool simultaneous_horizontal_keys_pressed;
 protected:
@@ -27,6 +28,8 @@ public:
 	/*
 	SECTION 2A: SETTERS
 	*/
+	bool loadLevelWidth(int level_width);
+	bool loadLevelHeight(int level_height);
 	/*
 	SECTION 2B: GETTERS
 	*/
@@ -94,6 +97,21 @@ Player::~Player() {
 /*
 SECTION 2A: SETTERS
 */
+bool Player::loadLevelWidth(int level_width) {
+	bool success = true;
+
+	this->level_width = level_width;
+
+	return success;
+}
+
+bool Player::loadLevelHeight(int level_height) {
+	bool success = true;
+
+	this->level_height = level_height;
+
+	return success;
+}
 /*
 SECTION 2B: GETTERS
 */
@@ -160,35 +178,44 @@ void Player::run() {
 			`current_key_states`.
 		*/
 		if (this->current_horizontal_key == SDL_SCANCODE_A) {
+			this->setDirectionFacing(Direction::LEFT);
+			/*
+			NOTE:
+				- Checking if the player is going out of the left bound. If they
+				are then stop them.
+			*/
+			if (this->getX() - this->getRunSpeed() <= 0) {
+				this->setRunningState(false);
+				/*
+				NOTE:
+					- The following code that sets the x-coordinate is basically saying
+					that we don't want to leave a gap between the player and the edge
+					of the screen.
+				*/
+				this->setX(0);
+				return;
+			}
 			/*
 			NOTE:
 				- The player is running left.
 			*/
 			this->setX(this->getX() - this->getRunSpeed());
-			this->setDirectionFacing(Direction::LEFT);
-		} 
-		if (this->current_horizontal_key == SDL_SCANCODE_D) {
+		} else if (this->current_horizontal_key == SDL_SCANCODE_D) {
+			this->setDirectionFacing(Direction::RIGHT);
+			/*
+			NOTE:
+				- Checking if the player is going out of the right bound. If they
+				are then stop them. 
+			*/
+			if (this->getX() + this->getRunSpeed() + this->getWidth() >= this->level_width) {
+				this->setRunningState(false);
+				return;
+			}
 			/*
 			NOTE:
 				- The player is running right.
 			*/
 			this->setX(this->getX() + this->getRunSpeed());
-			this->setDirectionFacing(Direction::RIGHT);
-		}
-
-		/*
-		NOTE:
-			- This might be deleted later because the character
-			won't be moving diagonally across the screen.
-
-		UPDATE:
-			- Will delete.
-		*/
-		if (user_actions.current_key_states[SDL_SCANCODE_S]) {
-			this->setY(this->getY() + this->getRunSpeed());
-		}
-		else if (user_actions.current_key_states[SDL_SCANCODE_W]) {
-			this->setY(this->getY() - this->getRunSpeed());
 		}
 	}
 	else {
