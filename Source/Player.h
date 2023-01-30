@@ -11,6 +11,9 @@
 #include "Character.h"
 
 class Player : public Character{
+private:
+	int current_horizontal_key;
+	bool simultaneous_horizontal_keys_pressed;
 protected:
 	UserEvent user_actions;
 public:
@@ -60,6 +63,9 @@ Player::Player() : Character() {
 	*/
 
 	user_actions = { NULL, NULL, NULL, NULL, NULL, NULL };
+
+	this->current_horizontal_key = 0;
+	this->simultaneous_horizontal_keys_pressed = false;
 }
 
 Player::Player(int x, int y, Animation animation, UserEvent user_actions)
@@ -70,6 +76,9 @@ Player::Player(int x, int y, Animation animation, UserEvent user_actions)
 		- Calling Character's parameterized constructor.
 	*/
 	this->user_actions = user_actions;
+
+	this->current_horizontal_key = 0;
+	this->simultaneous_horizontal_keys_pressed = false;
 
 	const int PIXELS_PER_FRAME = 4;
 	this->setRunSpeed(PIXELS_PER_FRAME);
@@ -93,35 +102,103 @@ SECTION 2B: GETTERS
 SECTION 3: OTHER FUNCTIONS
 */
 void Player::run() {
-	if (*user_actions.key_down) {
+	/*
+	NOTE:
+		- Checking if either of the horizontal running keys has been pressed 
+		(i.e., 'A' and/or 'D') to set the running state of the player to true 
+		for animation purposes.
+	*/
+	if (this->user_actions.current_key_states[SDL_SCANCODE_A] || this->user_actions.current_key_states[SDL_SCANCODE_D]) {
 		this->setRunningState(true);
 
-		if (user_actions.current_key_states[SDL_SCANCODE_A]) {
+		if (this->user_actions.current_key_states[SDL_SCANCODE_A] && !this->user_actions.current_key_states[SDL_SCANCODE_D]) {
+			/*
+			NOTE:
+				- This is what happens when only one key ('A') is pressed.
+			*/
+			this->simultaneous_horizontal_keys_pressed = false;
+			this->current_horizontal_key = SDL_SCANCODE_A;
+		}
+		else if (!this->user_actions.current_key_states[SDL_SCANCODE_A] && this->user_actions.current_key_states[SDL_SCANCODE_D]) {
+			/*
+			NOTE:
+				- This is what happens when only one key ('D') is pressed.
+			*/
+			this->simultaneous_horizontal_keys_pressed = false;
+			this->current_horizontal_key = SDL_SCANCODE_D;
+		}
+
+		if (this->user_actions.current_key_states[SDL_SCANCODE_A] && this->user_actions.current_key_states[SDL_SCANCODE_D]) {
+			/*
+			NOTE:
+				- If two keys are being pressed down then the subsequent key 
+				is the final input.
+
+				- For example, if 'D' was pressed first and 'A' is pressed
+				after then 'A' becomes the final processed input and the
+				player's character runs left.
+
+				- We only change the value of `current_horizontal_key` if the 
+				flag that notes the concurrence of the two horizontal keys 
+				is not set.
+			*/
+
+			if (this->current_horizontal_key == SDL_SCANCODE_D && !this->simultaneous_horizontal_keys_pressed) {
+				this->current_horizontal_key = SDL_SCANCODE_A;
+			}
+			else if (this->current_horizontal_key == SDL_SCANCODE_A && !this->simultaneous_horizontal_keys_pressed) {
+				this->current_horizontal_key = SDL_SCANCODE_D;
+			}
+
+			this->simultaneous_horizontal_keys_pressed = true;
+		}
+
+		/*
+		NOTE:
+			- The variable `current_horizontal_key` ultimately decides
+			the direction of the player's running motion and not 
+			`current_key_states`.
+		*/
+		if (this->current_horizontal_key == SDL_SCANCODE_A) {
+			this->setDirectionFacing(Direction::LEFT);
+			/*
+			NOTE:
+				- Checking if the player is going out of the left bound. If they
+				are then stop them.
+			*/
+			if (this->getX() - this->getRunSpeed() <= 0) {
+				this->setRunningState(false);
+				/*
+				NOTE:
+					- The following code that sets the x-coordinate is basically saying
+					that we don't want to leave a gap between the player and the edge
+					of the screen.
+				*/
+				this->setX(0);
+				return;
+			}
 			/*
 			NOTE:
 				- The player is running left.
 			*/
 			this->setX(this->getX() - this->getRunSpeed());
-			this->setDirectionFacing(Direction::LEFT);
-		}
-		else if (user_actions.current_key_states[SDL_SCANCODE_D]) {
+		} else if (this->current_horizontal_key == SDL_SCANCODE_D) {
+			this->setDirectionFacing(Direction::RIGHT);
+			/*
+			NOTE:
+				- Checking if the player is going out of the right bound. If they
+				are then stop them. 
+			*/
+			if (this->getX() + this->getRunSpeed() + this->getWidth() >= this->getLevelWidth()) {
+				this->setRunningState(false);
+				return;
+			}
 			/*
 			NOTE:
 				- The player is running right.
 			*/
 			this->setX(this->getX() + this->getRunSpeed());
-			this->setDirectionFacing(Direction::RIGHT);
 		}
-
-		/*
-		NOTE:
-			- This might be deleted later because the character
-			won't be moving diagonally across the screen.
-		*/
-		
-		/*if (user_actions.current_key_states[SDL_SCANCODE_S]) {
-			this->setY(this->getY() + this->getRunSpeed());
-		}*/
 	}
 	else {
 		this->setRunningState(false);
@@ -129,17 +206,10 @@ void Player::run() {
 }
 
 void Player::jump() {
-	if (*user_actions.key_down) {
-		this->setJumpingState(true);
-		int current_max_jump_height = 400 - this->getMaxJumpHeight();
-
-		if (user_actions.current_key_states[SDL_SCANCODE_W] && this->getY() >= current_max_jump_height) {
-				this->setY(this->getY() - this->getRunSpeed());
-		}
-	}
-	else {
-		this->setJumpingState(false);
-	}
+	/*
+	NOTE:
+		- Empty for now.
+	*/
 }
 
 void Player::move() {
@@ -149,8 +219,8 @@ void Player::move() {
 		jump() methods because they are both actions that
 		displace the player.
 	*/
-
 	this->run();
+	this->fall();
 	this->jump();
 }
 
@@ -166,6 +236,39 @@ void Player::setNextFrame() {
 	*/
 	int frames_per_sequence = 10;
 
+	if (this->isFalling()) {
+		Animation temp = this->getAnimation();
+
+		temp.current_frame_idle = 0;
+		temp.current_frame_running = 0;
+
+		this->setAnimation(temp);
+
+		/*
+		NOTE:
+			- Setting the texture to be rendered to the current falling frame.
+		*/
+		if (!(temp.current_frame_falling % frames_per_sequence)) {
+			this->setTexture(temp.frames_falling[temp.current_frame_falling / frames_per_sequence]);
+		}
+
+		/*
+		NOTE:
+			- Making sure the index doesn't access anything out of the
+			vector's range.
+		*/
+		if (temp.current_frame_falling >= (temp.frames_falling.size() - 1) * frames_per_sequence) {
+			temp.current_frame_falling = 0;
+		}
+		else {
+			temp.current_frame_falling++;
+		}
+
+		this->setAnimation(temp);
+
+		return;
+	}
+
 	if (!this->isRunning()) {
 		/*
 		NOTE:
@@ -174,6 +277,7 @@ void Player::setNextFrame() {
 		*/
 		Animation temp = this->getAnimation();
 		temp.current_frame_running = 0;
+		temp.current_frame_falling = 0;
 		this->setAnimation(temp);
 
 		/*
@@ -215,6 +319,7 @@ void Player::setNextFrame() {
 		frames_per_sequence = 5;
 		Animation temp = this->getAnimation();
 		temp.current_frame_idle = 0;
+		temp.current_frame_falling = 0;
 
 		this->setAnimation(temp);
 
@@ -247,20 +352,6 @@ void Player::update() {
 		- I will reimplement this later -- or make it abstract.
 		No idea yet.
 	*/
-
-	/* 
-	JUMP/FALL DEVELOPMENT NOTE:
-		- Temporary code block for collision, assuming y = 400 is a platform.
-		- Otherwise, reset fall_velocity to 0, for the next fall.
-	*/
-
-	if (this->getY() <= 400 && !this->isJumping()) {
-		this->fall();
-	}
-	else {
-		this->setFallVelocity(0);
-	}
-
 	this->move();
 
 	this->setNextFrame();
