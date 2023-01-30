@@ -1,6 +1,6 @@
 /*
-@ COLLABORATORS: An Nguyen, Jerry Vu, An Luu
-@ CLASS DESIGNERS: Jerry Vu
+@ COLLABORATORS: An Nguyen, Jerry Vu, An Luu, Khanh Nguyen
+@ CLASS DESIGNERS: Jerry Vu, Khanh Nguyen
 */
 
 #pragma once
@@ -31,16 +31,9 @@ private:
 
     Direction facing_direction;
 
-    /*
-    JUMP/FALL DEVELOPMENT NOTE:
-        - Added is_jumping() & is_falling()
-        - is_jumping() is used to detect if the character is currently jumping
-        - is_falling() is used to detect if the character is currently falling (no jumping, otherwise its a double jump)
-        - is_falling() is still in development to develop a system where LEFT/RIGHT movement are allowed while jumping isn't
-    */
-
     bool is_running;
     bool is_jumping;
+    bool is_falling;
     bool is_attacking;
 
     /*
@@ -60,6 +53,7 @@ private:
 
     int run_speed;
     int max_jump_height;
+
     int gravitational_acceleration;
     int fall_velocity;
     int terminal_velocity;
@@ -68,6 +62,7 @@ public:
     /*
     SECTION 1: CONSTRUCTORS AND DESTRUCTORS
     */
+
     Character();
     Character(int x, int y, Animation animation);
     ~Character();
@@ -79,7 +74,7 @@ public:
     bool setDirectionFacing(Direction facing);
     bool setRunningState(bool is_running);
     bool setJumpingState(bool is_jumping);
-    //bool setFallingState(bool is_falling);
+    bool setFallingState(bool is_falling);
     bool setAttackingState(bool is_attacking);
     bool setRunSpeed(int pixels_per_frame);
     bool setMaxJumpHeight(int pixels);
@@ -93,12 +88,12 @@ public:
     Animation getAnimation();
     Direction getDirectionFacing();
     bool isRunning();
-    bool isAttacking();
     bool isJumping();
-    //bool isFalling();
+    bool isFalling();
+    bool isAttacking();
     int getRunSpeed();
     int getMaxJumpHeight();
-    float getGravitationalAcceleration();
+    int getGravitationalAcceleration();
     int getFallVelocity();
     int getTerminalVelocity();
 
@@ -130,20 +125,23 @@ Character::Character() : Sprite() {
         class `Sprite`, initializing everything to the default values.
 
         - Do not call the default constructor if not needed.
-    
-    JUMP/FALL DEVELOPMENT NOTE:
-        - Added new setters into the constructor for jump/fall related variables, 200, 2, 50 values
+
+        - Added new setters into the constructor for gravitational acceleration, fall velocity, and terminal velocity
     */
     this->setDirectionFacing(Direction::NONE);
 
     this->setRunningState(false);
     this->setAttackingState(false);
+    
+    const int temp_max_jump_height = 200;
+    const int temp_grav_accel = 1;
+    const int temp_terminal_velocity = 10;
 
     this->setRunSpeed(0);
-    this->setMaxJumpHeight(200);
-    this->setGravitationalAcceleration(2);
+    this->setMaxJumpHeight(temp_max_jump_height);
+    this->setGravitationalAcceleration(temp_grav_accel);
     this->setFallVelocity(0);
-    this->setTerminalVelocity(50);
+    this->setTerminalVelocity(temp_terminal_velocity);
 }
 
 Character::Character(int x, int y, Animation animation) : Sprite(x, y, NULL) {
@@ -154,8 +152,7 @@ Character::Character(int x, int y, Animation animation) : Sprite(x, y, NULL) {
         - Setting the character to the first idle
         frame as soon as they are created.
 
-    JUMP/FALL DEVELOPMENT NOTE:
-        - Added new setters into the constructor for jump/fall related variables, 200, 2, 50 values
+        - Added new setters into the constructor for gravitational acceleration, fall velocity, and terminal velocity
     */
     if (animation.frames_idle.size() > 0) {
         this->setTexture(animation.frames_idle[0]);
@@ -166,11 +163,15 @@ Character::Character(int x, int y, Animation animation) : Sprite(x, y, NULL) {
     this->setRunningState(false);
     this->setAttackingState(false);
 
+    const int temp_max_jump_height = 200;
+    const int temp_grav_accel = 2;
+    const int temp_terminal_velocity = 10;
+
     this->setRunSpeed(0);
-    this->setMaxJumpHeight(200);
-    this->setGravitationalAcceleration(2);
+    this->setMaxJumpHeight(temp_max_jump_height);
+    this->setGravitationalAcceleration(temp_grav_accel);
     this->setFallVelocity(0);
-    this->setTerminalVelocity(50);
+    this->setTerminalVelocity(temp_terminal_velocity);
 
     this->animation.current_frame_idle = 0;
     this->animation.current_frame_running = 0;
@@ -218,8 +219,8 @@ bool Character::setAnimation(Animation animation) {
 
     /*
     NOTE:
-    - We add this layer of security to check if the vector
-    for running frames is empty.
+        - We add this layer of security to check if the vector
+        for running frames is empty.
     */
 
     if (animation.frames_running.size() <= 0) {
@@ -271,19 +272,19 @@ bool Character::setRunningState(bool is_running) {
 
 bool Character::setJumpingState(bool is_jumping) {
     bool success = true;
-
+    
     this->is_jumping = is_jumping;
 
     return success;
 }
 
-/*bool Character::setFallingState(bool is_falling) {
+bool Character::setFallingState(bool is_falling) {
     bool success = true;
 
     this->is_falling = is_falling;
 
     return success;
-}*/
+}
 
 bool Character::setAttackingState(bool is_attacking) {
     bool success = true;
@@ -340,10 +341,11 @@ Animation Character::getAnimation() { return this->animation; }
 Direction Character::getDirectionFacing() { return this->facing_direction; }
 bool Character::isRunning() { return this->is_running; }
 bool Character::isJumping() { return this->is_jumping; }
+bool Character::isFalling() { return this->is_falling; }
 bool Character::isAttacking() { return this->is_attacking; }
 int Character::getRunSpeed() { return this->run_speed; }
 int Character::getMaxJumpHeight() { return this->max_jump_height; }
-float Character::getGravitationalAcceleration() { return this->gravitational_acceleration;  }
+int Character::getGravitationalAcceleration() { return this->gravitational_acceleration;  }
 int Character::getFallVelocity() { return this->fall_velocity;  }
 int Character::getTerminalVelocity() { return this->terminal_velocity;  }
 
@@ -352,22 +354,24 @@ SECTION 3: OTHER FUNCTIONS
 */
 void Character::fall() {
     
-    
     /*
-    JUMP/FALL DEVELOPMENT NOTE:
-        - An attempt at disabling jump() after reaching the max height
+    NOTE:
+        - An attempt at disabling jump() after reaching the max height:
 
     his->setJumpingState(false);
     this->setFallingState(true);
 
         - The assumption for using 400 in the conditional statement was to establish a platform
+
         - To assure the Character does not fall through the platform by any means, a slight tweak was made for terminal velocity
+
         - As the Character fall, fall_velocity is 0, which increments by the gravitational_acceleration per game update interval.
     */
 
+    const int platform_y_coordinate = 400;
 
-    if (this->getY() + this->getFallVelocity() >= 400) {
-        this->setFallVelocity(400 - this->getY());
+    if (this->getY() + this->getFallVelocity() >= platform_y_coordinate) {
+        this->setFallVelocity(platform_y_coordinate - this->getY());
         this->setY(this->getY() + this->getFallVelocity());
     }
 
