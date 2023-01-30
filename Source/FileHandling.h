@@ -163,6 +163,7 @@ Player FileHandling::loadTestRagdoll(SDL_Renderer* renderer, UserEvent user_acti
 
 	vector<SDL_Texture*> anm_frames_idle;
 	vector<SDL_Texture*> anm_frames_running;
+	vector<SDL_Texture*> anm_frames_falling;
 
 	anm_frames_idle.push_back(loadTexture(renderer, "Assets/Sprite/Character/Player/Ragdoll/idle1.png"));
 	anm_frames_idle.push_back(loadTexture(renderer, "Assets/Sprite/Character/Player/Ragdoll/idle2.png"));
@@ -179,7 +180,10 @@ Player FileHandling::loadTestRagdoll(SDL_Renderer* renderer, UserEvent user_acti
 	anm_frames_running.push_back(loadTexture(renderer, "Assets/Sprite/Character/Player/Ragdoll/run7.png"));
 	anm_frames_running.push_back(loadTexture(renderer, "Assets/Sprite/Character/Player/Ragdoll/run8.png"));
 
-	Animation animation = { anm_frames_idle, anm_frames_running, INITIAL_FRAME, INITIAL_FRAME };
+	anm_frames_falling.push_back(loadTexture(renderer, "Assets/Sprite/Character/Player/Ragdoll/falling1.png"));
+
+	Animation animation = { anm_frames_idle, anm_frames_running, anm_frames_falling,
+		INITIAL_FRAME, INITIAL_FRAME, INITIAL_FRAME};
 
 	Player ragdolltest(x, y, animation, user_actions);
 

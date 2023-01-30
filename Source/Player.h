@@ -12,7 +12,6 @@
 
 class Player : public Character{
 private:
-	int level_width, level_height;
 	int current_horizontal_key;
 	bool simultaneous_horizontal_keys_pressed;
 protected:
@@ -28,8 +27,6 @@ public:
 	/*
 	SECTION 2A: SETTERS
 	*/
-	bool loadLevelWidth(int level_width);
-	bool loadLevelHeight(int level_height);
 	/*
 	SECTION 2B: GETTERS
 	*/
@@ -97,21 +94,6 @@ Player::~Player() {
 /*
 SECTION 2A: SETTERS
 */
-bool Player::loadLevelWidth(int level_width) {
-	bool success = true;
-
-	this->level_width = level_width;
-
-	return success;
-}
-
-bool Player::loadLevelHeight(int level_height) {
-	bool success = true;
-
-	this->level_height = level_height;
-
-	return success;
-}
 /*
 SECTION 2B: GETTERS
 */
@@ -207,7 +189,7 @@ void Player::run() {
 				- Checking if the player is going out of the right bound. If they
 				are then stop them. 
 			*/
-			if (this->getX() + this->getRunSpeed() + this->getWidth() >= this->level_width) {
+			if (this->getX() + this->getRunSpeed() + this->getWidth() >= this->getLevelWidth()) {
 				this->setRunningState(false);
 				return;
 			}
@@ -238,6 +220,7 @@ void Player::move() {
 		displace the player.
 	*/
 	this->run();
+	this->fall();
 	this->jump();
 }
 
@@ -253,6 +236,39 @@ void Player::setNextFrame() {
 	*/
 	int frames_per_sequence = 10;
 
+	if (this->isFalling()) {
+		Animation temp = this->getAnimation();
+
+		temp.current_frame_idle = 0;
+		temp.current_frame_running = 0;
+
+		this->setAnimation(temp);
+
+		/*
+		NOTE:
+			- Setting the texture to be rendered to the current falling frame.
+		*/
+		if (!(temp.current_frame_falling % frames_per_sequence)) {
+			this->setTexture(temp.frames_falling[temp.current_frame_falling / frames_per_sequence]);
+		}
+
+		/*
+		NOTE:
+			- Making sure the index doesn't access anything out of the
+			vector's range.
+		*/
+		if (temp.current_frame_falling >= (temp.frames_falling.size() - 1) * frames_per_sequence) {
+			temp.current_frame_falling = 0;
+		}
+		else {
+			temp.current_frame_falling++;
+		}
+
+		this->setAnimation(temp);
+
+		return;
+	}
+
 	if (!this->isRunning()) {
 		/*
 		NOTE:
@@ -261,6 +277,7 @@ void Player::setNextFrame() {
 		*/
 		Animation temp = this->getAnimation();
 		temp.current_frame_running = 0;
+		temp.current_frame_falling = 0;
 		this->setAnimation(temp);
 
 		/*
@@ -302,6 +319,7 @@ void Player::setNextFrame() {
 		frames_per_sequence = 5;
 		Animation temp = this->getAnimation();
 		temp.current_frame_idle = 0;
+		temp.current_frame_falling = 0;
 
 		this->setAnimation(temp);
 
