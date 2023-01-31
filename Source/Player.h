@@ -206,10 +206,73 @@ void Player::run() {
 }
 
 void Player::jump() {
+	int lvl_relative_max_jump_height = this->getLevelHeight() - this->getMaxJumpHeight();
+	int frame_update_interval = 4;
+
+	if (this->isJumping()) {
+		/*
+		NOTE:
+			- If the character is jumping mid air, jump() continues to increase the y
+			coordinate of this player.
+
+			- The jump() can only setY() to reach the platform's height subtracted by 
+			the max jump height.
+
+		*/
+
+		if (this->getY() + this->getVerticalVelocity() <= lvl_relative_max_jump_height) {
+			/*
+			NOTE:
+				- Makes sure the character does not jump beyond max jump height
+			*/
+
+			this->setY(this->getY() + (lvl_relative_max_jump_height - this->getY()));
+			this->setJumpingState(false);
+			this->setVerticalUpdateInterval(0);
+			this->setVerticalVelocity(0);
+			;
+		}
+
+		else if (this->getY() + this->getTerminalVelocity() >= lvl_relative_max_jump_height && this->getY() <= this->getLevelHeight()) {
+			/*
+			NOTE:
+				- In a static jump, if 'W' key is pressed, the jump continues until
+				max jump height is reached
+
+				- During this jump, gravitational acceleration is in effect, slowing
+				the player's jump/vertical velocity nearing the max jump height.
+
+				- A frame update interval is added to demonstrate the deceleration of
+				the vertical velocity as vertical velocity can only be change once
+				a frame update interval is met, in this case '2'.
+
+			*/
+
+			this->setY(this->getY() - this->getVerticalVelocity());
+
+			if (this->getVerticalVelocity() != 0 && this->getVerticalUpdateInterval() == frame_update_interval) {
+				this->setVerticalVelocity(this->getVerticalVelocity() - this->getGravitationalAcceleration());
+				this->setVerticalUpdateInterval(0);
+			}
+
+			else {
+				this->setVerticalUpdateInterval(this->getVerticalUpdateInterval() + 1);
+			}
+		}
+	}
+
 	/*
 	NOTE:
-		- Empty for now.
+		- Condition checks for 'W' key being pressed to trigger jump()
+
 	*/
+
+	else if (!this->isJumping() && this->user_actions.current_key_states[SDL_SCANCODE_W]) {
+		this->setJumpingState(true);
+		this->setVerticalVelocity(this->getTerminalVelocity());
+		this->setY(this->getY() + this->getVerticalVelocity());
+		this->setVerticalUpdateInterval(0);
+	}
 }
 
 void Player::move() {
@@ -218,10 +281,28 @@ void Player::move() {
 		- The move() method will entail both the run() and
 		jump() methods because they are both actions that
 		displace the player.
+		
+		- Fall() can only be called if the character is mid air,  
+		while not in jumping motion
+
+		- Jump() can only be called if the character is currently on
+		a platform, and is not falling mid air.
+		
 	*/
+
+	const int PIXEL_ERROR_MARGIN = 3;
+
+	if (!this->isJumping() && this->getY() <= this->getLevelHeight()) {
+		this->fall();
+	}
+	
+	if (!this->isFalling()) {
+		//&& ( this->isJumping() || (this->getY() <= this->getLevelHeight() + PIXEL_ERROR_MARGIN || this->getY() >= this->getLevelHeight() - PIXEL_ERROR_MARGIN))
+		this->jump();
+	}
+
 	this->run();
-	this->fall();
-	this->jump();
+	
 }
 
 void Player::setNextFrame() {
