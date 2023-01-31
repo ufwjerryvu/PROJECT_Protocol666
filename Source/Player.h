@@ -206,34 +206,27 @@ void Player::run() {
 }
 
 void Player::jump() {
-	int lvl_relative_max_jump_height = this->getLevelHeight() - this->getMaxJumpHeight();
-	int frame_update_interval = 4;
+	const int FRAME_UPDATE_INTERVAL = 3;
 
 	if (this->isJumping()) {
 		/*
 		NOTE:
 			- If the character is jumping mid air, jump() continues to increase the y
 			coordinate of this player.
-
-			- The jump() can only setY() to reach the platform's height subtracted by 
-			the max jump height.
-
 		*/
 
-		if (this->getY() + this->getVerticalVelocity() <= lvl_relative_max_jump_height) {
+		if (this->getVerticalVelocity() == 0) {
 			/*
 			NOTE:
-				- Makes sure the character does not jump beyond max jump height
+				- Jump is at its highest point, calls off the jump() function
 			*/
-
-			this->setY(this->getY() + (lvl_relative_max_jump_height - this->getY()));
 			this->setJumpingState(false);
 			this->setVerticalUpdateInterval(0);
 			this->setVerticalVelocity(0);
 			;
 		}
 
-		else if (this->getY() + this->getTerminalVelocity() >= lvl_relative_max_jump_height && this->getY() <= this->getLevelHeight()) {
+		else if (this->getVerticalVelocity() > 0) {
 			/*
 			NOTE:
 				- In a static jump, if 'W' key is pressed, the jump continues until
@@ -248,15 +241,14 @@ void Player::jump() {
 
 			*/
 
-			this->setY(this->getY() - this->getVerticalVelocity());
-
-			if (this->getVerticalVelocity() != 0 && this->getVerticalUpdateInterval() == frame_update_interval) {
+			if (this->getVerticalUpdateInterval() == FRAME_UPDATE_INTERVAL) {
 				this->setVerticalVelocity(this->getVerticalVelocity() - this->getGravitationalAcceleration());
 				this->setVerticalUpdateInterval(0);
 			}
 
 			else {
 				this->setVerticalUpdateInterval(this->getVerticalUpdateInterval() + 1);
+				this->setY(this->getY() - this->getVerticalVelocity());
 			}
 		}
 	}
@@ -269,8 +261,7 @@ void Player::jump() {
 
 	else if (!this->isJumping() && this->user_actions.current_key_states[SDL_SCANCODE_W]) {
 		this->setJumpingState(true);
-		this->setVerticalVelocity(this->getTerminalVelocity());
-		this->setY(this->getY() + this->getVerticalVelocity());
+		this->setVerticalVelocity(this->getInitialJumpVelocity());
 		this->setVerticalUpdateInterval(0);
 	}
 }
@@ -297,7 +288,6 @@ void Player::move() {
 	}
 	
 	if (!this->isFalling()) {
-		//&& ( this->isJumping() || (this->getY() <= this->getLevelHeight() + PIXEL_ERROR_MARGIN || this->getY() >= this->getLevelHeight() - PIXEL_ERROR_MARGIN))
 		this->jump();
 	}
 
