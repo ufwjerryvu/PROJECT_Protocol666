@@ -418,8 +418,6 @@ void Character::fall() {
     else {
         const int FRAME_UPDATE_INTERVAL = 2;
 
-        this->setY(this->getY() + this->getVerticalVelocity());
-
         if (this->getVerticalVelocity() != this->getTerminalVelocity() && this->getVerticalUpdateInterval() == FRAME_UPDATE_INTERVAL) {
             /*
             NOTE:
@@ -440,6 +438,7 @@ void Character::fall() {
 
         else {
             this->setVerticalUpdateInterval(this->getVerticalUpdateInterval() + 1);
+            this->setY(this->getY() + this->getVerticalVelocity());
         }
     }
 }
