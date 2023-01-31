@@ -42,8 +42,6 @@ private:
     NOTE :
         - Speed is in pixels per frame.
 
-        - Maximum jump height is in pixels.
-
         - Gravitational acceleration is in pixels per frame
 
         - Fall velocity is in pixels per frame
@@ -51,11 +49,10 @@ private:
         - Terminal velocity is in pixels per frame
     */
     int run_speed;
-    int max_jump_height;
-
     int gravitational_acceleration;
     int vertical_velocity;
-    int terminal_velocity;
+    int initial_jump_velocity;
+    int terminal_fall_velocity;
     int vertical_update_interval;
 
     int level_width, level_height;
@@ -78,10 +75,10 @@ public:
     bool setFallingState(bool is_falling);
     bool setAttackingState(bool is_attacking);
     bool setRunSpeed(int pixels_per_frame);
-    bool setMaxJumpHeight(int pixels);
     bool setGravitationalAcceleration(float grav_accel);
     bool setVerticalVelocity(int vertical_velocity);
-    bool setTerminalVelocity(int terminal_velocity);
+    bool setIntialJumpVelocity(int initial_jump_velocity);
+    bool setTerminalFallVelocity(int terminal_fall_velocity);
     bool setVerticalUpdateInterval(int vertical_update_interval);
     bool loadLevelWidth(int level_width);
     bool loadLevelHeight(int level_height);
@@ -97,10 +94,10 @@ public:
     bool isFalling();
     bool isAttacking();
     int getRunSpeed();
-    int getMaxJumpHeight();
     int getGravitationalAcceleration();
     int getVerticalVelocity();
-    int getTerminalVelocity();
+    int getInitialJumpVelocity();
+    int getTerminalFallVelocity();
     int getVerticalUpdateInterval();
     int getLevelWidth();
     int getLevelHeight();
@@ -139,15 +136,16 @@ Character::Character() : Sprite() {
     this->setRunningState(false);
     this->setAttackingState(false);
 
-    const int TEMP_MAX_JUMP_HEIGHT = 300;
-    const int TEMP_GRAV_ACCEL = 1;
+    const int TEMP_GRAV_ACCEL = 2;
+    const int TEMP_INITIAL_JUMP_VELOCITY = 10;
     const int TEMP_TERMINAL_VELOCITY = 10;
 
+
     this->setRunSpeed(0);
-    this->setMaxJumpHeight(TEMP_MAX_JUMP_HEIGHT);
     this->setGravitationalAcceleration(TEMP_GRAV_ACCEL);
     this->setVerticalVelocity(0);
-    this->setTerminalVelocity(TEMP_TERMINAL_VELOCITY);
+    this->setIntialJumpVelocity(TEMP_INITIAL_JUMP_VELOCITY);
+    this->setTerminalFallVelocity(TEMP_TERMINAL_VELOCITY);
     this->setVerticalUpdateInterval(0);
 }
 
@@ -168,15 +166,16 @@ Character::Character(int x, int y, Animation animation) : Sprite(x, y, NULL) {
     this->setRunningState(false);
     this->setAttackingState(false);
 
-    const int TEMP_MAX_JUMP_HEIGHT = 300;
-    const int TEMP_GRAV_ACCEL = 1;
+    const int TEMP_GRAV_ACCEL = 2;
+    const int TEMP_INITIAL_JUMP_VELOCITY = 10;
     const int TEMP_TERMINAL_VELOCITY = 10;
 
+
     this->setRunSpeed(0);
-    this->setMaxJumpHeight(TEMP_MAX_JUMP_HEIGHT);
     this->setGravitationalAcceleration(TEMP_GRAV_ACCEL);
     this->setVerticalVelocity(0);
-    this->setTerminalVelocity(TEMP_TERMINAL_VELOCITY);
+    this->setIntialJumpVelocity(TEMP_INITIAL_JUMP_VELOCITY);
+    this->setTerminalFallVelocity(TEMP_TERMINAL_VELOCITY);
     this->setVerticalUpdateInterval(0);
 
     this->animation.current_frame_idle = 0;
@@ -303,14 +302,6 @@ bool Character::setRunSpeed(int pixels_per_frame) {
     return true;
 }
 
-bool Character::setMaxJumpHeight(int pixels) {
-    bool success = true;
-
-    this->max_jump_height = pixels;
-
-    return true;
-}
-
 bool Character::setGravitationalAcceleration(float grav_accel) {
     bool success = true;
 
@@ -327,10 +318,18 @@ bool Character::setVerticalVelocity(int vertical_velocity) {
     return success;
 }
 
-bool Character::setTerminalVelocity(int terminal_velocity) {
+bool Character::setIntialJumpVelocity(int initial_jump_velocity) {
     bool success = true;
 
-    this->terminal_velocity = terminal_velocity;
+    this->initial_jump_velocity = initial_jump_velocity;
+
+    return success;
+}
+
+bool Character::setTerminalFallVelocity(int terminal_fall_velocity) {
+    bool success = true;
+
+    this->terminal_fall_velocity = terminal_fall_velocity;
 
     return success;
 }
@@ -369,10 +368,10 @@ bool Character::isFalling() { return this->is_falling; }
 bool Character::isJumping() { return this->is_jumping; }
 bool Character::isAttacking() { return this->is_attacking; }
 int Character::getRunSpeed() { return this->run_speed; }
-int Character::getMaxJumpHeight() { return this->max_jump_height; }
 int Character::getGravitationalAcceleration() { return this->gravitational_acceleration; }
 int Character::getVerticalVelocity() { return this->vertical_velocity; }
-int Character::getTerminalVelocity() { return this->terminal_velocity; }
+int Character::getInitialJumpVelocity() { return this->initial_jump_velocity;  }
+int Character::getTerminalFallVelocity() { return this->terminal_fall_velocity; }
 int Character::getVerticalUpdateInterval() { return this->vertical_update_interval; }
 int Character::getLevelWidth() { return this->level_width; }
 int Character::getLevelHeight() { return this->level_height; }
@@ -412,13 +411,14 @@ void Character::fall() {
     if (this->getY() + this->getHeight() >= this->getLevelHeight()) {
         this->setY(this->getLevelHeight() - this->getHeight());
         this->setVerticalVelocity(0);
+        this->setFallingState(false);
         return;
     }
 
-    else {
-        const int FRAME_UPDATE_INTERVAL = 2;
+    else if (this->isFalling()) {
+        const int FRAME_UPDATE_INTERVAL = 3;
 
-        if (this->getVerticalVelocity() != this->getTerminalVelocity() && this->getVerticalUpdateInterval() == FRAME_UPDATE_INTERVAL) {
+        if (this->getVerticalVelocity() != this->getTerminalFallVelocity() && this->getVerticalUpdateInterval() == FRAME_UPDATE_INTERVAL) {
             /*
             NOTE:
                 - Changed fall_velocity if fall_velocity has not reached 
