@@ -20,11 +20,13 @@ enum class Direction {
 struct Animation {
     vector<SDL_Texture*> frames_idle;
     vector<SDL_Texture*> frames_running;
+    vector<SDL_Texture*> frames_jumping;
     vector<SDL_Texture*> frames_falling;
 
-    int current_frame_idle;
-    int current_frame_running;
-    int current_frame_falling;
+    int current_frame_idle = 0;
+    int current_frame_running = 0;
+    int current_frame_jumping = 0;
+    int current_frame_falling = 0;
 };
 
 class Character : public Sprite {
@@ -39,7 +41,7 @@ private:
     bool is_attacking;
 
     /*
-    NOTE :
+    NOTE:
         - Speed is in pixels per frame.
 
         - Gravitational acceleration is in pixels per frame
@@ -47,6 +49,11 @@ private:
         - Fall velocity is in pixels per frame
 
         - Terminal velocity is in pixels per frame
+    */
+    /*
+    NOTE:
+        - The member attributes below are motion-related 
+        attributes.
     */
     int run_speed;
     int gravitational_acceleration;
@@ -133,20 +140,33 @@ Character::Character() : Sprite() {
     */
     this->setDirectionFacing(Direction::NONE);
 
+    /*
+    NOTE:
+        - Setting everything related to motion.
+    */
     this->setRunningState(false);
     this->setAttackingState(false);
+    
+    /*
+    NOTE:
+        - Overridable here means these are the default values for
+        all characters. If different types of characters need
+        different values of motion then they can specify it in their
+        constructors or elsewhere -- preferably in the constructors.
+    */
+    const int OVERRIDABLE_RUN_SPEED = 0,
+        OVERRIDABLE_GRAV_ACCEL = 0,
+        OVERRIDABLE_INITIAL_VERTICAL_VELOCITY = 0,
+        OVERRIDABLE_INITIAL_JUMP_VELOCITY = 0,
+        OVERRIDABLE_TERMINAL_VELOCITY = 0,
+        OVERRIDABLE_INITIAL_VERT_UPDATE_INTERVAL = 0;
 
-    const int TEMP_GRAV_ACCEL = 2;
-    const int TEMP_INITIAL_JUMP_VELOCITY = 10;
-    const int TEMP_TERMINAL_VELOCITY = 10;
-
-
-    this->setRunSpeed(0);
-    this->setGravitationalAcceleration(TEMP_GRAV_ACCEL);
-    this->setVerticalVelocity(0);
-    this->setIntialJumpVelocity(TEMP_INITIAL_JUMP_VELOCITY);
-    this->setTerminalFallVelocity(TEMP_TERMINAL_VELOCITY);
-    this->setVerticalUpdateInterval(0);
+    this->setRunSpeed(OVERRIDABLE_RUN_SPEED);
+    this->setGravitationalAcceleration(OVERRIDABLE_GRAV_ACCEL);
+    this->setVerticalVelocity(OVERRIDABLE_INITIAL_VERTICAL_VELOCITY);
+    this->setIntialJumpVelocity(OVERRIDABLE_INITIAL_JUMP_VELOCITY);
+    this->setTerminalFallVelocity(OVERRIDABLE_TERMINAL_VELOCITY);
+    this->setVerticalUpdateInterval(OVERRIDABLE_INITIAL_VERT_UPDATE_INTERVAL);
 }
 
 Character::Character(int x, int y, Animation animation) : Sprite(x, y, NULL) {
@@ -163,23 +183,33 @@ Character::Character(int x, int y, Animation animation) : Sprite(x, y, NULL) {
 
     this->setDirectionFacing(Direction::NONE);
 
+    /*
+    NOTE:
+        - Setting everything related to motion.
+    */
     this->setRunningState(false);
     this->setAttackingState(false);
 
-    const int TEMP_GRAV_ACCEL = 2;
-    const int TEMP_INITIAL_JUMP_VELOCITY = 10;
-    const int TEMP_TERMINAL_VELOCITY = 10;
+    /*
+    NOTE:
+        - Overridable here means these are the default values for
+        all characters. If different types of characters need
+        different values of motion then they can specify it in their
+        constructors or elsewhere -- preferably in the constructors.
+    */
+    const int OVERRIDABLE_RUN_SPEED = 0,
+        OVERRIDABLE_GRAV_ACCEL = 2,
+        OVERRIDABLE_INITIAL_VERTICAL_VELOCITY = 0,
+        OVERRIDABLE_INITIAL_JUMP_VELOCITY = 16,
+        OVERRIDABLE_TERMINAL_VELOCITY = 10,
+        OVERRIDABLE_INITIAL_VERT_UPDATE_INTERVAL = 0;
 
-
-    this->setRunSpeed(0);
-    this->setGravitationalAcceleration(TEMP_GRAV_ACCEL);
-    this->setVerticalVelocity(0);
-    this->setIntialJumpVelocity(TEMP_INITIAL_JUMP_VELOCITY);
-    this->setTerminalFallVelocity(TEMP_TERMINAL_VELOCITY);
-    this->setVerticalUpdateInterval(0);
-
-    this->animation.current_frame_idle = 0;
-    this->animation.current_frame_running = 0;
+    this->setRunSpeed(OVERRIDABLE_RUN_SPEED);
+    this->setGravitationalAcceleration(OVERRIDABLE_GRAV_ACCEL);
+    this->setVerticalVelocity(OVERRIDABLE_INITIAL_VERTICAL_VELOCITY);
+    this->setIntialJumpVelocity(OVERRIDABLE_INITIAL_JUMP_VELOCITY);
+    this->setTerminalFallVelocity(OVERRIDABLE_TERMINAL_VELOCITY);
+    this->setVerticalUpdateInterval(OVERRIDABLE_INITIAL_VERT_UPDATE_INTERVAL);
 }
 
 Character::~Character() {
