@@ -1,5 +1,5 @@
 /*
-@ COLLABORATORS: Jerry Vu
+@ COLLABORATORS: Jerry Vu, Kenny Nguyen
 @ CLASS DESIGNERS: Jerry Vu
 */
 
@@ -221,6 +221,7 @@ void Player::jump() {
 				- Jump is at its highest point, calls off the jump() function
 			*/
 			this->setJumpingState(false);
+			this->setFallingState(true);
 			this->setVerticalUpdateInterval(0);
 			this->setVerticalVelocity(0);
 			;
@@ -312,6 +313,7 @@ void Player::setNextFrame() {
 
 		temp.current_frame_idle = 0;
 		temp.current_frame_running = 0;
+		temp.current_frame_jumping = 0;
 
 		this->setAnimation(temp);
 
@@ -340,6 +342,40 @@ void Player::setNextFrame() {
 		return;
 	}
 
+	if (this->isJumping()) {
+		Animation temp = this->getAnimation();
+
+		temp.current_frame_idle = 0;
+		temp.current_frame_running = 0;
+		temp.current_frame_falling = 0;
+
+		this->setAnimation(temp);
+
+		/*
+		NOTE:
+			- Setting the texture to be rendered to the current falling frame.
+		*/
+		if (!(temp.current_frame_jumping % frames_per_sequence)) {
+			this->setTexture(temp.frames_jumping[temp.current_frame_jumping / frames_per_sequence]);
+		}
+
+		/*
+		NOTE:
+			- Making sure the index doesn't access anything out of the
+			vector's range.
+		*/
+		if (temp.current_frame_jumping >= (temp.frames_jumping.size() - 1) * frames_per_sequence) {
+			temp.current_frame_jumping = 0;
+		}
+		else {
+			temp.current_frame_jumping++;
+		}
+
+		this->setAnimation(temp);
+
+		return;
+	}
+
 	if (!this->isRunning()) {
 		/*
 		NOTE:
@@ -347,8 +383,11 @@ void Player::setNextFrame() {
 			must be reset to 0.
 		*/
 		Animation temp = this->getAnimation();
+
 		temp.current_frame_running = 0;
 		temp.current_frame_falling = 0;
+		temp.current_frame_jumping = 0;
+
 		this->setAnimation(temp);
 
 		/*
@@ -389,8 +428,10 @@ void Player::setNextFrame() {
 
 		frames_per_sequence = 5;
 		Animation temp = this->getAnimation();
+
 		temp.current_frame_idle = 0;
 		temp.current_frame_falling = 0;
+		temp.current_frame_jumping = 0;
 
 		this->setAnimation(temp);
 
