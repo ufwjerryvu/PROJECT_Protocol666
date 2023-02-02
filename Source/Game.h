@@ -15,6 +15,8 @@
 #include "Character.h"
 #include "Player.h"
 
+#include "Terrain.h"
+
 class Game {
 public:
 	/*
@@ -47,8 +49,9 @@ public:
 	*/
 
 	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER --------------------------------------------->
-	Sprite block1, block2, block3, block4;
 	Player player;
+
+	vector<Terrain> test_terrains;
 	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER <---------------------------------------------
 
 	/*
@@ -81,6 +84,7 @@ Game::Game(UserEvent user_actions) {
 	NOTE:
 		- Initializing all SDL subsystems.
 	*/
+
 	if (!this->initialize()) {
 		cerr << "Error from Game(): cannot initialize SDL subsystems." << endl;
 	}
@@ -208,6 +212,10 @@ bool Game::loadAllAssets() {
 
 	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER --------------------------------------------->
 	this->player = file_io.loadTestRagdoll(this->renderer, this->user_actions);
+	
+	SDL_Texture* grass_texture = file_io.loadTexture(this->renderer, "Assets/Sprite/Terrain/Platform/Grass/texture.png");
+	this->test_terrains.push_back(Terrain(400, 350, grass_texture));
+	this->test_terrains.push_back(Terrain(800, 400, grass_texture));
 	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER <---------------------------------------------
 
 	return success;
@@ -290,6 +298,12 @@ void Game::updateRenderCoordinates() {
 	*/
 	this->player.setRenderCoordinates(this->camera.x, this->camera.y);
 
+	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER --------------------------------------------->
+	for (int index = 0; index < this->test_terrains.size(); index++) {
+		this->test_terrains[index].setRenderCoordinates(this->camera.x, this->camera.y);
+	}
+	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER <---------------------------------------------
+
 	/*
 	NOTE:
 		- Then we update the render coordinates for the other objects
@@ -305,6 +319,13 @@ void Game::update() {
 		of updates. I don't know why yet but this just feels right.
 	*/
 	this->updateRenderCoordinates();
+
+	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER --------------------------------------------->
+	this->player.collide(this->test_terrains);
+	Collision temp = this->player.getCollisionDirections();
+	cout << "Left: " << temp.left << "; right: " << temp.right << "; top: " << temp.top << "; bottom: " 
+		<< temp.bottom << "; vert_velo: " << this->player.getVerticalVelocity() << endl;
+	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER <---------------------------------------------
 
 	this->player.update();
 }
@@ -327,7 +348,12 @@ void Game::render() {
 		the player's character will be on top of all the 
 		other textures.
 	*/
-	cout << this->player.getX() << ", " << this->player.getY() << endl;
+	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER --------------------------------------------->
+	for (int index = 0; index < this->test_terrains.size(); index++) {
+		this->test_terrains[index].render(this->renderer);
+	}
+	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER <---------------------------------------------
+
 	this->player.render(this->renderer);
 
 	/*

@@ -7,6 +7,33 @@
 
 #include "LIBDECLARATIONS.h"
 
+enum class Direction {
+	NONE,
+	LEFT,
+	RIGHT,
+	UP,
+	DOWN
+};
+
+struct Collision {
+	bool left = false;
+	bool right = false;
+	bool top = false;
+	bool bottom = false;
+};
+
+struct Animation {
+	vector<SDL_Texture*> frames_idle;
+	vector<SDL_Texture*> frames_running;
+	vector<SDL_Texture*> frames_jumping;
+	vector<SDL_Texture*> frames_falling;
+
+	int current_frame_idle;
+	int current_frame_running;
+	int current_frame_jumping;
+	int current_frame_falling;
+};
+
 class Sprite {
 private:
 	int x;
@@ -49,6 +76,10 @@ public:
 	int getRenderY();
 	int getWidth();
 	int getHeight();
+	int getTopBound();
+	int getBottomBound();
+	int getLeftBound();
+	int getRightBound();
 	SDL_Texture* getTexture();
 	SDL_Rect getViewport();
 
@@ -233,6 +264,10 @@ int Sprite::getRenderX() { return this->render_x; }
 int Sprite::getRenderY() { return this->render_y; }
 int Sprite::getWidth() { return this->width; }
 int Sprite::getHeight() { return this->height; }
+int Sprite::getTopBound() { return this->getY(); }
+int Sprite::getBottomBound() { return this->getY() + this->getHeight(); }
+int Sprite::getLeftBound() { return this->getX(); }
+int Sprite::getRightBound() { return this->getX() + this->getWidth(); }
 SDL_Texture* Sprite::getTexture() { return this->texture; }
 SDL_Rect Sprite::getViewport() { return this->viewport; }
 

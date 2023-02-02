@@ -9,29 +9,11 @@
 
 #include "Sprite.h"
 
-enum class Direction {
-    NONE,
-    LEFT, 
-    RIGHT,
-    UP,
-    DOWN
-};
-
-struct Animation {
-    vector<SDL_Texture*> frames_idle;
-    vector<SDL_Texture*> frames_running;
-    vector<SDL_Texture*> frames_jumping;
-    vector<SDL_Texture*> frames_falling;
-
-    int current_frame_idle = 0;
-    int current_frame_running = 0;
-    int current_frame_jumping = 0;
-    int current_frame_falling = 0;
-};
-
 class Character : public Sprite {
 private:
     Animation animation;
+
+    Collision collided;
 
     Direction facing_direction;
 
@@ -76,6 +58,7 @@ public:
     SECTION 2A: SETTERS
     */
     bool setAnimation(Animation animation);
+    bool setCollision(Collision collided);
     bool setDirectionFacing(Direction facing);
     bool setRunningState(bool is_running);
     bool setJumpingState(bool is_jumping);
@@ -90,11 +73,11 @@ public:
     bool loadLevelWidth(int level_width);
     bool loadLevelHeight(int level_height);
 
-
     /*
     SECTION 2B: GETTERS
     */
     Animation getAnimation();
+    Collision getCollisionDirections();
     Direction getDirectionFacing();
     bool isRunning();
     bool isJumping();
@@ -122,6 +105,8 @@ public:
     virtual void jump() = 0;
     void fall();
     virtual void move() = 0;
+
+    bool checkCollision(Sprite& arg);
 
     virtual void setNextFrame() = 0;
     virtual void update() = 0;
@@ -284,6 +269,14 @@ bool Character::setAnimation(Animation animation) {
     return success;
 }
 
+bool Character::setCollision(Collision collided) {
+    bool success = true;
+
+    this->collided = collided;
+
+    return success;
+}
+
 bool Character::setDirectionFacing(Direction facing) {
     bool success = true;
 
@@ -392,6 +385,7 @@ bool Character::loadLevelHeight(int level_height) {
 SECTION 2B: GETTERS
 */
 Animation Character::getAnimation() { return this->animation; }
+Collision Character::getCollisionDirections() { return this->collided; }
 Direction Character::getDirectionFacing() { return this->facing_direction; }
 bool Character::isRunning() { return this->is_running; }
 bool Character::isFalling() { return this->is_falling; }
@@ -417,16 +411,17 @@ void Character::fall() {
 
         - As the Character falls, fall_velocity is 0, which increments by 
         the gravitational_acceleration per game update interval.
-
-        - Incorporated the horizontal bounds to make sure characters
-        don't fall through the bottom of the screen.
     */
 
-    const int PIXEL_ERROR_MARGIN = 3;
-
-    if (this->getY() >= this->getLevelHeight() - this->getHeight() - PIXEL_ERROR_MARGIN
-        && this->getY() <= this->getLevelHeight() - this->getHeight() + PIXEL_ERROR_MARGIN) {
+    /*
+    NOTE:
+        - If a character is detecting collision beneath
+        it then set the falling state to false and vertical
+        velocity to 0.
+    */
+    if (this->getCollisionDirections().bottom) {
         this->setFallingState(false);
+        this->setVerticalVelocity(0);
     }
     else {
         this->setFallingState(true);
@@ -434,21 +429,37 @@ void Character::fall() {
 
     /*
     NOTE:
+        - Incorporated the horizontal bounds to make sure characters
+        don't fall through the bottom of the screen.
+    */
+    const int PIXEL_ERROR_MARGIN = 3;
+
+    if (this->getY() >= this->getLevelHeight() - this->getHeight() - PIXEL_ERROR_MARGIN
+        && this->getY() <= this->getLevelHeight() - this->getHeight() + PIXEL_ERROR_MARGIN) {
+        this->setFallingState(false);
+    }
+
+    /*
+    NOTE:
         - This is to make sure that none of the characters
         fall through the bottom of the screen.
     */
-   
     if (this->getY() + this->getHeight() >= this->getLevelHeight()) {
         this->setY(this->getLevelHeight() - this->getHeight());
         this->setVerticalVelocity(0);
         this->setFallingState(false);
         return;
     }
-
-    else if (this->isFalling()) {
+    
+    if (this->isFalling()) {
         const int FRAME_UPDATE_INTERVAL = 3;
 
-        if (this->getVerticalVelocity() != this->getTerminalFallVelocity() && this->getVerticalUpdateInterval() == FRAME_UPDATE_INTERVAL) {
+        /*
+        NOTE:
+            - Fixed the condition up a little bit. The vertical update interval
+            must be larger than the 
+        */
+        if (this->getVerticalVelocity() != this->getTerminalFallVelocity() && this->getVerticalUpdateInterval() >= FRAME_UPDATE_INTERVAL) {
             /*
             NOTE:
                 - Changed fall_velocity if fall_velocity has not reached 
@@ -470,5 +481,26 @@ void Character::fall() {
             this->setVerticalUpdateInterval(this->getVerticalUpdateInterval() + 1);
             this->setY(this->getY() + this->getVerticalVelocity());
         }
+    }
+}
+
+bool Character::checkCollision(Sprite& arg) {
+    bool has_collided = false;
+    /*
+    NOTE:
+        - The if statement below checks for non-collision.
+        Kudos to An B Luu for doing things differently.
+        *That was not a compliment*. Man's mad.
+        
+        - I also fixed up the code to make it less redundant.
+        The code is now a quarter of what it was.
+    */
+
+    if (this->getLeftBound() > arg.getRightBound() || this->getRightBound() < arg.getLeftBound()
+        || this->getTopBound() > arg.getBottomBound() || this->getBottomBound() < arg.getTopBound()) {
+        return has_collided = false;
+    }
+    else {
+        return has_collided = true;
     }
 }

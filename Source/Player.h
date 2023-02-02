@@ -10,6 +10,8 @@
 #include "Sprite.h"
 #include "Character.h"
 
+#include "Terrain.h"
+
 class Player : public Character{
 private:
 	int current_horizontal_key;
@@ -37,6 +39,8 @@ public:
 	void run();
 	void jump();
 	void move();
+
+	void collide(vector<Terrain>& args);
 
 	/*
 	NOTE:
@@ -224,7 +228,6 @@ void Player::jump() {
 			this->setFallingState(true);
 			this->setVerticalUpdateInterval(0);
 			this->setVerticalVelocity(0);
-			;
 		}
 
 		else if (this->getVerticalVelocity() > 0) {
@@ -259,7 +262,6 @@ void Player::jump() {
 		- Condition checks for 'W' key being pressed to trigger jump()
 
 	*/
-
 	else if (!this->isJumping() && this->user_actions.current_key_states[SDL_SCANCODE_W]) {
 		this->setJumpingState(true);
 		this->setVerticalVelocity(this->getInitialJumpVelocity());
@@ -281,19 +283,82 @@ void Player::move() {
 		a platform, and is not falling mid air.
 		
 	*/
-
-	const int PIXEL_ERROR_MARGIN = 3;
-
 	if (!this->isJumping() && this->getY() <= this->getLevelHeight()) {
 		this->fall();
 	}
 	
 	if (!this->isFalling()) {
+		/*
+		NOTE:
+			- This doesn't mean that we're going to make
+			the player's character jump. The function still
+			depends on the user's input via `user_actions`.
+		*/
 		this->jump();
 	}
 
 	this->run();
-	
+}
+
+void Player::collide(vector<Terrain>& args) {
+	/*
+	NOTE:
+		- Code is now made less redundant.
+
+		- Resetting the member attribute `collided` to
+		the default values, which are all false.
+	*/
+	this->setCollision(Collision());
+
+	/*
+	NOTE:
+		- Having a temporary structure all initialized
+		to false.
+	*/
+	Collision temp;
+
+	/*
+	NOTE:
+		- Looping through the blocks of terrain.
+	*/
+	for (int index = 0; index < args.size(); index++) {
+		if (this->checkCollision(args[index])) {
+			if (this->getLeftBound() <= args[index].getRightBound()
+				&& this->getLeftBound() >= args[index].getLeftBound()) {
+				temp.left = true;
+			}
+
+			if (this->getRightBound() >= args[index].getLeftBound()
+				&& this->getRightBound() <= args[index].getRightBound()) {
+				temp.right = true;
+			}
+
+			if (this->getTopBound() <= args[index].getBottomBound()
+				&& this->getTopBound() >= args[index].getTopBound()) {
+				temp.top = true;
+			}
+
+			if (this->getBottomBound() >= args[index].getTopBound()
+				&& this->getBottomBound() <= args[index].getBottomBound()) {
+				temp.bottom = true;
+
+				/*
+				NOTE:
+					- This is to make sure that the player
+					stays on top of the platform/terrain.
+				*/
+				const int PIXEL_ERROR_MARGIN = 3;
+				this->setY(args[index].getY() - this->getHeight() + PIXEL_ERROR_MARGIN);
+			}
+		}
+
+		/*
+		NOTE:
+			- Finally setting the collision directions
+			for the player.
+		*/
+		this->setCollision(temp);
+	}
 }
 
 void Player::setNextFrame() {
@@ -302,7 +367,6 @@ void Player::setNextFrame() {
 		- This is the default setNextFrame() method. Derived classes
 		can override the method if there are other preferred animation
 		sequences.
-
 		- We want the animation sequence to be updated every 10 frames
 		for the idle animation so we use a modulo operation.
 	*/
@@ -417,10 +481,8 @@ void Player::setNextFrame() {
 		NOTE:
 			- On the contrary, if the player is moving then the current
 			index for the idle frame gets reset to 0.
-
 			- Everything here is pretty similar to the previous block, just
 			that idle animation frames are accounted for instead.
-
 			- In this case, we want the next animation sequence
 			to be updated every 5 frames so a modulo operation is used to
 			make sure the animation doesn't happen too quickly.
