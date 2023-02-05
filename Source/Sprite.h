@@ -134,7 +134,7 @@ Sprite::Sprite(int x, int y, SDL_Texture* texture) {
 	if (this->getTexture() != NULL) {
 		/*
 		NOTE:
-			- Using SDL_QueryTexture() to get the discrete_dimensions of
+			- Using SDL_QueryTexture() to get the dimensions of
 			the loaded texture.
 		*/
 		SDL_Point size;
