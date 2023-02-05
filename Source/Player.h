@@ -11,6 +11,7 @@
 #include "Character.h"
 
 #include "Terrain.h"
+#include "Ground.h"
 
 class Player : public Character{
 private:
@@ -40,7 +41,7 @@ public:
 	void jump();
 	void move();
 
-	void collide(vector<Terrain>& args);
+	void collide(vector<Ground>& args);
 
 	/*
 	NOTE:
@@ -300,7 +301,7 @@ void Player::move() {
 	this->run();
 }
 
-void Player::collide(vector<Terrain>& args) {
+void Player::collide(vector<Ground>& args) {
 	/*
 	NOTE:
 		- Code is now made less redundant.
@@ -347,6 +348,7 @@ void Player::collide(vector<Terrain>& args) {
 					- This is to make sure that the player
 					stays on top of the platform/terrain.
 				*/
+
 				const int PIXEL_ERROR_MARGIN = 3;
 				this->setY(args[index].getY() - this->getHeight() + PIXEL_ERROR_MARGIN);
 			}

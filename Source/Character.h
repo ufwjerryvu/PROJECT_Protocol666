@@ -44,8 +44,6 @@ private:
     int terminal_fall_velocity;
     int vertical_update_interval;
 
-    int level_width, level_height;
-
 public:
     /*
     SECTION 1: CONSTRUCTORS AND DESTRUCTORS
@@ -70,8 +68,6 @@ public:
     bool setIntialJumpVelocity(int initial_jump_velocity);
     bool setTerminalFallVelocity(int terminal_fall_velocity);
     bool setVerticalUpdateInterval(int vertical_update_interval);
-    bool loadLevelWidth(int level_width);
-    bool loadLevelHeight(int level_height);
 
     /*
     SECTION 2B: GETTERS
@@ -89,8 +85,6 @@ public:
     int getInitialJumpVelocity();
     int getTerminalFallVelocity();
     int getVerticalUpdateInterval();
-    int getLevelWidth();
-    int getLevelHeight();
 
     /*
     SECTION 3: OTHER METHODS
@@ -365,22 +359,6 @@ bool Character::setVerticalUpdateInterval(int vertical_update_interval) {
     return success;
 }
 
-bool Character::loadLevelWidth(int level_width) {
-    bool success = true;
-
-    this->level_width = level_width;
-
-    return success;
-}
-
-bool Character::loadLevelHeight(int level_height) {
-    bool success = true;
-
-    this->level_height = level_height;
-
-    return success;
-}
-
 /*
 SECTION 2B: GETTERS
 */
@@ -397,8 +375,6 @@ int Character::getVerticalVelocity() { return this->vertical_velocity; }
 int Character::getInitialJumpVelocity() { return this->initial_jump_velocity;  }
 int Character::getTerminalFallVelocity() { return this->terminal_fall_velocity; }
 int Character::getVerticalUpdateInterval() { return this->vertical_update_interval; }
-int Character::getLevelWidth() { return this->level_width; }
-int Character::getLevelHeight() { return this->level_height; }
 /*
 SECTION 3: OTHER FUNCTIONS
 */

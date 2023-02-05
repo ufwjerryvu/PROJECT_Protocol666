@@ -48,6 +48,7 @@ private:
 	SDL_Texture* texture;
 	SDL_Rect viewport;
 
+	int level_width, level_height;
 public:
 	/*
 	SECTION 1: CONSTRUCTORS AND DESTRUCTORS
@@ -61,11 +62,15 @@ public:
 	*/
 	bool setX(int x);
 	bool setY(int y);
+	bool setWidth(int width);
+	bool setHeight(int height);
 	bool setRenderX(int camera_x);
 	bool setRenderY(int camera_y);
 	bool setCoordinates(int x, int y);
 	bool setRenderCoordinates(int camera_x, int camera_y);
 	bool setTexture(SDL_Texture* texture);
+	bool loadLevelWidth(int level_width);
+	bool loadLevelHeight(int level_height);
 
 	/*
 	SECTION 2B: GETTERS
@@ -82,6 +87,8 @@ public:
 	int getRightBound();
 	SDL_Texture* getTexture();
 	SDL_Rect getViewport();
+	int getLevelWidth();
+	int getLevelHeight();
 
 	/*
 	SECTION 3: OTHER METHODS
@@ -127,7 +134,7 @@ Sprite::Sprite(int x, int y, SDL_Texture* texture) {
 	if (this->getTexture() != NULL) {
 		/*
 		NOTE:
-			- Using SDL_QueryTexture() to get the dimensions of
+			- Using SDL_QueryTexture() to get the discrete_dimensions of
 			the loaded texture.
 		*/
 		SDL_Point size;
@@ -202,6 +209,24 @@ bool Sprite::setRenderY(int camera_y) {
 	return success;
 }
 
+bool Sprite::setWidth(int width) {
+	bool success = true;
+
+	this->width = width;
+	this->viewport.w = width;
+
+	return success;
+}
+
+bool Sprite::setHeight(int height) {
+	bool success = true;
+
+	this->height = height;
+	this->viewport.h = height;
+
+	return success;
+}
+
 bool Sprite::setCoordinates(int x, int y) {
 	/*
 	NOTE:
@@ -255,6 +280,22 @@ bool Sprite::setTexture(SDL_Texture* texture) {
 	return success;
 }
 
+bool Sprite::loadLevelWidth(int level_width) {
+	bool success = true;
+
+	this->level_width = level_width;
+
+	return success;
+}
+
+bool Sprite::loadLevelHeight(int level_height) {
+	bool success = true;
+
+	this->level_height = level_height;
+
+	return success;
+}
+
 /*
 SECTION 2B: GETTERS
 */
@@ -270,6 +311,8 @@ int Sprite::getLeftBound() { return this->getX(); }
 int Sprite::getRightBound() { return this->getX() + this->getWidth(); }
 SDL_Texture* Sprite::getTexture() { return this->texture; }
 SDL_Rect Sprite::getViewport() { return this->viewport; }
+int Sprite::getLevelWidth() { return this->level_width; }
+int Sprite::getLevelHeight() { return this->level_height; }
 
 /*
 SECTION 3: OTHER METHODS
