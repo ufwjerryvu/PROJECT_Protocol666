@@ -16,6 +16,7 @@
 #include "Player.h"
 
 #include "Terrain.h"
+#include "Ground.h"
 
 class Game {
 public:
@@ -51,7 +52,7 @@ public:
 	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER --------------------------------------------->
 	Player player;
 
-	vector<Terrain> test_terrains;
+	vector<Ground> ground;
 	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER <---------------------------------------------
 
 	/*
@@ -213,9 +214,28 @@ bool Game::loadAllAssets() {
 	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER --------------------------------------------->
 	this->player = file_io.loadTestRagdoll(this->renderer, this->user_actions);
 	
-	SDL_Texture* grass_texture = file_io.loadTexture(this->renderer, "Assets/Sprite/Terrain/Platform/Grass/texture.png");
-	this->test_terrains.push_back(Terrain(400, 350, grass_texture));
-	this->test_terrains.push_back(Terrain(800, 400, grass_texture));
+	vector<SDL_Texture*> row;
+	vector<vector<SDL_Texture*>> texture_setup_blocks;
+
+	row.push_back(file_io.loadTexture(this->renderer, "Assets/Sprite/Terrain/Ground/0_0.png"));
+	row.push_back(file_io.loadTexture(this->renderer, "Assets/Sprite/Terrain/Ground/0_1.png"));
+	row.push_back(file_io.loadTexture(this->renderer, "Assets/Sprite/Terrain/Ground/0_2.png"));
+	texture_setup_blocks.push_back(row);
+	row.clear();
+
+	row.push_back(file_io.loadTexture(this->renderer, "Assets/Sprite/Terrain/Ground/1_0.png"));
+	row.push_back(file_io.loadTexture(this->renderer, "Assets/Sprite/Terrain/Ground/1_1.png"));
+	row.push_back(file_io.loadTexture(this->renderer, "Assets/Sprite/Terrain/Ground/1_2.png"));
+	texture_setup_blocks.push_back(row);
+	row.clear();
+
+	row.push_back(file_io.loadTexture(this->renderer, "Assets/Sprite/Terrain/Ground/2_0.png"));
+	row.push_back(file_io.loadTexture(this->renderer, "Assets/Sprite/Terrain/Ground/2_1.png"));
+	row.push_back(file_io.loadTexture(this->renderer, "Assets/Sprite/Terrain/Ground/2_2.png"));
+	texture_setup_blocks.push_back(row);
+	row.clear();
+
+	this->ground.push_back(Ground(0, 500 - 48, texture_setup_blocks, DiscreteDimensions{ 50, 2 }));
 	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER <---------------------------------------------
 
 	return success;
@@ -269,7 +289,7 @@ void Game::updateCamera() {
 
 	/*
 	NOTE:
-		- Making sure the camera doesn't go out of the dimensions of
+		- Making sure the camera doesn't go out of the discrete_dimensions of
 		the level. Again, the code was modified from lazyfoo.net.
 	*/
 	if (this->camera.x < 0) { this->camera.x = 0; }
@@ -299,9 +319,7 @@ void Game::updateRenderCoordinates() {
 	this->player.setRenderCoordinates(this->camera.x, this->camera.y);
 
 	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER --------------------------------------------->
-	for (int index = 0; index < this->test_terrains.size(); index++) {
-		this->test_terrains[index].setRenderCoordinates(this->camera.x, this->camera.y);
-	}
+	this->ground[0].setRenderCoordinates(this->camera.x, this->camera.y);
 	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER <---------------------------------------------
 
 	/*
@@ -321,10 +339,8 @@ void Game::update() {
 	this->updateRenderCoordinates();
 
 	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER --------------------------------------------->
-	this->player.collide(this->test_terrains);
+	this->player.collide(ground);
 	Collision temp = this->player.getCollisionDirections();
-	cout << "Left: " << temp.left << "; right: " << temp.right << "; top: " << temp.top << "; bottom: " 
-		<< temp.bottom << "; vert_velo: " << this->player.getVerticalVelocity() << endl;
 	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER <---------------------------------------------
 
 	this->player.update();
@@ -349,9 +365,7 @@ void Game::render() {
 		other textures.
 	*/
 	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER --------------------------------------------->
-	for (int index = 0; index < this->test_terrains.size(); index++) {
-		this->test_terrains[index].render(this->renderer);
-	}
+	this->ground[0].render(this->renderer);
 	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER <---------------------------------------------
 
 	this->player.render(this->renderer);
