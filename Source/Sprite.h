@@ -62,10 +62,10 @@ public:
 	*/
 	bool setX(int x);
 	bool setY(int y);
-	bool setWidth(int width);
-	bool setHeight(int height);
 	bool setRenderX(int camera_x);
 	bool setRenderY(int camera_y);
+	bool setWidth(int width);
+	bool setHeight(int height);
 	bool setCoordinates(int x, int y);
 	bool setRenderCoordinates(int camera_x, int camera_y);
 	bool setTexture(SDL_Texture* texture);
