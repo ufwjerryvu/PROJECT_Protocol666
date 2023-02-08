@@ -3,8 +3,8 @@
 # Dimensions format: level_width,level_height
 2400,500
 
-# Characters format: Object,initial_x,initial_y,animation_config_path
-Player,30,30,Configurations/Animation Paths/Ragdoll.txt
+# Player format: Object,initial_x,initial_y
+Player,0,0
 
-# Other sprites format: Object,initial_x,initial_y,texture_path
-Sprite,0,0,Assets/Sprite/Background/backgroundlv1.png
+# Ground format: Object,initial_x,initial_y,width_by_units,height_by_units
+Ground,0,452,50,2
