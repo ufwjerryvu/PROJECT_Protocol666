@@ -168,6 +168,16 @@ SECTION 2A: SETTERS
 
 bool Sprite::setX(int x) {
 	bool success = true;
+	
+	/*
+	NOTE:
+		- Check x-coordinate's availability within the level
+		before setting the Sprite's x-coordinates to a new location.
+	*/
+
+	if (!(x >= 0 && x <= this->getLevelWidth())) {
+		cerr << "Error from Sprite::setX(int x): x-coordinate is outside level bounds." << endl;
+	}
 
 	this->x = x;
 	this->viewport.x = x;
@@ -176,6 +186,16 @@ bool Sprite::setX(int x) {
 }
 bool Sprite::setY(int y) {
 	bool success = true;
+
+	/*
+	NOTE:
+		- Check y-coordinate's availability in terms of height
+		before changing the current Sprite's y-coordinate.
+	*/
+
+	if (!(y >= 0 && y <= this->getLevelHeight())) {
+		cerr << "Error from Sprite::setY(int y): y-coordinate is outside level bounds." << endl;
+	}
 
 	this->y = y;
 	this->viewport.y = y;
@@ -190,7 +210,14 @@ bool Sprite::setRenderX(int camera_x) {
 		the character is different to that of the sprite's
 		true x-coordinate in the level.
 	*/
+
 	bool success = true;
+	const int SCREEN_WIDTH = 900;
+
+	if (camera_x < 0) {
+		cerr << "Error from Sprite::setRenderX(int camera_x): camera x-coordinate is outside level bounds." << endl;
+	}
+
 
 	this->render_x = this->getX() - camera_x;
 
@@ -202,7 +229,13 @@ bool Sprite::setRenderY(int camera_y) {
 		- Similarly, the y-coordinate to which the camera 
 		follows the character is only relative to the level.
 	*/
+
 	bool success = true;
+	const int SCREEN_HEIGHT = 500;
+
+	if (camera_y < 0) {
+		cerr << "Error from Sprite::setRenderY(int camera_y): camera y-coordinate is outside level bounds." << endl;
+	}
 
 	this->render_y = this->getY() - camera_y;
 
@@ -212,6 +245,13 @@ bool Sprite::setRenderY(int camera_y) {
 bool Sprite::setWidth(int width) {
 	bool success = true;
 
+	if (width == 0 || width == NULL) {
+		cerr << "Error from Sprite::setWidth(int width): width is 0 or null, and is not set." << endl;
+		success = false;
+
+		return success;
+	}
+
 	this->width = width;
 	this->viewport.w = width;
 
@@ -220,6 +260,13 @@ bool Sprite::setWidth(int width) {
 
 bool Sprite::setHeight(int height) {
 	bool success = true;
+
+	if (height == 0 || height == NULL) {
+		cerr << "Error from Sprite::setHeight(int height): height is 0 or null, and is not set." << endl;
+		success = false;
+
+		return success;
+	}
 
 	this->height = height;
 	this->viewport.h = height;
@@ -283,6 +330,13 @@ bool Sprite::setTexture(SDL_Texture* texture) {
 bool Sprite::loadLevelWidth(int level_width) {
 	bool success = true;
 
+	if (level_width == 0 || level_width == NULL) {
+		cerr << "Error from Sprite::loadLevelWidth(int level_width) : level_width is 0 or null, and is not set." << endl;
+		success = false;
+
+		return success;
+	}
+
 	this->level_width = level_width;
 
 	return success;
@@ -290,6 +344,13 @@ bool Sprite::loadLevelWidth(int level_width) {
 
 bool Sprite::loadLevelHeight(int level_height) {
 	bool success = true;
+
+	if (level_height == 0 || level_height == NULL) {
+		cerr << "Error from Sprite::loadLevelHeight(int level_height) : level_height is 0 or null, and is not set." << endl;
+		success = false;
+
+		return success;
+	}
 
 	this->level_height = level_height;
 
