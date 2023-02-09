@@ -25,8 +25,6 @@ public:
 	SECTION 2A: SETTERS
 	*/
 	bool setAssembledTexture();
-	bool setWidth();
-	bool setHeight();
 	/*
 	SECTION 2B: GETTERS
 	*/
@@ -36,6 +34,9 @@ public:
 	*/
 };
 
+/*
+SECTION 1: CONSTRUCTORS AND DESTRUCTORS
+*/
 Ground::Ground() : Terrain() {
 	/*
 	NOTE:
@@ -210,66 +211,6 @@ bool Ground::setAssembledTexture() {
 		- Finally using the setter from the base class.
 	*/
 	Terrain::setAssembledTexture(assembled_texture);
-
-	return success;
-}
-
-bool Ground::setWidth() {
-	bool success = true;
-
-	/*
-	NOTE:
-		- Since the Ground instance is not represented by a single
-		texture but rather a collection of Sprites in a 2D vector,
-		we can't use SDL_QueryTexture to find its width and so we have 
-		to determine the aggregate width by adding the widths of all
-		the textures in a row together.
-	*/
-	vector<vector<Sprite>> assembled_texture = this->getAssembledTexture();
-	int width_in_pixels = 0;
-
-	if (assembled_texture.size()) {
-		for (int index = 0; index < assembled_texture[0].size(); index++) {
-			width_in_pixels += assembled_texture[0][index].getWidth();
-		}
-	}
-
-	/*
-	NOTE:
-		- In the end, we still need to use the setter
-		function from the base class because an instance of
-		Ground is still one individual object and not a
-		collection of Sprites.
-	*/
-	Sprite::setWidth(width_in_pixels);
-
-	return success;
-}
-
-bool Ground::setHeight() {
-	bool success = true;
-
-	/*
-	NOTE:
-		- Similar to Ground::setWidth(), we can find the 
-		aggregate height by adding all the heights of the 
-		textures in a column.
-	*/
-	vector<vector<Sprite>> assembled_texture = this->getAssembledTexture();
-	int height_in_pixels = 0;
-
-	for (int index = 0; index < assembled_texture.size(); index++) {
-		if (assembled_texture[index].size()) {
-			height_in_pixels += assembled_texture[index][0].getHeight();
-		}
-	}
-
-	/*
-	NOTE:
-		- And again, we set the height of the Ground object
-		via the setter function in its base class.
-	*/
-	Sprite::setHeight(height_in_pixels);
 
 	return success;
 }
