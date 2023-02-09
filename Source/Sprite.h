@@ -34,6 +34,23 @@ struct Animation {
 	int current_frame_falling;
 };
 
+struct Damage {
+	int collision;
+	int attack;
+	int self_destruct;
+};
+
+struct Movement {
+	int spawn_x;
+	int spawn_y;
+
+	int x_max_displacement;
+	int y_max_displacement;
+
+	int x_direction_velocity;
+	int y_direction_velocity;
+};
+
 class Sprite {
 private:
 	int x;
@@ -176,7 +193,7 @@ bool Sprite::setX(int x) {
 	*/
 
 	if (!(x >= 0 && x <= this->getLevelWidth())) {
-		cerr << "Error from Sprite::setX(int x): x-coordinate is outside level bounds." << endl;
+		cerr << "Warning from Sprite::setX(): x-coordinate is outside level bounds." << endl;
 	}
 
 	this->x = x;
@@ -194,7 +211,7 @@ bool Sprite::setY(int y) {
 	*/
 
 	if (!(y >= 0 && y <= this->getLevelHeight())) {
-		cerr << "Error from Sprite::setY(int y): y-coordinate is outside level bounds." << endl;
+		cerr << "Warning from Sprite::setY(): y-coordinate is outside level bounds." << endl;
 	}
 
 	this->y = y;
@@ -215,7 +232,7 @@ bool Sprite::setRenderX(int camera_x) {
 	const int SCREEN_WIDTH = 900;
 
 	if (camera_x < 0) {
-		cerr << "Error from Sprite::setRenderX(int camera_x): camera x-coordinate is outside level bounds." << endl;
+		cerr << "Error from Sprite::setRenderX(): camera x-coordinate is outside level bounds." << endl;
 	}
 
 
@@ -234,7 +251,7 @@ bool Sprite::setRenderY(int camera_y) {
 	const int SCREEN_HEIGHT = 500;
 
 	if (camera_y < 0) {
-		cerr << "Error from Sprite::setRenderY(int camera_y): camera y-coordinate is outside level bounds." << endl;
+		cerr << "Error from Sprite::setRenderY(): camera y-coordinate is outside level bounds." << endl;
 	}
 
 	this->render_y = this->getY() - camera_y;
@@ -246,7 +263,7 @@ bool Sprite::setWidth(int width) {
 	bool success = true;
 
 	if (width == 0 || width == NULL) {
-		cerr << "Error from Sprite::setWidth(int width): width is 0 or null, and is not set." << endl;
+		cerr << "Error from Sprite::setWidth(): width is 0 or null, and is not set." << endl;
 		success = false;
 
 		return success;
@@ -262,7 +279,7 @@ bool Sprite::setHeight(int height) {
 	bool success = true;
 
 	if (height == 0 || height == NULL) {
-		cerr << "Error from Sprite::setHeight(int height): height is 0 or null, and is not set." << endl;
+		cerr << "Error from Sprite::setHeight(): height is 0 or null, and is not set." << endl;
 		success = false;
 
 		return success;
@@ -331,7 +348,7 @@ bool Sprite::loadLevelWidth(int level_width) {
 	bool success = true;
 
 	if (level_width == 0 || level_width == NULL) {
-		cerr << "Error from Sprite::loadLevelWidth(int level_width) : level_width is 0 or null, and is not set." << endl;
+		cerr << "Error from Sprite::loadLevelWidth() : level_width is 0 or null, and is not set." << endl;
 		success = false;
 
 		return success;
@@ -346,7 +363,7 @@ bool Sprite::loadLevelHeight(int level_height) {
 	bool success = true;
 
 	if (level_height == 0 || level_height == NULL) {
-		cerr << "Error from Sprite::loadLevelHeight(int level_height) : level_height is 0 or null, and is not set." << endl;
+		cerr << "Error from Sprite::loadLevelHeight() : level_height is 0 or null, and is not set." << endl;
 		success = false;
 
 		return success;
