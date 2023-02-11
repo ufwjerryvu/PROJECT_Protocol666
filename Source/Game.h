@@ -92,10 +92,21 @@ Game::Game(UserEvent user_actions) {
 
 	/*
 	NOTE:
-		- Initializing the camera. 
+		- Initializing the camera.
 	*/
 	SDL_Rect camera = { 0, 0, this->SCREEN_WIDTH, this->SCREEN_HEIGHT };
 	this->user_actions = user_actions;
+
+	/*
+	NOTE:
+		- Loading the first level of the game
+		as we are initializing the game.
+	*/
+	this->current_level = 0;
+
+	if (!this->loadCurrentLevel()) {
+		cerr << "Error from Game(): cannot load the current level configurations." << endl;
+	}
 
 	/*
 	NOTE:
@@ -103,17 +114,6 @@ Game::Game(UserEvent user_actions) {
 	*/
 	if (!this->loadAllAssets()) {
 		cerr << "Error from Game(): cannot load some or all assets properly." << endl;
-	}
-
-	/*
-	NOTE:
-		- Loading the first level of the game 
-		as we are initializing the game.
-	*/
-	this->current_level = 0;
-
-	if (!this->loadCurrentLevel()) {
-		cerr << "Error from Game(): cannot load the current level configurations." << endl;
 	}
 }
 
@@ -125,7 +125,7 @@ bool Game::initialize() {
 
 	/*
 	NOTE:
-		- Initializing the SDL video subsystems. This step is modified 
+		- Initializing the SDL video subsystems. This step is modified
 		from lazyfoo.net.
 	*/
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -136,7 +136,7 @@ bool Game::initialize() {
 
 	/*
 	NOTE:
-		- Attempting to create a window. This step is also modified 
+		- Attempting to create a window. This step is also modified
 		from lazyfoo.net.
 	*/
 	this->window = SDL_CreateWindow("Protocol 666", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
@@ -149,7 +149,7 @@ bool Game::initialize() {
 
 	/*
 	NOTE:
-		- Also modified from lazyfoo.net. All textures of the game 
+		- Also modified from lazyfoo.net. All textures of the game
 		objects will be rendered via this renderer. If it fails then
 		nothing gets displayed.
 	*/
@@ -164,23 +164,19 @@ bool Game::initialize() {
 	NOTE:
 		- Initializing the SDL IMG library, specifically to load
 		in and display PNG images. Modified from lazyfoo.net.
-
 		- The bitwise AND operation below is used to make sure
 		the IMG_Init() function returns its argument. If the function
-		doesn't return the value of its argument then the whole 
+		doesn't return the value of its argument then the whole
 		expression evaluates to 1, and 0 if vice versa.
-
-		- In the document, IMG_INIT_PNG = 2. If IMG_Init(IMG_INIT_PNG) 
+		- In the document, IMG_INIT_PNG = 2. If IMG_Init(IMG_INIT_PNG)
 		returns 2, then IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG is 2 & 2
 		which would be evaluated to 1. At this point, we've successfully
 		initiated the IMG subsystem for PNG images.
-
 		- However, if IMG_Init(IMG_INIT_PNG) would return something else
-		like 4, which presumably is the value for IMG_INIT_JPEG then 
+		like 4, which presumably is the value for IMG_INIT_JPEG then
 		the expression IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG is 4 & 2,
 		which would then be evaluated to 0. A zero means we've failed
 		to initialize the PNG subsystems.
-
 		- This was just my rationale --- Jerry.
 	*/
 	if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
@@ -211,9 +207,11 @@ bool Game::loadAllAssets() {
 
 	FileHandling file_io;
 
+	this->player = file_io.loadPlayer(this->renderer, this->level_config_paths[this->current_level],
+		this->user_actions);
+
 	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER --------------------------------------------->
-	this->player = file_io.loadTestRagdoll(this->renderer, this->user_actions);
-	
+
 	vector<SDL_Texture*> row;
 	vector<vector<SDL_Texture*>> texture_setup_blocks;
 
@@ -236,7 +234,17 @@ bool Game::loadAllAssets() {
 	row.clear();
 
 	this->ground.push_back(Ground(0, 500 - 48, texture_setup_blocks, DiscreteDimensions{ 50, 2 }));
+
 	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER <---------------------------------------------
+
+	/*
+	NOTE:
+		- We kind of have to update the player regarding how big
+		the level is everytime the level changes. This is purely
+		because of bad design.
+	*/
+	this->player.loadLevelWidth(this->level_width);
+	this->player.loadLevelHeight(this->level_height);
 
 	return success;
 }
@@ -250,18 +258,9 @@ bool Game::loadCurrentLevel() {
 
 	FileHandling file_io;
 	this->level_config_paths = file_io.parseLevelConfigPaths();
-	
+
 	this->level_width = file_io.parseLevelWidth(level_config_paths[this->current_level]);
 	this->level_height = file_io.parseLevelHeight(level_config_paths[this->current_level]);
-
-	/*
-	NOTE:
-		- We kind of have to update the player regarding how big 
-		the level is everytime the level changes. This is purely
-		because of bad design.
-	*/
-	this->player.loadLevelWidth(this->level_width);
-	this->player.loadLevelHeight(this->level_height);
 
 	return success;
 }
@@ -281,7 +280,6 @@ void Game::updateCamera() {
 	/*
 	NOTE:
 		- The code below centers the player.
-
 		- Code modified from lazyfoo.net.
 	*/
 	camera.x = (this->player.getX() + this->player.getWidth() / 2) - this->SCREEN_WIDTH / 2;
@@ -355,13 +353,13 @@ void Game::render() {
 
 	/*
 	NOTE:
-		- Copying all the non-playable objects to the renderer. 
+		- Copying all the non-playable objects to the renderer.
 	*/
 
 	/*
 	NOTE:
-		- The player's texture is being copied last because 
-		the player's character will be on top of all the 
+		- The player's texture is being copied last because
+		the player's character will be on top of all the
 		other textures.
 	*/
 	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER --------------------------------------------->
