@@ -28,10 +28,10 @@ struct Animation {
 	vector<SDL_Texture*> frames_jumping;
 	vector<SDL_Texture*> frames_falling;
 
-	int current_frame_idle;
-	int current_frame_running;
-	int current_frame_jumping;
-	int current_frame_falling;
+	int current_frame_idle = 0;
+	int current_frame_running = 0;
+	int current_frame_jumping = 0;
+	int current_frame_falling = 0;
 };
 
 struct Damage {
@@ -262,7 +262,7 @@ bool Sprite::setRenderY(int camera_y) {
 bool Sprite::setWidth(int width) {
 	bool success = true;
 
-	if (width == 0 || width == NULL) {
+	if (width == 0) {
 		cerr << "Error from Sprite::setWidth(): width is 0 or null, and is not set." << endl;
 		success = false;
 
@@ -278,7 +278,7 @@ bool Sprite::setWidth(int width) {
 bool Sprite::setHeight(int height) {
 	bool success = true;
 
-	if (height == 0 || height == NULL) {
+	if (height == 0) {
 		cerr << "Error from Sprite::setHeight(): height is 0 or null, and is not set." << endl;
 		success = false;
 
@@ -347,7 +347,7 @@ bool Sprite::setTexture(SDL_Texture* texture) {
 bool Sprite::loadLevelWidth(int level_width) {
 	bool success = true;
 
-	if (level_width == 0 || level_width == NULL) {
+	if (level_width == 0) {
 		cerr << "Error from Sprite::loadLevelWidth() : level_width is 0 or null, and is not set." << endl;
 		success = false;
 
@@ -362,7 +362,7 @@ bool Sprite::loadLevelWidth(int level_width) {
 bool Sprite::loadLevelHeight(int level_height) {
 	bool success = true;
 
-	if (level_height == 0 || level_height == NULL) {
+	if (level_height == 0) {
 		cerr << "Error from Sprite::loadLevelHeight() : level_height is 0 or null, and is not set." << endl;
 		success = false;
 
