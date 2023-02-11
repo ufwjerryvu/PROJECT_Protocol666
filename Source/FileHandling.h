@@ -1,6 +1,6 @@
 /*
 @ COLLABORATORS: Jerry Vu, An Luu
-@ CLASS DESIGNERS: Jerry Vu
+@ CLASS DESIGNERS: Jerry Vu, An Luu
 */
 
 #pragma once
@@ -14,32 +14,48 @@
 #include "Character.h"
 #include "Player.h"
 
+#include "Terrain.h"
+#include "Ground.h"
+#include "Platform.h"
+
 /*
 NOTE:
 	- This class will be handling all file input/output.
 */
 class FileHandling {
 public:
+	/*
+	SECTION 1: BASIC LOADING
+	*/
 	SDL_Texture* loadTexture(SDL_Renderer* renderer, string path);
-
 	string parseTextFile(string path);
 
+	/*
+	SECTION 2: CONFIGURATIONS LOADING
+	*/
 	vector<string> parseLevelConfigPaths();
-
-	vector<int> parseDimensions(string level_config_path);
+	vector<int> parseLevelDimensions(string level_config_path);
 	int parseLevelWidth(string level_config_path);
 	int parseLevelHeight(string level_config_path);
 
-	vector<string> parseAnimationPaths(string level_config_path);
-	Animation loadAnimation(SDL_Renderer* renderer, string level_config_path);
+	/*
+	SECTION 3: ANIMATION/ASSEMBLY LOADING
+	*/
+	vector<string> parseFileForAnimationPaths(string file_for_animation_paths);
+	Animation loadAnimation(SDL_Renderer* renderer, string file_for_animation_paths);
 
-	Player loadPlayer(SDL_Renderer* renderer, string level_config_path, string animation_path, Animation animation, UserEvent user_actions);
-	Ground loadGround(string level_config_path, vector<vector<SDL_Texture*>> texture_blocks, 
-						DiscreteDimensions discrete_dimensions);
+	/*
+	SECTION 4: ASSETS LOADING
+	*/
+	vector<string> getLinesFromFlag(string content, string flag);
+	string getFirstLineFromFlag(string content, string flag);
 
-	Player loadTestRagdoll(SDL_Renderer* renderer, UserEvent user_actions);
+	Player loadPlayer(SDL_Renderer* renderer, string level_config_path, UserEvent user_actions, string chosen_type);
 };
 
+/*
+SECTION 1: BASIC LOADING
+*/
 SDL_Texture* FileHandling::loadTexture(SDL_Renderer* renderer, string path) {
 	/*
 	NOTE:
@@ -85,23 +101,35 @@ string FileHandling::parseTextFile(string path) {
 	input_file.close();
 }
 
+/*
+SECTION 2: CONFIGURATIONS LOADING
+*/
 vector<string> FileHandling::parseLevelConfigPaths() {
 
 	/*
 	NOTE:
-		- Parse txt file into `file_content` using FileHandling::parseTextFile()
-		
-		- Split content of `file_content` line by line and return a vector<string> using Utilities::split()
-		
-		- Add the paths in the `split_content` vector into paths_vector, ignoring comments and empty lines.
+		- Parse txt file into `file_content` using 
+		FileHandling::parseTextFile().
 	*/
 
 	vector<string> paths_vector;
 	Utilities util;
 	string file_content = parseTextFile("Configurations/paths_level_config.txt");
 	
+	/*
+	NOTE:
+		- Split content of `file_content` line by
+		line and return a vector<string> using 
+		Utilities::split().
+	*/
 	vector<string> split_content = util.split(file_content, "\n");
 
+	/*
+	NOTE:
+		- Add the paths in the `split_content` 
+		vector into paths_vector, ignoring comments
+		and empty lines.
+	*/
 	for (int i = 0; i < split_content.size(); i++) {
 		if (split_content[i][0] == '#' || split_content[i] == "") {
 			continue;
@@ -112,72 +140,110 @@ vector<string> FileHandling::parseLevelConfigPaths() {
 	return paths_vector;
 }
 
-vector<int> FileHandling::parseDimensions(string level_config_path) {
+vector<int> FileHandling::parseLevelDimensions(string level_config_path) {
+	/*
+	NOTE:
+		- Parsing the level config text file
+		and splitting its content into a vector of
+		strings.
+	*/
+	Utilities util;
+	string file_content = this->parseTextFile(level_config_path);
+	vector<string> file_content_split = util.split(file_content, "\n");
+	vector<int> dimensions_vec;
 
 	/*
 	NOTE:
-		- This function returns a vector<int> containing dimensions of the window read from the Level Configuration
-		txt file.
-
-		- After parsing file contents at `level_config_path`, each line is split and assigned into the `content_vec`
-		string vector.
-
-		- `Content_vec` is iterated to search for the "# Dimensions format: level_width,level_height" element.
-		Once found, the line below this line is split and assigned into the `dimension_vec_str` string vector.
-
-		- Elements that contain initial xy coordinates in `dimension_vec_str` is converted to float. Results from the conversion is
-		added into the `dimensions_vec` vector with element[0] being the x value and [1] being the y value.
-
-		- `dimensions_vec` is returned.
+		- Iterating through the contents of the file.
 	*/
-	
-	vector<int> dimensions_vec;
-	Utilities util;
-	string file_content = parseTextFile(level_config_path);
-
-	vector<string> dimensions_vec_str;
-
-	vector<string> content_vec = util.split(file_content, "\n");
-	for (int i = 0; i < content_vec.size(); i++) {
-		if (content_vec[i] == "# Dimensions format: level_width,level_height") {
-			dimensions_vec_str = util.split(content_vec[i + 1], ",");
-			break;
-		}
-	}
-
-	for (int i = 0; i < dimensions_vec_str.size(); i++) {
-		if (util.checkFloat(dimensions_vec_str[i])) {
-			int conversion = util.strToFloat(dimensions_vec_str[i]);
-			dimensions_vec.push_back(conversion);
-		}
-		else {
+	for (int index = 0; index < file_content_split.size(); index++) {
+		/*
+		NOTE:
+			- If it's an empty line then we ignore that
+			line.
+		*/
+		if (file_content_split[index] == "") {
 			continue;
+		}
+		else if (file_content_split[index].length()) {
+			/*
+			NOTE:
+				- But if it's a non-empty line but is 
+				denoted by a hashtag -- which is a comment
+				then we also ignore it.
+			*/
+			if (file_content_split[index][0] == '#') {
+				continue;
+			}
+			else {
+				vector<string> line_split = util.split(file_content_split[index], ",");
+				const int NUMBER_OF_DIMENSIONS = 2;
+				/*
+				NOTE:
+					- If there are less than two arguments then the
+					formatting is invalid.
+				*/
+				if (line_split.size() != NUMBER_OF_DIMENSIONS) {
+					cerr << "Error from FileHandling::parseDimensions(): invalid number of arguments." << endl;
+				}
+				else {
+					/*
+					NOTE:
+						- If the first element or the second element isn't
+						a number then the formatting is also invalid.
+					*/
+					if (!util.checkFloat(line_split[0]) || !util.checkFloat(line_split[1])) {
+						cerr << "Error from FileHandling::parseDimensions(): dimensions must be numerical." << endl;
+					}
+					else {
+						dimensions_vec.push_back(util.strToFloat(line_split[0]));
+						dimensions_vec.push_back(util.strToFloat(line_split[1]));
+					}
+				}
+
+				/*
+				NOTE:
+					- We break out of the loop because dimensions 
+					will always be the first configuration line in the
+					text file.
+				*/
+				break;
+			}
 		}
 	}
 
 	return dimensions_vec;
 }
+
 int FileHandling::parseLevelWidth(string level_config_path) {
-	vector<int> dimension = parseDimensions(level_config_path);
+	vector<int> dimension = parseLevelDimensions(level_config_path);
 	int width = dimension[0];
 	return width;
 }
 int FileHandling::parseLevelHeight(string level_config_path) {
-	vector<int> dimension = parseDimensions(level_config_path);
+	vector<int> dimension = parseLevelDimensions(level_config_path);
 	int height = dimension[1];
 	return height;
 }
 
-vector<string> FileHandling::parseAnimationPaths(string level_config_path) {
+/*
+SECTION 3: ANIMATION / ASSEMBLY LOADING
+*/
+vector<string> FileHandling::parseFileForAnimationPaths(string file_for_animation_paths) {
 	vector<string> path_vec;
 	Utilities util;
-	string file_content = parseTextFile(level_config_path);
+	string file_content = parseTextFile(file_for_animation_paths);
 
 	vector<string> split_content = util.split(file_content, "\n");
 
 	for (int i = 0; i < split_content.size(); i++) {
-		if (split_content[i][0] == '#' || split_content[i] == "") {
+		if (split_content[i] == "") {
 			continue;
+		}
+		if (split_content[i].length() >= 0) {
+			if (split_content[i][0] == '#') {
+				continue;
+			}
 		}
 		path_vec.push_back(split_content[i]);
 	}
@@ -185,165 +251,159 @@ vector<string> FileHandling::parseAnimationPaths(string level_config_path) {
 	return path_vec;
 }
 
-Animation FileHandling::loadAnimation(SDL_Renderer* renderer, string level_config_path) {
+Animation FileHandling::loadAnimation(SDL_Renderer* renderer, string file_for_animation_paths) {
 	/*
 	NOTE:
-		- This function returns an initialized Animation structure with animation frames of all types read from a text file
+		- This function returns an initialized Animation structure 
+		with animation frames of all types read from a text file
 		containing the paths to each respective frame image.
-
-		- After parsing each individual paths, each line is split and assigned into the `anim_paths_vec`
-		string vector.
-
-		- Each element in `anim_paths_vec` is iterated. Upon each iteration, when encountering a path to a frame image,
-		loadTexture() is called to load an SDL_Texture variable using the encountered path as parameter. This texture is then
-		added to the animation struture.
 	*/
 
 	FileHandling file;
 	Animation animation;
 
-	vector<string> anim_paths_vec = parseAnimationPaths(level_config_path);
-	string temp = "";
+	/*
+	NOTE:
+		- After parsing each individual paths, each line is split 
+		and assigned into the `anim_paths_vec` string vector.
+	*/
+	vector<string> anim_paths_vec = parseFileForAnimationPaths(file_for_animation_paths);
+	string current_flag = "";
 
+	/*
+	NOTE:
+		- Each element in `anim_paths_vec` is iterated. Upon each iteration,
+		when encountering a path to a frame image, loadTexture() is called to 
+		load an SDL_Texture variable using the encountered path as parameter. 
+		This texture is then added to the animation struture.
+	*/
 	for (int i = 0; i < anim_paths_vec.size(); i++) {
-		if (anim_paths_vec[i] == "<idle" || anim_paths_vec[i] == "<running>" || anim_paths_vec[i] == "<jumping>" || anim_paths_vec[i] == "<falling>") {
-			temp = anim_paths_vec[i];
+		/*
+		NOTE:
+			- Setting a flag for the animation type.
+		*/
+		if (anim_paths_vec[i] == "<idle>" || anim_paths_vec[i] == "<running>" 
+			|| anim_paths_vec[i] == "<jumping>" || anim_paths_vec[i] == "<falling>") {
+			current_flag = anim_paths_vec[i];
 		}
 
-		if (temp == "<idle>" && anim_paths_vec[i] != temp && anim_paths_vec[i] != "</idle>") {
+		/*
+		NOTE:
+			- Loading the animation textures in given the paths.
+		*/
+		if (current_flag == "<idle>" && anim_paths_vec[i] != current_flag && anim_paths_vec[i] != "</idle>") {
 			animation.frames_idle.push_back(loadTexture(renderer, anim_paths_vec[i]));
 		}
-		if (temp == "<running>" && anim_paths_vec[i] != temp && anim_paths_vec[i] != "</running>") {
-			animation.frames_idle.push_back(loadTexture(renderer, anim_paths_vec[i]));
+		if (current_flag == "<running>" && anim_paths_vec[i] != current_flag && anim_paths_vec[i] != "</running>") {
+			animation.frames_running.push_back(loadTexture(renderer, anim_paths_vec[i]));
 		}
-		if (temp == "<jumping>" && anim_paths_vec[i] != temp && anim_paths_vec[i] != "</jumping>") {
-			animation.frames_idle.push_back(loadTexture(renderer, anim_paths_vec[i]));
+		if (current_flag == "<jumping>" && anim_paths_vec[i] != current_flag && anim_paths_vec[i] != "</jumping>") {
+			animation.frames_jumping.push_back(loadTexture(renderer, anim_paths_vec[i]));
 		}
-		if (temp == "<falling>" && anim_paths_vec[i] != temp && anim_paths_vec[i] != "</falling>") {
-			animation.frames_idle.push_back(loadTexture(renderer, anim_paths_vec[i]));
+		if (current_flag == "<falling>" && anim_paths_vec[i] != current_flag && anim_paths_vec[i] != "</falling>") {
+			animation.frames_falling.push_back(loadTexture(renderer, anim_paths_vec[i]));
 		}
 	}
 
 	return animation;
 }
 
-Player FileHandling::loadPlayer(SDL_Renderer* renderer, string level_config_path, string animation_path, Animation animation, UserEvent user_actions) {
+/*
+SECTION 4: ASSETS LOADING
+*/
+vector<string> FileHandling::getLinesFromFlag(string content, string flag) {
+	Utilities util;
+	vector<string> split_content = util.split(content, "\n");
+
+	vector<string> current_line_split;
+	vector<string> ret_vec;
+
 
 	/*
 	NOTE:
-		- This function returns an initialized Player object with initial xy coordinates read from the 
-		Level Configurations text file
-
-		- After parsing file contents at `level_config_path`, each line is split and assigned into the `content_vec` 
-		string vector.
-
-		- `Content_vec` is iterated to search for the "# Player format: Object,initial_x,initial_y" element. 
-		Once found, the line below this line is split and assigned into the `position_vec_str` string vector.
-
-		- Elements that contain initial xy coordinates in `position_vec_str` is converted to float. Results from the conversion is
-		added into the xy_pos vector with element[0] being the x value and [1] being the y value.
-
-		- player's animation is loaded using loadAnimation, with parameters being `renderer` and `animation_path`
-
-		- Player object is constructed with these xy values and returned.
+		- Looping through the contents of the config file.
 	*/
-
-	Player player;
-
-	vector<int> xy_pos;
-	Utilities util;
-	string file_content = parseTextFile(level_config_path);
-	vector<string> position_vec_str;
-
-	vector<string> content_vec = util.split(file_content, "\n");
-	for (int i = 0; i < content_vec.size(); i++) {
-		if (content_vec[i] == "# Player format: Object,initial_x,initial_y") {
-			position_vec_str = util.split(content_vec[i+1], ",");
-			break;
-		}
-	}
-
-	for (int i = 0; i < position_vec_str.size(); i++) {
-		if (util.checkFloat(position_vec_str[i])) {
-			int conversion = util.strToFloat(position_vec_str[i]);
-			xy_pos.push_back(conversion);
-		}
-		else {
+	for (int index = 0; index < split_content.size(); index++) {
+		/*
+		NOTE:
+			- We ignore the lines that are empty.
+		*/
+		if (!split_content[index].length() || split_content[index] == "") {
 			continue;
 		}
+		else {
+			/*
+			NOTE:
+				- We ignore the comments as well.
+			*/
+			if (split_content[index][0] == '#') {
+				continue;
+			}
+
+			current_line_split = util.split(split_content[index], ",");
+			if (current_line_split.size()) {
+				/*
+				NOTE:
+					- If we see the flag then we return the
+					current element in the split content
+					vector.
+				*/
+				if (current_line_split[0] == flag) {
+					ret_vec.push_back(split_content[index]);
+				}
+			}
+		}
 	}
-	int x = xy_pos[0];
-	int y = xy_pos[1];
 
-	animation = loadAnimation(renderer, animation_path);
-
-	player = Player(x, y, animation, user_actions);
-
-	return player;
+	return ret_vec;
 }
 
-Ground FileHandling::loadGround(string level_config_path, vector<vector<SDL_Texture*>> texture_blocks,
-	DiscreteDimensions discrete_dimensions) {
+string FileHandling::getFirstLineFromFlag(string content, string flag) {
+	vector<string> lines = getLinesFromFlag(content, flag);
+
+	if (lines.size()) {
+		return lines[0];
+	}
+
+	return "";
+}
+
+Player FileHandling::loadPlayer(SDL_Renderer* renderer, string level_config_path, UserEvent user_actions, string chosen_type = "ragdoll") {
+	Utilities util;
+	Animation animation;
 
 	/*
 	NOTE:
-		- This function returns an initialized Ground object with initial xy coordinates as well as discrete dimensions 
-		read from the Level Configurations text file.
-
-		- After parsing file contents at `level_config_path`, each line is split and assigned into the `content_vec`
-		string vector.
-
-		- `Content_vec` is iterated to search for the "# Ground format: Object,initial_x,initial_y,width_by_units,height_by_units" 
-		element. Once found, the line below this line is split and assigned into the `format_vec_str` string vector.
-
-		- Elements that contain initial xy coordinates in `format_vec_str` is converted to float. Results from the conversion is
-		added into the format_vec vector with element[0] being the x value, [1] being the y value, [2] being width_by_units
-		and [3] being height by units.
-
-		- Player object is constructed with these values and returned.
+		- These are the standard characters and animation frames
+		for the characters.
 	*/
-
-
-	Ground ground;
-
-	vector<int> format_vec;
-	Utilities util;
-	string file_content = parseTextFile(level_config_path);
-
-	vector<string> format_vec_str;
-
-	vector<string> content_vec = util.split(file_content, "\n");
-	for (int i = 0; i < content_vec.size(); i++) {
-		if (content_vec[i] == "# Ground format: Object,initial_x,initial_y,width_by_units,height_by_units") {
-			format_vec_str = util.split(content_vec[i + 1], ",");
-			break;
-		}
+	if (chosen_type == "ragdoll") {
+		animation = this->loadAnimation(renderer, "Configurations/Animation/Ragdoll.txt");
+	}
+	else if (chosen_type == " theresa") {
+		animation = this->loadAnimation(renderer, "Configurations/Animation/Theresa.txt");
+	}
+	else if(chosen_type == "may") {
+		animation = this->loadAnimation(renderer, "Configurations/Animation/May.txt");
 	}
 
-	for (int i = 0; i < format_vec_str.size(); i++) {
-		if (util.checkFloat(format_vec_str[i])) {
-			int conversion = util.strToFloat(format_vec_str[i]);
-			format_vec.push_back(conversion);
-		}
-		else {
-			continue;
-		}
-	}
-	int x = format_vec[0];
-	int y = format_vec[1];
+	/*
+	NOTE: 
+		- We get the line that we want to initialize the player.
+	*/
+	string player_config = this->getFirstLineFromFlag(this->parseTextFile(level_config_path), "Player");
 
-	int width = format_vec[2];
-	int height = format_vec[3];
-
-	discrete_dimensions = { width, height };
-
-
-	for (int i = 0; i < format_vec.size(); i++) {
-		cout << format_vec[i] << endl;
+	const int NUMBER_OF_ARGUMENTS = 3;
+	if (util.split(player_config, ",").size() != NUMBER_OF_ARGUMENTS) {
+		cerr << "Error from FileHandling::loadPlayer(): invalid configuration formatting." << endl;
+		return Player();
 	}
 
+	int initial_x = util.strToFloat(util.split(player_config, ",")[1]);
+	int initial_y = util.strToFloat(util.split(player_config, ",")[2]);
 
-	ground = Ground(x, y, texture_blocks, discrete_dimensions);
+	Player ret_obj(initial_x, initial_y, animation, user_actions);
 
-	return ground;
+	return ret_obj;
 }
+
