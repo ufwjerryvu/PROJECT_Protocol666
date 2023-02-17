@@ -18,5 +18,5 @@ Assets/Sprite/Character/Player/Ragdoll/run8.png
 Assets/Sprite/Character/Player/Ragdoll/jump1.png
 </jumping>
 <falling>
-Assets/Sprite/Character/Player/Ragdoll/jump1.png
+Assets/Sprite/Character/Player/Ragdoll/fall1.png
 </falling>
