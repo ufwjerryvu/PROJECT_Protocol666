@@ -7,7 +7,7 @@ class Enemy : public Character {
 private:
 	string name;
 	Movement movement_logic;
-	Damage damage_dealt;\
+	Damage damage_dealt;
 
 	/*
 	NOTE:
@@ -77,20 +77,11 @@ Enemy::Enemy() : Character() {
 	
 	this->setName("-Default-");
 	
-	Movement default_logic;
-	default_logic.spawn_x = 0;
-	default_logic.spawn_y = 0;
-	default_logic.x_max_displacement = 0;
-	default_logic.y_max_displacement = 0;
-	default_logic.x_direction_velocity = 0;
-	default_logic.y_direction_velocity = 0;
+	Movement default_logic = {0, 0, 0, 0, 0, 0};
 
 	this->setMovementLogic(default_logic);
 
-	Damage default_damage;
-	default_damage.attack = 0;
-	default_damage.collision = 0;
-	default_damage.self_destruct = 0;
+	Damage default_damage = {0, 0, 0};
 
 	this->setDamageDealt(default_damage);
 };
@@ -115,13 +106,6 @@ SECTION 2A: SETTERS
 bool Enemy::setName(string name) {
 	bool success = true;
 
-	if (name.compare(NULL)) {
-		cerr << "Warning from Enemy::setName(string name): string is empty/null." << endl;
-
-		success = false;
-		return success;
-	}
-
 	this->name = name;
 
 	return success;
@@ -130,10 +114,7 @@ bool Enemy::setName(string name) {
 bool Enemy::setMovementLogic(Movement movement_logic) {
 	bool success = true;
 
-	this->movement_logic.x_direction_velocity = movement_logic.x_direction_velocity;
-	this->movement_logic.y_direction_velocity = movement_logic.y_direction_velocity;
-	this->movement_logic.x_max_displacement = movement_logic.x_max_displacement;
-	this->movement_logic.y_direction_velocity = movement_logic.y_max_displacement;
+	this->movement_logic = { movement_logic.spawn_x, movement_logic.y_direction_velocity, movement_logic.x_max_displacement, movement_logic.y_max_displacement };
 
 	return success;
 }
@@ -141,9 +122,7 @@ bool Enemy::setMovementLogic(Movement movement_logic) {
 bool Enemy::setDamageDealt(Damage damage_dealt) {
 	bool success = true;
 
-	this->damage_dealt.attack = damage_dealt.attack;
-	this->damage_dealt.collision = damage_dealt.collision;
-	this->damage_dealt.self_destruct = damage_dealt.self_destruct;
+	this->damage_dealt = {damage_dealt.attack, damage_dealt.collision, damage_dealt.self_destruct};
 
 	return success;
 }
@@ -324,5 +303,3 @@ void Enemy::move() {
 	this->run();
 	this->jump();
 }
-
-
