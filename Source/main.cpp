@@ -8,6 +8,7 @@ int main(int argc, char* argv[]) {
 	NOTE:
 		- Keeping track of user-induced events.
 	*/
+
 	bool key_down = false, key_up = true;
 	const Uint8* current_key_states = SDL_GetKeyboardState(NULL);
 
