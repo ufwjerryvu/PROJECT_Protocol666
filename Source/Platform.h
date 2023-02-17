@@ -24,7 +24,6 @@ public:
 	/*
 	SECTION 2A: SETTERS
 	*/
-	bool setAssembledTexture();
 
 	/*
 	SECTION 2B: GETTERS
@@ -59,9 +58,6 @@ Platform::Platform(int x, int y, vector<vector<SDL_Texture*>> texture_blocks,
 	NOTE:
 		- This is the preferred constructor.
 	*/
-	this->setAssembledTexture();
-	this->setWidth();
-	this->setHeight();
 }
 
 Platform::~Platform() {
@@ -73,9 +69,6 @@ Platform::~Platform() {
 /*
 SECTION 2A: SETTERS
 */
-bool Platform::setAssembledTexture() {
-	return true;
-}
 /*
 SECTION 2B: GETTERS
 */

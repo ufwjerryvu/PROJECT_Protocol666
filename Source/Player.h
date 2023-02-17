@@ -12,6 +12,8 @@
 
 #include "Terrain.h"
 #include "Ground.h"
+#include "Platform.h"
+#include "SinglePlatform.h"
 
 class Player : public Character{
 private:
@@ -42,6 +44,7 @@ public:
 	void move();
 
 	void collide(vector<Ground>& args);
+	void collide(vector<Platform>& args);
 
 	/*
 	NOTE:
@@ -65,6 +68,8 @@ Player::Player() : Character() {
 		- Calling the base classs's constructor. I don't know what
 		to initialize user_actions with. Probably just setting 
 		everything to NULL should do.
+
+		- Do not call this constructor if not needed.
 	*/
 
 	user_actions = { NULL, NULL, NULL, NULL, NULL, NULL };
@@ -79,6 +84,8 @@ Player::Player(int x, int y, Animation animation, UserEvent user_actions)
 	/*
 	NOTE:
 		- Calling Character's parameterized constructor.
+
+		- This is the preferred constructor.
 	*/
 	this->user_actions = user_actions;
 
@@ -302,25 +309,21 @@ void Player::move() {
 }
 
 void Player::collide(vector<Ground>& args) {
+
 	/*
 	NOTE:
-		- Code is now made less redundant.
+		- Code now made less redundant.
 
-		- Resetting the member attribute `collided` to
-		the default values, which are all false.
+		- Storing the current collision status of 
+		the player into a temporary structure.
 	*/
-	this->setCollision(Collision());
+	Collision temp = this->getCollisionDirections();
 
 	/*
 	NOTE:
-		- Having a temporary structure all initialized
-		to false.
-	*/
-	Collision temp;
-
-	/*
-	NOTE:
-		- Looping through the blocks of terrain.
+		- Looping through the blocks of Ground and
+		setting the collision flags to whichever direction
+		that collision is detected in.
 	*/
 	for (int index = 0; index < args.size(); index++) {
 		if (this->checkCollision(args[index])) {
@@ -334,11 +337,6 @@ void Player::collide(vector<Ground>& args) {
 				temp.right = true;
 			}
 
-			if (this->getTopBound() <= args[index].getBottomBound()
-				&& this->getTopBound() >= args[index].getTopBound()) {
-				temp.top = true;
-			}
-
 			if (this->getBottomBound() >= args[index].getTopBound()
 				&& this->getBottomBound() <= args[index].getBottomBound()) {
 				temp.bottom = true;
@@ -346,7 +344,7 @@ void Player::collide(vector<Ground>& args) {
 				/*
 				NOTE:
 					- This is to make sure that the player
-					stays on top of the platform/terrain.
+					stays on top of the Ground object(s).
 				*/
 
 				const int PIXEL_ERROR_MARGIN = 3;
@@ -362,6 +360,62 @@ void Player::collide(vector<Ground>& args) {
 		this->setCollision(temp);
 	}
 }
+
+void Player::collide(vector<Platform>& args) {
+	/*
+	NOTE:
+		- Having a temporary structure storing the current
+		collision status of the player.
+	*/
+	Collision temp = this->getCollisionDirections();
+
+	/*
+	NOTE:
+		- Looping through the blocks of Platform and setting only
+		the collision flag for the bottom bound of the player 
+		because the player can basically jump UP through a
+		platform but once they jump over the platform they can
+		rest on the platform after they fall down.
+	*/
+	for (int index = 0; index < args.size(); index++) {
+		if (this->checkCollision(args[index])) {
+
+			if (this->getBottomBound() >= args[index].getTopBound()
+				&& this->getBottomBound() <= args[index].getBottomBound()) {
+
+				/*
+				NOTE:
+					- Adding the extra collision detection margin is sort
+					of a band-aid solution but this code is to prevent the
+					player from catapulting upwards jumping halfway through
+					the platform.
+				*/
+				const int PIXEL_ERROR_MARGIN = 3;
+				const int EXTRA_DETECTION_MARGIN = 12;
+				if (this->getBottomBound() <= args[index].getTopBound() 
+					+ PIXEL_ERROR_MARGIN + EXTRA_DETECTION_MARGIN) {
+					temp.bottom = true;
+				}
+				/*
+				NOTE:
+					- This is to make sure that the player
+					stays on top of the platform.
+				*/
+				if (!this->isJumping() && temp.bottom) {
+					this->setY(args[index].getY() - this->getHeight() + PIXEL_ERROR_MARGIN);
+				}
+			}
+		}
+
+		/*
+		NOTE:
+			- Finally setting the collision directions
+			for the player.
+		*/
+		this->setCollision(temp);
+	}
+}
+
 
 void Player::setNextFrame() {
 	/*
