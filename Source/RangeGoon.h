@@ -1,13 +1,46 @@
+/*
+@ COLLABORATORS: Khanh Nguyen
+@ CLASS DESIGNERS: Khanh Nguyen
+*/
+
 #pragma once
 
+#include "Sprite.h"
+
+#include "Character.h"
+#include "Player.h"
 #include "Enemy.h"
 
 class RangeGoon : public Enemy {
 public:
+	/*
+	SECTION 1: CONSTRUCTORS AND DESTRUCTORS
+	*/
+	/*
+	SECTION 2A: SETTERS
+	*/
+	/*
+	SECTION 2B: GETTERS	
+	*/
+	/*
+	SECTION 3: OTHER METHODS
+	*/
 	void attack();
 	void detectPlayer(Player& arg);
 };
 
+/*
+SECTION 1: CONSTRUCTORS AND DESTRUCTORS
+*/
+/*
+SECTION 2A: SETTERS
+*/
+/*
+SECTION 2B: GETTERS	
+*/
+/*
+SECTION 3: OTHER METHODS
+*/
 void RangeGoon::attack() {
 
 }
