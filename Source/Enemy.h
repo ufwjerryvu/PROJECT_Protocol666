@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include "Sprite.h"
+
 #include "Character.h"
 #include "Player.h"
 
