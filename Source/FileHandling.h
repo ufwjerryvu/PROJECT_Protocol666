@@ -17,6 +17,8 @@
 #include "Terrain.h"
 #include "Ground.h"
 #include "Platform.h"
+#include "SinglePlatform.h"
+#include "MultiplePlatform.h"
 
 /*
 NOTE:
@@ -41,8 +43,9 @@ public:
 	/*
 	SECTION 3: ANIMATION/ASSEMBLY LOADING
 	*/
-	vector<string> parseFileForAnimationPaths(string file_for_animation_paths);
+	vector<string> parseFileForLoadingPaths(string file_path);
 	Animation loadAnimation(SDL_Renderer* renderer, string file_for_animation_paths);
+	vector<vector<SDL_Texture*>> loadSetupTextures(SDL_Renderer* renderer, string file_for_assembly_paths);
 
 	/*
 	SECTION 4: ASSETS LOADING
@@ -51,6 +54,10 @@ public:
 	string getFirstLineFromFlag(string content, string flag);
 
 	Player loadPlayer(SDL_Renderer* renderer, string level_config_path, UserEvent user_actions, string chosen_type);
+	vector<Ground> loadGrounds(SDL_Renderer* renderer, string level_config_path);
+	vector<SinglePlatform> loadSinglePlatforms(SDL_Renderer* renderer, string level_config_path);
+	vector<MultiplePlatform> loadMultiplePlatforms(SDL_Renderer* renderer, string level_config_path);
+	vector<Platform> loadPlatforms(SDL_Renderer* renderer, string level_config_path);
 };
 
 /*
@@ -229,13 +236,20 @@ int FileHandling::parseLevelHeight(string level_config_path) {
 /*
 SECTION 3: ANIMATION / ASSEMBLY LOADING
 */
-vector<string> FileHandling::parseFileForAnimationPaths(string file_for_animation_paths) {
+vector<string> FileHandling::parseFileForLoadingPaths(string file_path) {
 	vector<string> path_vec;
 	Utilities util;
-	string file_content = parseTextFile(file_for_animation_paths);
+	string file_content = parseTextFile(file_path);
 
 	vector<string> split_content = util.split(file_content, "\n");
 
+	/*
+	NOTE:
+		- What this function basically does is 
+		ignore all the comments and all the empty lines.
+		This is similar to parseTextFile() except it returns
+		a cleaner vector of strings.
+	*/
 	for (int i = 0; i < split_content.size(); i++) {
 		if (split_content[i] == "") {
 			continue;
@@ -267,7 +281,7 @@ Animation FileHandling::loadAnimation(SDL_Renderer* renderer, string file_for_an
 		- After parsing each individual paths, each line is split 
 		and assigned into the `anim_paths_vec` string vector.
 	*/
-	vector<string> anim_paths_vec = parseFileForAnimationPaths(file_for_animation_paths);
+	vector<string> anim_paths_vec = parseFileForLoadingPaths(file_for_animation_paths);
 	string current_flag = "";
 
 	/*
@@ -306,6 +320,44 @@ Animation FileHandling::loadAnimation(SDL_Renderer* renderer, string file_for_an
 	}
 
 	return animation;
+}
+
+vector<vector<SDL_Texture*>> FileHandling::loadSetupTextures(SDL_Renderer* renderer, string file_for_assembly_paths) {
+	/*
+	NOTE:
+		- This function loads in the texture setup blocks
+		for Terrain objects.
+	*/
+	vector<vector<SDL_Texture*>> ret_vec;
+	vector<SDL_Texture*> row;
+	vector<string> assembly_anim_paths = parseFileForLoadingPaths(file_for_assembly_paths);
+
+	bool load_flag = false;
+
+	for (int index = 0; index < assembly_anim_paths.size(); index++) {
+		if (assembly_anim_paths[index] == "<row>") {
+			load_flag = true;
+			continue;
+		}
+		if (assembly_anim_paths[index] == "</row>") {
+			/*
+			NOTE:
+				- With every flag that ends a row, 
+				we push back the return vector and 
+				then we clear the row for the next
+				set of iterations.
+			*/
+			load_flag = false;
+			ret_vec.push_back(row);
+			row.clear();
+			continue;
+		}
+		if (load_flag) {
+			row.push_back(this->loadTexture(renderer, assembly_anim_paths[index]));
+		}
+	}
+
+	return ret_vec;
 }
 
 /*
@@ -407,3 +459,236 @@ Player FileHandling::loadPlayer(SDL_Renderer* renderer, string level_config_path
 	return ret_obj;
 }
 
+vector<Ground> FileHandling::loadGrounds(SDL_Renderer* renderer, string level_config_path) {
+	Utilities util;
+	/*
+	NOTE:
+		- We get the config lines that contain the flag 'Ground'.
+
+		- The texture setup blocks are also loaded in using the
+		assembly loading method defined earlier.
+	*/
+	vector<string> lines = getLinesFromFlag(this->parseTextFile(level_config_path), "Ground");
+	vector<vector<SDL_Texture*>> texture_setup_blocks = this->loadSetupTextures(renderer, "Configurations/Assembly/Ground.txt");
+	vector<Ground> ret_vec;
+
+	/*
+	NOTE:
+		- Now, we're iterating through the config lines.
+	*/
+	for (int index = 0; index < lines.size(); index++) {
+		vector<string> current_line_split = util.split(lines[index], ",");
+		
+		const int NUMBER_OF_ARGUMENTS = 5;
+		/*
+		NOTE:
+			- If the formatting in the text file is invalid then the 
+			function gives an error message.
+		*/
+		if (current_line_split.size() != NUMBER_OF_ARGUMENTS) {
+			cerr << "Error from FileHandling::loadGrounds(): invalid formatting in the config file." << endl;
+			return ret_vec;
+		}
+
+		/*
+		NOTE:
+			- Converting all the string objects being read from
+			the file into floating points first and storing
+			them into integer variables.
+		*/
+		int initial_x = util.strToFloat(current_line_split[1]);
+		int initial_y = util.strToFloat(current_line_split[2]);
+		int width_by_units = util.strToFloat(current_line_split[3]);
+		int height_by_units = util.strToFloat(current_line_split[4]);
+
+		/*
+		NOTE:
+			- Instantiating Ground objects normally and adding 
+			the instance to the vector of Ground objects.
+		*/
+		Ground temp(initial_x, initial_y, texture_setup_blocks, 
+			DiscreteDimensions{ width_by_units, height_by_units});
+
+		ret_vec.push_back(temp);
+	}
+
+	return ret_vec;
+}
+
+vector<SinglePlatform> FileHandling::loadSinglePlatforms(SDL_Renderer* renderer, string level_config_path) {
+	Utilities util;
+
+	/*
+	NOTE:
+		- Single platforms and half-single platforms are the same type 
+		of platform with the very same behaviors. They just have different
+		textures.
+
+		- In the level config file, full-height extendable single platforms
+		are flagged by 'FullSinglePlatform' and half-height extendable single
+		platforms are flagged by 'HalfSinglePlatform'.
+	*/
+	vector<string> lines_single_platform = getLinesFromFlag(this->parseTextFile(level_config_path), "FullSinglePlatform");
+	vector<string> lines_halfsingle_platform = getLinesFromFlag(this->parseTextFile(level_config_path), "HalfSinglePlatform");
+
+	vector<vector<SDL_Texture*>> texture_setup_blocks_sp = 
+		this->loadSetupTextures(renderer, "Configurations/Assembly/FullSinglePlatform.txt");
+	vector<vector<SDL_Texture*>> texture_setup_blocks_hsp =
+		this->loadSetupTextures(renderer, "Configurations/Assembly/HalfSinglePlatform.txt");
+
+	/*
+	NOTE:
+		- This is the vector that will store all the single platform 
+		objects.
+	*/
+	vector<SinglePlatform> ret_vec;
+
+	/*
+	NOTE:
+		- This loop is for full-height extendable platforms.
+	*/
+	for (int index = 0; index < lines_single_platform.size(); index++) {
+		vector<string> current_line_split = util.split(lines_single_platform[index], ",");
+
+		const int NUMBER_OF_ARGUMENTS = 4;
+		/*
+		NOTE:
+			- If the level config line has an invalid format
+			then we print out an error message. It should have
+			at least 4 arguments.
+		*/
+		if (current_line_split.size() != NUMBER_OF_ARGUMENTS) {
+			cerr << "Error from FileHandling::loadSinglePlatforms(): invalid formatting in the config file." << endl;
+			return ret_vec;
+		}
+
+		int width_by_units = util.strToFloat(current_line_split[3]);
+		int height_by_units = 1;
+
+		/*
+		NOTE:
+			- Notice that `temp` takes in `texture_setup_blocks_sp` and not
+			`texture_setup_blocks_hsp`.
+		*/
+		SinglePlatform temp(util.strToFloat(current_line_split[1]), util.strToFloat(current_line_split[2]), texture_setup_blocks_sp,
+			DiscreteDimensions{ width_by_units, height_by_units });
+
+		ret_vec.push_back(temp);
+	}
+
+	/*
+	NOTE:
+		- This loop is to instantiate half-height extendable platforms
+		from the level config file.
+	*/
+	for (int index = 0; index < lines_halfsingle_platform.size(); index++) {
+		vector<string> current_line_split = util.split(lines_halfsingle_platform[index], ",");
+
+		const int NUMBER_OF_ARGUMENTS = 4;
+		/*
+		NOTE:
+			- Again, we're checking for the validity of the config file's
+			formatting.
+		*/
+		if (current_line_split.size() != NUMBER_OF_ARGUMENTS) {
+			cerr << "Error from FileHandling::loadSinglePlatforms(): invalid formatting in the config file." << endl;
+			return ret_vec;
+		}
+
+		int width_by_units = util.strToFloat(current_line_split[3]);
+		int height_by_units = 1;
+
+		/*
+		NOTE:
+			- Notice that `temp` takes in `texture_setup_blocks_hsp` and not
+			`texture_setup_blocks_sp`.
+		*/
+		SinglePlatform temp(util.strToFloat(current_line_split[1]), util.strToFloat(current_line_split[2]), texture_setup_blocks_hsp,
+			DiscreteDimensions{ width_by_units, height_by_units });
+
+		ret_vec.push_back(temp);
+	}
+
+	return ret_vec;
+}
+
+vector<MultiplePlatform> FileHandling::loadMultiplePlatforms(SDL_Renderer* renderer, string level_config_path) {
+	Utilities util;
+
+	/*
+	NOTE:
+		- MultiplePlatform objects are kind of similar to Ground objects.
+		It only takes in 3x3 two-dimensional texture vectors.
+	*/
+	vector<string> lines_mult_platform = getLinesFromFlag(this->parseTextFile(level_config_path), "MultiplePlatform");
+
+	vector<vector<SDL_Texture*>> texture_setup_blocks =
+		this->loadSetupTextures(renderer, "Configurations/Assembly/MultiplePlatform.txt");
+
+	/*
+	NOTE:
+		- This is the vector that will store all the MultiplePlatform
+		objects.
+	*/
+	vector<MultiplePlatform> ret_vec;
+
+	for (int index = 0; index < lines_mult_platform.size(); index++) {
+		vector<string> current_line_split = util.split(lines_mult_platform[index], ",");
+
+		const int NUMBER_OF_ARGUMENTS = 5;
+		/*
+		NOTE:
+			- If the level config line has an invalid format
+			then we print out an error message. It should have
+			at least 6 arguments.
+		*/
+		if (current_line_split.size() != NUMBER_OF_ARGUMENTS) {
+			cerr << "Error from FileHandling::loadMultiplePlatforms(): invalid formatting in the config file." << endl;
+			return ret_vec;
+		}
+
+		int initial_x = util.strToFloat(current_line_split[1]);
+		int initial_y = util.strToFloat(current_line_split[2]);
+		int width_by_units = util.strToFloat(current_line_split[3]);
+		int height_by_units = util.strToFloat(current_line_split[4]);
+
+		/*
+		NOTE:
+			- Notice that `temp` takes in `texture_setup_blocks_sp` and not
+			`texture_setup_blocks_hsp`.
+		*/
+		MultiplePlatform temp(initial_x, initial_y, texture_setup_blocks,
+			DiscreteDimensions{ width_by_units, height_by_units });
+
+		ret_vec.push_back(temp);
+	}
+
+	return ret_vec;
+}
+
+vector<Platform> FileHandling::loadPlatforms(SDL_Renderer* renderer, string level_config_path) {
+	vector<Platform> ret_vec;
+
+	vector<SinglePlatform> splat_vec = this->loadSinglePlatforms(renderer, level_config_path);
+	vector<MultiplePlatform> mplat_vec = this->loadMultiplePlatforms(renderer, level_config_path);
+
+	/*
+	NOTE:
+		- Storing all SinglePlatform objects into one Platform 
+		vector.
+	*/
+	for (int index = 0; index < splat_vec.size(); index++) {
+		ret_vec.push_back(splat_vec[index]);
+	}
+
+	/*
+	NOTE:
+		- Storing all MultiplePlatform objects into one Platform
+		vector.
+	*/
+	for (int index = 0; index < mplat_vec.size(); index++) {
+		ret_vec.push_back(mplat_vec[index]);
+	}
+
+	return ret_vec;
+}

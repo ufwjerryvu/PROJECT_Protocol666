@@ -17,6 +17,8 @@
 
 #include "Terrain.h"
 #include "Ground.h"
+#include "Platform.h"
+#include "SinglePlatform.h"
 
 class Game {
 public:
@@ -48,12 +50,9 @@ public:
 	/*
 	SECTION 0C: GAME ASSETS VARIABLES
 	*/
-
-	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER --------------------------------------------->
 	Player player;
-
-	vector<Ground> ground;
-	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER <---------------------------------------------
+	vector<Ground> grounds;
+	vector<Platform> platforms;
 
 	/*
 	SECTION 1: CONSTRUCTORS AND DESTRUCTORS
@@ -164,19 +163,23 @@ bool Game::initialize() {
 	NOTE:
 		- Initializing the SDL IMG library, specifically to load
 		in and display PNG images. Modified from lazyfoo.net.
+
 		- The bitwise AND operation below is used to make sure
 		the IMG_Init() function returns its argument. If the function
 		doesn't return the value of its argument then the whole
 		expression evaluates to 1, and 0 if vice versa.
+
 		- In the document, IMG_INIT_PNG = 2. If IMG_Init(IMG_INIT_PNG)
 		returns 2, then IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG is 2 & 2
 		which would be evaluated to 1. At this point, we've successfully
 		initiated the IMG subsystem for PNG images.
+
 		- However, if IMG_Init(IMG_INIT_PNG) would return something else
 		like 4, which presumably is the value for IMG_INIT_JPEG then
 		the expression IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG is 4 & 2,
 		which would then be evaluated to 0. A zero means we've failed
 		to initialize the PNG subsystems.
+
 		- This was just my rationale --- Jerry.
 	*/
 	if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
@@ -209,33 +212,9 @@ bool Game::loadAllAssets() {
 
 	this->player = file_io.loadPlayer(this->renderer, this->level_config_paths[this->current_level],
 		this->user_actions);
-
-	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER --------------------------------------------->
-
-	vector<SDL_Texture*> row;
-	vector<vector<SDL_Texture*>> texture_setup_blocks;
-
-	row.push_back(file_io.loadTexture(this->renderer, "Assets/Sprite/Terrain/Ground/0_0.png"));
-	row.push_back(file_io.loadTexture(this->renderer, "Assets/Sprite/Terrain/Ground/0_1.png"));
-	row.push_back(file_io.loadTexture(this->renderer, "Assets/Sprite/Terrain/Ground/0_2.png"));
-	texture_setup_blocks.push_back(row);
-	row.clear();
-
-	row.push_back(file_io.loadTexture(this->renderer, "Assets/Sprite/Terrain/Ground/1_0.png"));
-	row.push_back(file_io.loadTexture(this->renderer, "Assets/Sprite/Terrain/Ground/1_1.png"));
-	row.push_back(file_io.loadTexture(this->renderer, "Assets/Sprite/Terrain/Ground/1_2.png"));
-	texture_setup_blocks.push_back(row);
-	row.clear();
-
-	row.push_back(file_io.loadTexture(this->renderer, "Assets/Sprite/Terrain/Ground/2_0.png"));
-	row.push_back(file_io.loadTexture(this->renderer, "Assets/Sprite/Terrain/Ground/2_1.png"));
-	row.push_back(file_io.loadTexture(this->renderer, "Assets/Sprite/Terrain/Ground/2_2.png"));
-	texture_setup_blocks.push_back(row);
-	row.clear();
-
-	this->ground.push_back(Ground(0, 500 - 48, texture_setup_blocks, DiscreteDimensions{ 50, 2 }));
-
-	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER <---------------------------------------------
+	
+	this->grounds = file_io.loadGrounds(this->renderer, this->level_config_paths[this->current_level]);
+	this->platforms = file_io.loadPlatforms(this->renderer, this->level_config_paths[this->current_level]);
 
 	/*
 	NOTE:
@@ -316,9 +295,13 @@ void Game::updateRenderCoordinates() {
 	*/
 	this->player.setRenderCoordinates(this->camera.x, this->camera.y);
 
-	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER --------------------------------------------->
-	this->ground[0].setRenderCoordinates(this->camera.x, this->camera.y);
-	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER <---------------------------------------------
+	for (int index = 0; index < this->grounds.size(); index++) {
+		this->grounds[index].setRenderCoordinates(this->camera.x, this->camera.y);
+	}
+
+	for (int index = 0; index < this->platforms.size(); index++) {
+		this->platforms[index].setRenderCoordinates(this->camera.x, this->camera.y);
+	}
 
 	/*
 	NOTE:
@@ -336,10 +319,13 @@ void Game::update() {
 	*/
 	this->updateRenderCoordinates();
 
-	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER --------------------------------------------->
-	this->player.collide(ground);
-	Collision temp = this->player.getCollisionDirections();
-	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER <---------------------------------------------
+	/*
+	NOTE:
+		- We must reset all collision directions for the player first.
+	*/
+	this->player.setCollision(Collision());
+	this->player.collide(this->platforms);
+	this->player.collide(this->grounds);
 
 	this->player.update();
 }
@@ -362,9 +348,12 @@ void Game::render() {
 		the player's character will be on top of all the
 		other textures.
 	*/
-	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER --------------------------------------------->
-	this->ground[0].render(this->renderer);
-	// NON-OFFICIAL CODE - DELETE OR MODIFY LATER <---------------------------------------------
+	for (int index = 0; index < this->grounds.size(); index++) {
+		this->grounds[index].render(this->renderer);
+	}
+	for (int index = 0; index < this->platforms.size(); index++) {
+		this->platforms[index].render(this->renderer);
+	}
 
 	this->player.render(this->renderer);
 
