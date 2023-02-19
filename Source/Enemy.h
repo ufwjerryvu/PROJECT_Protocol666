@@ -1,3 +1,8 @@
+/*
+@ COLLABORATORS: Khanh Nguyen
+@ CLASS DESIGNERS: Khanh Nguyen
+*/
+
 #pragma once
 
 #include "Character.h"
