@@ -5,6 +5,10 @@
 
 #pragma once
 
+#include "Sprite.h"
+
+#include "Character.h"
+#include "Player.h"
 #include "Enemy.h"
 
 class MeleeGoon : public Enemy {
