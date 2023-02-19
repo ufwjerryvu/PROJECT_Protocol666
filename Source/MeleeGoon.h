@@ -16,6 +16,10 @@ public:
 	/*
 	SECTION 1: CONSTRUCTORS AND DESTRUCTORS
 	*/
+	MeleeGoon();
+	MeleeGoon(string name, Movement movement_logic, Damage damage_dealt, int x, int y, Animation animation);
+	~MeleeGoon();
+
 	/*
 	SECTION 2A: SETTERS
 	*/
@@ -32,6 +36,17 @@ public:
 /*
 SECTION 1: CONSTRUCTORS AND DESTRUCTORS
 */
+MeleeGoon::MeleeGoon() : Enemy(){}
+
+MeleeGoon::MeleeGoon(string name, Movement movement_logic, Damage damage_dealt, int x, int y, Animation animation) : Enemy(name, movement_logic, damage_dealt, x, y, animation) {};
+
+MeleeGoon::~MeleeGoon() {
+/*
+NOTE:
+	- Empty for now
+*/
+}
+
 /*
 SECTION 2A: SETTERS
 */
