@@ -1,13 +1,42 @@
+/*
+@ COLLABORATORS: Khanh Nguyen
+@ CLASS DESIGNERS: Khanh Nguyen
+*/
+
 #pragma once
 
 #include "Enemy.h"
 
 class MeleeGoon : public Enemy {
 public:
+	/*
+	SECTION 1: CONSTRUCTORS AND DESTRUCTORS
+	*/
+	/*
+	SECTION 2A: SETTERS
+	*/
+	/*
+	SECTION 2B: GETTERS	
+	*/
+	/*
+	SECTION 3: OTHER METHODS
+	*/
 	void attack();
 	void detectPlayer(Player& arg);
 };
 
+/*
+SECTION 1: CONSTRUCTORS AND DESTRUCTORS
+*/
+/*
+SECTION 2A: SETTERS
+*/
+/*
+SECTION 2B: GETTERS	
+*/
+/*
+SECTION 3: OTHER METHODS
+*/
 void MeleeGoon::attack(){
 	
 }
