@@ -35,20 +35,20 @@ struct Animation {
 };
 
 struct Damage {
-	int collision;
-	int attack;
-	int self_destruct;
+	int collision = 0;
+	int attack = 0;
+	int self_destruct = 0;
 };
 
 struct Movement {
-	int spawn_x;
-	int spawn_y;
+	int spawn_x = 0;
+	int spawn_y = 0;
 
-	int x_max_displacement;
-	int y_max_displacement;
+	int x_max_displacement = 0;
+	int y_max_displacement = 0;
 
-	int x_direction_velocity;
-	int y_direction_velocity;
+	int x_direction_velocity = 0;
+	int y_direction_velocity = 0;
 };
 
 class Sprite {
@@ -110,6 +110,7 @@ public:
 	/*
 	SECTION 3: OTHER METHODS
 	*/
+	bool checkCollision(Sprite& arg);
 	bool render(SDL_Renderer* renderer, bool camera_follow);
 };
 
@@ -201,6 +202,7 @@ bool Sprite::setX(int x) {
 
 	return success;
 }
+
 bool Sprite::setY(int y) {
 	bool success = true;
 
@@ -269,6 +271,12 @@ bool Sprite::setWidth(int width) {
 		return success;
 	}
 
+	/*
+	NOTE:
+		- This function is when we want to manually set the width and
+		not have the width depend on the texture. Some Sprite objects 
+		are made up of multiple Sprite objects and not just one texture.
+	*/
 	this->width = width;
 	this->viewport.w = width;
 
@@ -285,6 +293,11 @@ bool Sprite::setHeight(int height) {
 		return success;
 	}
 
+	/*
+	NOTE:
+		- Similarly, this function is when we want to manually set the height and
+		not have the height depend on the texture. 
+	*/
 	this->height = height;
 	this->viewport.h = height;
 
@@ -354,6 +367,11 @@ bool Sprite::loadLevelWidth(int level_width) {
 		return success;
 	}
 
+	/*
+	NOTE:
+		- Some objects might need to know the size of the current level
+		to do certain bound-checking.
+	*/
 	this->level_width = level_width;
 
 	return success;
@@ -369,6 +387,11 @@ bool Sprite::loadLevelHeight(int level_height) {
 		return success;
 	}
 
+	/*
+	NOTE:
+		- Some objects might need to know the size of the current level
+		to do certain bound-checking.
+	*/
 	this->level_height = level_height;
 
 	return success;
@@ -395,6 +418,27 @@ int Sprite::getLevelHeight() { return this->level_height; }
 /*
 SECTION 3: OTHER METHODS
 */
+bool Sprite::checkCollision(Sprite& arg) {
+	bool has_collided = false;
+	/*
+	NOTE:
+		- The if statement below checks for non-collision.
+		Kudos to An B Luu for doing things differently.
+		*That was not a compliment*. Man's mad.
+
+		- I also fixed up the code to make it less redundant.
+		The code is now a quarter of what it was.
+	*/
+
+	if (this->getLeftBound() > arg.getRightBound() || this->getRightBound() < arg.getLeftBound()
+		|| this->getTopBound() > arg.getBottomBound() || this->getBottomBound() < arg.getTopBound()) {
+		return has_collided = false;
+	}
+	else {
+		return has_collided = true;
+	}
+}
+
 bool Sprite::render(SDL_Renderer* renderer, bool camera_follow = true) {
 	bool success = true;
 
