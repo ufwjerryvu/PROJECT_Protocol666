@@ -1,5 +1,5 @@
 <row>
-Assets/Sprite/Terrain/Platform/SinglePlatform/0_0.png
-Assets/Sprite/Terrain/Platform/SinglePlatform/0_1.png
-Assets/Sprite/Terrain/Platform/SinglePlatform/0_2.png
+Assets/Sprite/Terrain/Platform/HalfSinglePlatform/0_0.png
+Assets/Sprite/Terrain/Platform/HalfSinglePlatform/0_1.png
+Assets/Sprite/Terrain/Platform/HalfSinglePlatform/0_2.png
 </row>
