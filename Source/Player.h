@@ -8,12 +8,15 @@
 #include "LIBDECLARATIONS.h"
 
 #include "Sprite.h"
+
 #include "Character.h"
 
 #include "Terrain.h"
 #include "Ground.h"
 #include "Platform.h"
 #include "SinglePlatform.h"
+
+#include "Projectile.h"
 
 class Player : public Character{
 private:

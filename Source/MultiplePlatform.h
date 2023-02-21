@@ -8,6 +8,7 @@
 #include "LIBDECLARATIONS.h"
 
 #include "Sprite.h"
+
 #include "Terrain.h"
 #include "Platform.h"
 
@@ -264,7 +265,6 @@ bool MultiplePlatform::setAssembledTexture() {
 
 	return success;
 }
-
 
 /*
 SECTION 2B: GETTERS

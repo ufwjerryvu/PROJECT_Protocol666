@@ -8,6 +8,7 @@
 #include "LIBDECLARATIONS.h"
 
 #include "Sprite.h"
+
 #include "Terrain.h"
 #include "Platform.h"
 

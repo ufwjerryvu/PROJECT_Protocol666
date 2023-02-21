@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include "LIBDECLARATIONS.h"
+
 #include "Sprite.h"
 
 #include "Character.h"
@@ -31,7 +33,7 @@ public:
 	SECTION 1: CONSTRUCTOR AND DESTRUCTORS
 	*/
 	Enemy();
-	Enemy(string name, Movement movement_logic, Damage damage_dealt, int x, int y, Animation animation);
+	Enemy(int x, int y, Animation animation, string name, Movement movement_logic, Damage damage_dealt);
 	~Enemy();
 
 	/*
@@ -40,6 +42,7 @@ public:
 	bool setName(string name);
 	bool setMovementLogic(Movement movement_logic);
 	bool setDamageDealt(Damage damage_dealt);
+	bool setAttackDamage(int attack_damage);
 
 	/*
 	SECTION 2B: GETTERS
@@ -47,9 +50,10 @@ public:
 	string getName();
 	Movement getMovementLogic();
 	Damage getDamageDealt();
+	int getAttackDamage();
 
 	/*
-	SECTION 3: OTHER FUNCTIONS
+	SECTION 3: OTHER METHODS
 	*/
 	void run();
 	void jump();
@@ -82,7 +86,7 @@ Enemy::Enemy() : Character() {
 		default Enemy coordinates.
 	*/
 	
-	this->setName("-Default-");
+	this->setName("Default");
 	
 	Movement default_logic = {0, 0, 0, 0, 0, 0};
 
@@ -93,7 +97,8 @@ Enemy::Enemy() : Character() {
 	this->setDamageDealt(default_damage);
 };
 
-Enemy::Enemy(string name, Movement movement_logic, Damage damage_dealt, int x, int y, Animation animation) : Character(x, y, animation) {
+Enemy::Enemy(int x, int y, Animation animation, string name, Movement movement_logic, Damage damage_dealt)
+	: Character(x, y, animation) {
 	this->setName(name);
 	this->setMovementLogic(movement_logic);
 	this->setDamageDealt(damage_dealt);
@@ -134,6 +139,17 @@ bool Enemy::setDamageDealt(Damage damage_dealt) {
 	return success;
 }
 
+bool Enemy::setAttackDamage(int attack_damage) {
+	bool success = true;
+
+	Damage temp = this->getDamageDealt();
+	temp.attack = attack_damage;
+
+	this->setDamageDealt(temp);
+
+	return success;
+}
+
 /*
 SECTION 2B: GETTERS
 */
@@ -141,9 +157,10 @@ SECTION 2B: GETTERS
 string Enemy::getName() { return this->name; };
 Movement Enemy::getMovementLogic() { return this->movement_logic; };
 Damage Enemy::getDamageDealt() { return this->damage_dealt; };
+int Enemy::getAttackDamage() { return this->getDamageDealt().attack; }
 
 /*
-SECTION 3: OTHER FUNCTIONS
+SECTION 3: OTHER METHODS
 */
 
 void Enemy::run() {
@@ -239,7 +256,6 @@ void Enemy::run() {
 		new_logic.x_max_displacement = this->getMovementLogic().x_max_displacement;
 		new_logic.y_direction_velocity = this->getMovementLogic().y_direction_velocity;
 		new_logic.y_max_displacement = this->getMovementLogic().y_max_displacement;
-
 
 		this->setMovementLogic(new_logic);
 	}

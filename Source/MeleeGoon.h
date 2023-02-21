@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include "LIBDECLARATIONS.h"
+
 #include "Sprite.h"
 
 #include "Character.h"
@@ -16,6 +18,10 @@ public:
 	/*
 	SECTION 1: CONSTRUCTORS AND DESTRUCTORS
 	*/
+	MeleeGoon();
+	MeleeGoon(int x, int y, Animation animation, string name, Movement movement_logic, Damage damage_dealt);
+	~MeleeGoon();
+
 	/*
 	SECTION 2A: SETTERS
 	*/
@@ -32,6 +38,28 @@ public:
 /*
 SECTION 1: CONSTRUCTORS AND DESTRUCTORS
 */
+MeleeGoon::MeleeGoon() : Enemy(){
+	/*
+	NOTE:
+		- Do not use this constructor if not needed.
+	*/
+}
+
+MeleeGoon::MeleeGoon(int x, int y, Animation animation, string name, Movement movement_logic, Damage damage_dealt) 
+	: Enemy(x, y, animation, name, movement_logic, damage_dealt) {
+	/*
+	NOTE:
+		- This is the preferred constructor.
+	*/
+};
+
+MeleeGoon::~MeleeGoon() {
+	/*
+	NOTE:
+		- Empty for now
+	*/
+}
+
 /*
 SECTION 2A: SETTERS
 */
@@ -41,9 +69,6 @@ SECTION 2B: GETTERS
 /*
 SECTION 3: OTHER METHODS
 */
-void MeleeGoon::attack(){
-	
-}
 
 void MeleeGoon::detectPlayer(Player& arg) {
 	const int DETECTION_RANGE = 300;
@@ -85,4 +110,11 @@ void MeleeGoon::detectPlayer(Player& arg) {
 			}
 		}
 	}
+}
+
+void MeleeGoon::attack() {
+	/*
+	NOTE:	
+		- Empty for now.
+	*/
 }

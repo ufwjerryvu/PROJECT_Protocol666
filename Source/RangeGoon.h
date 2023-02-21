@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include "LIBDECLARATIONS.h"
+
 #include "Sprite.h"
 
 #include "Character.h"
@@ -16,6 +18,9 @@ public:
 	/*
 	SECTION 1: CONSTRUCTORS AND DESTRUCTORS
 	*/
+	RangeGoon();
+	RangeGoon(int x, int y, Animation animation, string name, Movement movement_logic, Damage damage_dealt);
+	~RangeGoon();
 	/*
 	SECTION 2A: SETTERS
 	*/
@@ -32,6 +37,28 @@ public:
 /*
 SECTION 1: CONSTRUCTORS AND DESTRUCTORS
 */
+RangeGoon::RangeGoon() : Enemy() {
+	/*
+	NOTE:
+		- Do not use this constructor if not needed.
+	*/
+}
+
+RangeGoon::RangeGoon(int x, int y, Animation animation, string name, Movement movement_logic, Damage damage_dealt) 
+	: Enemy(x, y, animation, name, movement_logic, damage_dealt) {
+	/*
+	NOTE:
+		- This is the preferred constructor.
+	*/
+};
+
+RangeGoon::~RangeGoon() {
+	/*
+	NOTE:
+		- Empty for now
+	*/
+}
+
 /*
 SECTION 2A: SETTERS
 */

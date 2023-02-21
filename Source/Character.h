@@ -100,8 +100,6 @@ public:
     void fall();
     virtual void move() = 0;
 
-    bool checkCollision(Sprite& arg);
-
     virtual void setNextFrame() = 0;
     virtual void update() = 0;
 };
@@ -258,6 +256,60 @@ bool Character::setAnimation(Animation animation) {
         }
     }
 
+    /*
+    NOTE:
+        - We add this layer of security to check if the vector
+        for jumping frames is empty.
+    */
+
+    if (animation.frames_jumping.size() <= 0) {
+        cerr << "Error from Character::setAnimation(): no elements "
+            << "are present in the frames_jumping vector." << endl;
+        success = false;
+        return success;
+    }
+
+    /*
+    NOTE:
+        - Again, if any of the textures in the vector is
+        NULL then the method returns false.
+    */
+    for (int index = 0; index < this->animation.frames_jumping.size(); index++) {
+        if (this->animation.frames_jumping[index] == NULL) {
+            cerr << "Error from Character::setAnimation(): a null "
+                << "pointer has been detected in the frames_jumping vector." << endl;
+            success = false;
+            return success;
+        }
+    }
+
+    /*
+    NOTE:
+        - We add this layer of security to check if the vector
+        for falling frames is empty.
+    */
+
+    if (animation.frames_falling.size() <= 0) {
+        cerr << "Error from Character::setAnimation(): no elements "
+            << "are present in the frames_falling vector." << endl;
+        success = false;
+        return success;
+    }
+
+    /*
+    NOTE:
+        - Again, if any of the textures in the vector is
+        NULL then the method returns false.
+    */
+    for (int index = 0; index < this->animation.frames_falling.size(); index++) {
+        if (this->animation.frames_falling[index] == NULL) {
+            cerr << "Error from Character::setAnimation(): a null "
+                << "pointer has been detected in the frames_falling vector." << endl;
+            success = false;
+            return success;
+        }
+    }
+
     this->animation = animation;
 
     return success;
@@ -366,8 +418,8 @@ Animation Character::getAnimation() { return this->animation; }
 Collision Character::getCollisionDirections() { return this->collided; }
 Direction Character::getDirectionFacing() { return this->facing_direction; }
 bool Character::isRunning() { return this->is_running; }
-bool Character::isFalling() { return this->is_falling; }
 bool Character::isJumping() { return this->is_jumping; }
+bool Character::isFalling() { return this->is_falling; }
 bool Character::isAttacking() { return this->is_attacking; }
 int Character::getRunSpeed() { return this->run_speed; }
 int Character::getGravitationalAcceleration() { return this->gravitational_acceleration; }
@@ -457,26 +509,5 @@ void Character::fall() {
             this->setVerticalUpdateInterval(this->getVerticalUpdateInterval() + 1);
             this->setY(this->getY() + this->getVerticalVelocity());
         }
-    }
-}
-
-bool Character::checkCollision(Sprite& arg) {
-    bool has_collided = false;
-    /*
-    NOTE:
-        - The if statement below checks for non-collision.
-        Kudos to An B Luu for doing things differently.
-        *That was not a compliment*. Man's mad.
-        
-        - I also fixed up the code to make it less redundant.
-        The code is now a quarter of what it was.
-    */
-
-    if (this->getLeftBound() > arg.getRightBound() || this->getRightBound() < arg.getLeftBound()
-        || this->getTopBound() > arg.getBottomBound() || this->getBottomBound() < arg.getTopBound()) {
-        return has_collided = false;
-    }
-    else {
-        return has_collided = true;
     }
 }
