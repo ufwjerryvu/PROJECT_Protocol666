@@ -257,7 +257,6 @@ void Enemy::run() {
 		new_logic.y_direction_velocity = this->getMovementLogic().y_direction_velocity;
 		new_logic.y_max_displacement = this->getMovementLogic().y_max_displacement;
 
-
 		this->setMovementLogic(new_logic);
 	}
 }
