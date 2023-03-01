@@ -72,6 +72,7 @@ public:
 	*/
 	void updateCamera();
 	void updateRenderCoordinates();
+	void updateCollisions();
 	void update();
 	void render();
 };
@@ -310,23 +311,37 @@ void Game::updateRenderCoordinates() {
 	*/
 }
 
+void Game::updateCollisions() {
+	/*
+	NOTE:
+		- We must clear all collision directions 
+		for all objects that detect collision 
+		directions first.
+	*/
+	this->player.setCollision(Collision());
+
+	/*
+	NOTE:
+		- Then we call all the objects that have a collide() 
+		function.
+	*/
+	this->player.collide(this->platforms);
+	this->player.collide(this->grounds);
+}
+
 void Game::update() {
 	/*
 	NOTE:
-		- All object updates must go first (including the player's).
-		But the player's update must be placed last in the sequence
-		of updates. I don't know why yet but this just feels right.
+		- Updating the render coordinates to make sure
+		the objects are properly in the camera.
 	*/
 	this->updateRenderCoordinates();
+	this->updateCollisions();
 
 	/*
 	NOTE:
-		- We must reset all collision directions for the player first.
+		- Updating the status of all the objects.
 	*/
-	this->player.setCollision(Collision());
-	this->player.collide(this->platforms);
-	this->player.collide(this->grounds);
-
 	this->player.update();
 }
 
