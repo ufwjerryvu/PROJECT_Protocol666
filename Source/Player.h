@@ -17,6 +17,8 @@
 #include "SinglePlatform.h"
 
 #include "Projectile.h"
+#include "LaserBeam.h"
+#include "FiftyCalibre.h"
 
 class Player : public Character{
 private:

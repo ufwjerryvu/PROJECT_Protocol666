@@ -55,6 +55,12 @@ public:
 	/*
 	SECTION 3: OTHER METHODS
 	*/
+	void collide(vector<Ground>& args);
+	void collide(vector<Platform>& args);
+
+	bool atPlatformBoundary(vector<Platform>& platforms);
+	bool atGroundBoundary(vector<Ground>& grounds);
+
 	void run();
 	void jump();
 	void move();
@@ -102,6 +108,14 @@ Enemy::Enemy(int x, int y, Animation animation, string name, Movement movement_l
 	this->setName(name);
 	this->setMovementLogic(movement_logic);
 	this->setDamageDealt(damage_dealt);
+
+	/* 
+	NOTE: 
+		- By default, Enemy needs to be facing the right as 
+		they spawn, to ensure the consistency of their movement.
+	*/
+
+	this->setDirectionFacing(Direction::RIGHT);
 };
 
 Enemy::~Enemy() {
@@ -126,7 +140,7 @@ bool Enemy::setName(string name) {
 bool Enemy::setMovementLogic(Movement movement_logic) {
 	bool success = true;
 
-	this->movement_logic = { movement_logic.spawn_x, movement_logic.y_direction_velocity, movement_logic.x_max_displacement, movement_logic.y_max_displacement };
+	this->movement_logic = { movement_logic.spawn_x, movement_logic.spawn_y, movement_logic.x_max_displacement, movement_logic.y_max_displacement, movement_logic.x_direction_velocity, movement_logic.y_direction_velocity };
 
 	return success;
 }
@@ -163,92 +177,275 @@ int Enemy::getAttackDamage() { return this->getDamageDealt().attack; }
 SECTION 3: OTHER METHODS
 */
 
+void Enemy::collide(vector<Ground>& args) {
+	/*
+	NOTE:
+		- Code is adjusted to suit Enemy from Player.h, 
+		developed by Jerry Vu.
+
+		- Storing the current collision status of
+		the Enemy into a temporary structure.
+	*/
+
+	Collision temp = this->getCollisionDirections();
+	
+	/*
+	NOTE:
+		- Looping through the blocks of Ground and
+		setting the collision flags to whichever direction
+		that collision is detected in.
+	*/
+
+	for (int index = 0; index < args.size(); index++) {
+		if (this->checkCollision(args[index])) {
+			if (this->getBottomBound() >= args[index].getTopBound()
+				&& this->getBottomBound() <= args[index].getBottomBound()) {
+
+				const int PIXEL_ERROR_MARGIN = 3;
+				const int EXTRA_DETECTION_MARGIN = 12;
+
+				if (this->getBottomBound() <= args[index].getTopBound()
+					+ PIXEL_ERROR_MARGIN + EXTRA_DETECTION_MARGIN) {
+					temp.bottom = true;
+					/*
+					NOTE:
+						- This is to make sure that the player
+						stays on top of the Ground object(s).
+					*/
+
+					this->setY(args[index].getY() - this->getHeight() + PIXEL_ERROR_MARGIN);
+				}
+			}
+		}
+		/*
+		NOTE:
+			- Finally setting the collision directions
+			for the Enemy.
+		*/
+
+		this->setCollision(temp);
+	}
+}
+
+void Enemy::collide(vector<Platform>& args) {
+	/*
+	NOTE:
+		- Having a temporary structure storing the current
+		collision status of the Enemy.
+	*/
+
+	Collision temp = this->getCollisionDirections();
+
+	/*
+	NOTE:
+		- Looping through the blocks of Platform and setting only
+		the collision flag for the bottom bound of the Enemy
+		since general enemies, such as Goons, will not be jumping
+		to detect collision in any other direction.
+	*/
+	for (int index = 0; index < args.size(); index++) {
+		if (this->checkCollision(args[index])) {
+			if (this->getBottomBound() >= args[index].getTopBound()
+				&& this->getBottomBound() <= args[index].getBottomBound()) {
+
+				/*
+				NOTE:
+					- Adding the extra collision detection margin is sort
+					of a band-aid solution but this code is to prevent the
+					player from catapulting upwards jumping halfway through
+					the platform.
+				*/
+				const int PIXEL_ERROR_MARGIN = 3;
+				const int EXTRA_DETECTION_MARGIN = 12;
+				if (this->getBottomBound() <= args[index].getTopBound()
+					+ PIXEL_ERROR_MARGIN + EXTRA_DETECTION_MARGIN) {
+					temp.bottom = true;
+				}
+
+				/*
+				NOTE:
+					- This is to make sure that the player
+					stays on top of the platform.
+				*/
+				if (!this->isJumping() && temp.bottom) {
+					this->setY(args[index].getY() - this->getHeight() + PIXEL_ERROR_MARGIN);
+				}
+			}
+		}
+
+		/*
+		NOTE:
+			- Finally setting the collision directions
+			for the Enemy.
+		*/
+		this->setCollision(temp);
+	}
+}
+
+bool Enemy::atPlatformBoundary(vector<Platform>& platforms) {
+	/*
+	NOTE:
+		- at_platform_edge is a boolean indicating whether 
+		the Enemy is near the edge of the Platform, where it 
+		would fall if it continues walking in its current direction.
+
+		- potential_platform checks for all platforms that has
+		the current y-level as the Enemy.
+
+		- current_platform_found and index_of_current_platform is 
+		used to traverse through the platforms vector and identify 
+		which specific platform is the Enemy currently on to 
+		detect its boundary (left and right bound).
+	*/
+	
+	bool at_platform_edge = false;
+
+	vector<int> potential_platforms;
+	bool current_platform_found = false;
+	int index_of_current_platform;
+
+	for (int i = 0; i < platforms.size(); i++) {
+		if (platforms[i].getTopBound() <= this->getBottomBound()) {
+			/*
+			NOTE:
+				- This loop is inefficient as it detects any platform
+				that is under the y-level of the current Enemy, however
+				this is to prevent the Enemy to continuously walk in one
+				direction mid-air, passing another platform.
+			*/
+
+			potential_platforms.push_back(i);
+		}
+	}
+	
+	for (int j = 0; j < potential_platforms.size(); j++) {
+		if (this->getX() > platforms[potential_platforms[j]].getLeftBound() - this->getRunSpeed() && this->getX() < platforms[potential_platforms[j]].getRightBound() + this->getRunSpeed()) {
+			/*
+			NOTE:
+				- Checks for the left and right boundary to identify
+				which platform is the current platform that the Enemy 
+				is standing on or floating above.
+			*/
+			
+			index_of_current_platform = j;
+			current_platform_found = true;
+			break;
+		}
+	}
+	
+	/*
+	NOTE:
+		- If no platforms are identified for the Enemy, by default
+		the Enemy is not at the edge of any platform.
+	*/
+
+	if (!current_platform_found) {
+		return at_platform_edge;
+	}
+
+	/*
+	NOTE:
+		- Platforms are detected, Enemy must now check if its bounds 
+		to return whether the Enemy is at the platform's boundary.
+	*/
+
+	if (this->getRightBound() >= platforms.at(index_of_current_platform).getRightBound() || this->getLeftBound() <= platforms.at(index_of_current_platform).getLeftBound()) {
+		at_platform_edge = true;
+	}
+
+	return at_platform_edge;
+}
+
+bool Enemy::atGroundBoundary(vector<Ground>& grounds) {
+	/* 
+	NOTE:
+		- In cases of having multiple Ground in the vector,
+		this function detects its boundary and prevent the
+		Character from falling at its boundaries.
+	*/
+
+	bool at_ground_edge = false;
+
+	vector<int> potential_grounds;
+	int index_of_current_ground = 0;
+	bool current_ground_found = false;
+
+	if (this->getX() <= 0 || this->getX() >= this->getLevelWidth()) {
+		/* 
+		NOTE:
+			- First check to see if the Enemy is going out of the screen.
+		*/
+
+		at_ground_edge = true;
+		return at_ground_edge;
+	}
+
+	for (int i = 0; i < grounds.size(); i++) {
+		if (grounds[i].getTopBound() <= this->getBottomBound()) {
+			/*
+			NOTE: 
+				- Find Ground instances that are under the Enemy y-level.
+			*/
+
+			potential_grounds.push_back(i);
+		}
+	}
+
+	for (int j = 0; j < potential_grounds.size(); j++) {
+		if (this->getX() > grounds[potential_grounds[j]].getLeftBound() - this->getRunSpeed() && this->getX() < grounds[potential_grounds[j]].getRightBound() + this->getRunSpeed()) {
+			/*
+			NOTE:
+				- Find the Ground instance that has the Enemy
+				within boundary
+			*/
+
+			index_of_current_ground = j;
+			current_ground_found = true;
+			break;
+		}
+	}
+
+	if (!current_ground_found) {
+		return at_ground_edge;
+	}
+
+	if (this->getX() >= grounds.at(index_of_current_ground).getRightBound() || this->getX() <= grounds.at(index_of_current_ground).getLeftBound()) {
+		/*
+		NOTE:
+			- Check if the Enemy is at the Ground instance's boundary
+		*/
+		at_ground_edge = true;
+	}
+
+	return at_ground_edge;
+}
+
 void Enemy::run() {
 	const int PIXEL_ERROR = 4;
 
-	/* 
+	/*
 	NOTE:
 		- As Enemy spawns, it has the max x-displacement to the right,
 		and by default it will be facing towards the Right.
-		
-		- Enemy keeps running within their boundary if Enemy is 
+
+		- Enemy keeps running within their boundary if Enemy is
 		within their movement boundary
-		
-		- Else setX() back into boundary if Player knock Enemy out of 
+
+		- Else setX() back into boundary if Player knock Enemy out of
 		movement zone.
 
 		- The first if-statement checks whether the Enemy is within
 		their default spawn_x coordinate and x_max_displacement boundary
 	*/
 
-	if (this->getX() > this->getMovementLogic().spawn_x && this->getX() < this->getMovementLogic().spawn_x + this->getMovementLogic().x_max_displacement) {
+	if (this->getX() < this->getMovementLogic().spawn_x - PIXEL_ERROR || this->getX() > this->getMovementLogic().spawn_x + this->getMovementLogic().x_max_displacement + PIXEL_ERROR) {
 		/*
 			NOTE:
 				- Check for Direction facing to continue its movement in that direction.
 
 				- While in that running in that direction, if there is an obstacle, stops running and returns.
-
-				- NEEDS TO IMPLEMENT: Prevention of Enemy falling into a hole/gap
 		*/
-		
-		if (this->getDirectionFacing() == Direction::RIGHT && this->getX() + this->getRunSpeed() < this->getMovementLogic().spawn_x + this->getMovementLogic().x_max_displacement) {
-			
 
-			if (!this->checkCollision(*this)) {
-				this->setX(this->getX() + this->getMovementLogic().x_direction_velocity);
-				return;
-			}
-			else {
-				return;
-			}
-		}
-
-		else if (this->getDirectionFacing() == Direction::LEFT && this->getX() - this->getRunSpeed() > this->getMovementLogic().spawn_x) {
-			if (!this->checkCollision(*this)) {
-				this->setX(this->getX() - this->getMovementLogic().x_direction_velocity);
-				return;
-			}
-			else {
-				return;
-			}
-		}
-		
-		else if ((this->getDirectionFacing() == Direction::RIGHT && this->getX() + this->getRunSpeed() <= this->getMovementLogic().spawn_x + this->getMovementLogic().x_max_displacement + 4 && this->getX() + this->getRunSpeed() >= this->getMovementLogic().spawn_x - this->getMovementLogic().x_max_displacement - 4)) {
-
-			this->setRunningState(false);
-			/*
-			NOTE:
-				- The following code that sets the x-coordinate to ensure 
-				if the Enemy crosses or comes close to its boundary, it is 
-				set exactly upon the boundary, facing inwards of the boundary
-				towards the other end.
-			*/
-
-			this->setX(this->getMovementLogic().spawn_x + this->getMovementLogic().x_max_displacement);
-			this->setDirectionFacing(Direction::LEFT);
-			return;
-		}
-
-		else if ((this->getDirectionFacing() == Direction::LEFT && this->getX() - this->getRunSpeed() >= this->getMovementLogic().spawn_x - PIXEL_ERROR && this->getX() - this->getRunSpeed() <= this->getMovementLogic().spawn_x + PIXEL_ERROR)) {
-			this->setRunningState(false);
-			/*
-			NOTE:
-				- The following code that sets the x-coordinate is basically saying
-				that we don't want the Enemy leaving its spawn_x boundary.
-			*/
-			this->setX(this->getMovementLogic().spawn_x);
-			this->setDirectionFacing(Direction::RIGHT);
-			return;
-		}
-	}
-	else {
-		/*
-		NOTE:
-			- This else-condition sees whether the Enemy has been knocked 
-			back by the Player or Obstacle, hence it sets the current position
-			of the Enemy as its new spawn_x.
-		*/
-		
 		Movement new_logic;
 		new_logic.spawn_x = this->getX();
 		new_logic.spawn_y = this->getY();
@@ -259,70 +456,65 @@ void Enemy::run() {
 
 		this->setMovementLogic(new_logic);
 	}
-}
-
-void Enemy::jump() {
-	const int FRAME_UPDATE_INTERVAL = 3;
-
-	if (this->isJumping()) {
+	
+	else if (this->getDirectionFacing() == Direction::RIGHT && this->getX() + this->getRunSpeed() < this->getMovementLogic().spawn_x + this->getMovementLogic().x_max_displacement) {
 		/*
 		NOTE:
-			- If the character is jumping mid air, jump() continues to increase the y
-			coordinate of this player.
+			- Moving right, not at the right boundary for movement logic
 		*/
 
-		if (this->getVerticalVelocity() == 0) {
-			/*
-			NOTE:
-				- Jump is at its highest point, calls off the jump() function
-			*/
-			this->setJumpingState(false);
-			this->setFallingState(true);
-			this->setVerticalUpdateInterval(0);
-			this->setVerticalVelocity(0);
-		}
-
-		else if (this->getVerticalVelocity() > 0) {
-			/*
-			NOTE:
-				- In a static jump, the jump continues until max jump height is reached
-
-				- During this jump, gravitational acceleration is in effect, slowing
-				the Enemy's jump/vertical velocity nearing the max jump height.
-
-				- A frame update interval is added to demonstrate the deceleration of
-				the vertical velocity as vertical velocity can only be change once
-				a frame update interval is met, in this case '2'.
-
-			*/
-
-			if (this->getVerticalUpdateInterval() == FRAME_UPDATE_INTERVAL) {
-				this->setVerticalVelocity(this->getVerticalVelocity() - this->getGravitationalAcceleration());
-				this->setVerticalUpdateInterval(0);
-			}
-
-			else {
-				this->setVerticalUpdateInterval(this->getVerticalUpdateInterval() + 1);
-				this->setY(this->getY() - this->getVerticalVelocity());
-			}
-		}
+		this->setRunningState(true);
+		this->setX(this->getX() + this->getRunSpeed());
+		return;
 	}
 
-	/*
-	NOTE:
-		- Condition checks collision of a vertical wall that 
-		requires Enemy to Jump.
+	else if (this->getDirectionFacing() == Direction::LEFT && this->getX() - this->getRunSpeed() > this->getMovementLogic().spawn_x) {
+		/*
+		NOTE:
+			- Moving left, not at the left boundary for movement logic
+		*/
+		this->setRunningState(true);
+		this->setX(this->getX() - this->getRunSpeed());
+		return;
+	}
 
-	*/
-	else if (!this->isJumping() && this->checkCollision(*this) && this->isRunning()) {
-		this->setJumpingState(true);
+	else if (this->getDirectionFacing() == Direction::RIGHT && this->getX() + this->getRunSpeed() >= this->getMovementLogic().spawn_x + this->getMovementLogic().x_max_displacement) {
 		this->setRunningState(false);
-		this->setVerticalVelocity(this->getInitialJumpVelocity());
-		this->setVerticalUpdateInterval(0);
+		/*
+		NOTE:
+			- The following code that sets the x-coordinate to ensure
+			if the Enemy crosses or comes close to its boundary, its position, 
+			direction facing is set inwards into the boundary, towards 
+			the other end.
+		*/
+
+		this->setX(this->getMovementLogic().spawn_x + this->getMovementLogic().x_max_displacement - PIXEL_ERROR);
+		this->setDirectionFacing(Direction::LEFT);
+		return;
+	}
+
+	else if (this->getDirectionFacing() == Direction::LEFT && this->getX() - this->getRunSpeed() <= this->getMovementLogic().spawn_x) {
+		this->setRunningState(false);
+		/*
+		NOTE:
+			- The following code that sets the x-coordinate is basically saying
+			that we don't want the Enemy leaving its spawn_x boundary.
+		*/
+
+		this->setX(this->getMovementLogic().spawn_x + PIXEL_ERROR);
+		this->setDirectionFacing(Direction::RIGHT);
+		return;
 	}
 }
 
+void Enemy::jump() {}
+
 void Enemy::move() {
-	this->run();
-	this->jump();
+	if (!this->isJumping()) {
+		this->fall();
+	}
+
+	if (!this->isAttacking()) {
+		this->run();
+	}
 }
