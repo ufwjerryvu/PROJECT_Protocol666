@@ -31,12 +31,12 @@ public:
 	/*
 	SECTION 3: OTHER METHODS
 	*/
-	void attack();
 	void detectPlayer(Player& arg);
+	void attack();
 
 	void setNextFrame();
-	void render(SDL_Renderer* renderer);
 	void update();
+	void render(SDL_Renderer* renderer);
 };
 
 /*
@@ -75,13 +75,6 @@ SECTION 2B: GETTERS
 /*
 SECTION 3: OTHER METHODS
 */
-
-void MeleeGoon::attack() {
-	/*
-	NOTE:
-		- Empty for now.
-	*/
-}
 
 void MeleeGoon::detectPlayer(Player& arg) {
 	const int DETECTION_RANGE = 300;
@@ -161,6 +154,13 @@ void MeleeGoon::detectPlayer(Player& arg) {
 	else {
 		this->setAttackingState(false);
 	}
+}
+
+void MeleeGoon::attack() {
+	/*
+	NOTE:
+		- Empty for now.
+	*/
 }
 
 void MeleeGoon::setNextFrame() {
@@ -315,6 +315,11 @@ void MeleeGoon::setNextFrame() {
 	}
 }
 
+void MeleeGoon::update() {
+	this->move();
+	this->setNextFrame();
+}
+
 void MeleeGoon::render(SDL_Renderer* renderer) {
 	/*
 	NOTE:
@@ -345,9 +350,4 @@ void MeleeGoon::render(SDL_Renderer* renderer) {
 		|| this->getDirectionFacing() == Direction::NONE) {
 		SDL_RenderCopy(renderer, this->getTexture(), NULL, &viewport);
 	}
-}
-
-void MeleeGoon::update() {
-	this->move();
-	this->setNextFrame();
 }

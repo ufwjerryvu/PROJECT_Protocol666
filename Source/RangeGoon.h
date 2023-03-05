@@ -30,8 +30,8 @@ public:
 	/*
 	SECTION 3: OTHER METHODS
 	*/
-	void attack();
 	void detectPlayer(Player& arg);
+	void attack();
 };
 
 /*
@@ -68,9 +68,6 @@ SECTION 2B: GETTERS
 /*
 SECTION 3: OTHER METHODS
 */
-void RangeGoon::attack() {
-
-}
 
 void RangeGoon::detectPlayer(Player& arg) {
 	const int DETECTION_RANGE = 300;
@@ -113,4 +110,11 @@ void RangeGoon::detectPlayer(Player& arg) {
 			}
 		}
 	}
+}
+
+void RangeGoon::attack() {
+	/*
+	NOTE:
+		- Empty for now.
+	*/
 }
