@@ -193,10 +193,6 @@ bool Sprite::setX(int x) {
 		before setting the Sprite's x-coordinates to a new location.
 	*/
 
-	if (!(x >= 0 && x <= this->getLevelWidth())) {
-		cerr << "Warning from Sprite::setX(): x-coordinate is outside level bounds." << endl;
-	}
-
 	this->x = x;
 	this->viewport.x = x;
 
@@ -211,10 +207,6 @@ bool Sprite::setY(int y) {
 		- Check y-coordinate's availability in terms of height
 		before changing the current Sprite's y-coordinate.
 	*/
-
-	if (!(y >= 0 && y <= this->getLevelHeight())) {
-		cerr << "Warning from Sprite::setY(): y-coordinate is outside level bounds." << endl;
-	}
 
 	this->y = y;
 	this->viewport.y = y;
@@ -233,11 +225,6 @@ bool Sprite::setRenderX(int camera_x) {
 	bool success = true;
 	const int SCREEN_WIDTH = 900;
 
-	if (camera_x < 0) {
-		cerr << "Error from Sprite::setRenderX(): camera x-coordinate is outside level bounds." << endl;
-	}
-
-
 	this->render_x = this->getX() - camera_x;
 
 	return success;
@@ -251,10 +238,6 @@ bool Sprite::setRenderY(int camera_y) {
 
 	bool success = true;
 	const int SCREEN_HEIGHT = 500;
-
-	if (camera_y < 0) {
-		cerr << "Error from Sprite::setRenderY(): camera y-coordinate is outside level bounds." << endl;
-	}
 
 	this->render_y = this->getY() - camera_y;
 

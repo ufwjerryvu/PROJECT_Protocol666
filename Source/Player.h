@@ -24,6 +24,9 @@ class Player : public Character{
 private:
 	int current_horizontal_key;
 	bool simultaneous_horizontal_keys_pressed;
+
+	SDL_Texture* laser_beam_texture;
+	vector<LaserBeam> laser_beams;
 protected:
 	UserEvent user_actions;
 public:
@@ -37,10 +40,11 @@ public:
 	/*
 	SECTION 2A: SETTERS
 	*/
+	bool loadLaserBeamTexture(SDL_Texture* laser_beam_texture);
 	/*
 	SECTION 2B: GETTERS
 	*/
-
+	vector<LaserBeam>& getLaserBeams();
 	/*
 	SECTION 3: OTHER FUNCTIONS
 	*/
@@ -50,6 +54,8 @@ public:
 
 	void collide(vector<Ground>& args);
 	void collide(vector<Platform>& args);
+
+	void shoot();
 
 	/*
 	NOTE:
@@ -81,6 +87,8 @@ Player::Player() : Character() {
 
 	this->current_horizontal_key = 0;
 	this->simultaneous_horizontal_keys_pressed = false;
+
+	this->laser_beam_texture = NULL;
 }
 
 Player::Player(int x, int y, Animation animation, UserEvent user_actions)
@@ -99,6 +107,8 @@ Player::Player(int x, int y, Animation animation, UserEvent user_actions)
 
 	const int PIXELS_PER_FRAME = 4;
 	this->setRunSpeed(PIXELS_PER_FRAME);
+
+	this->laser_beam_texture = NULL;
 }
 
 Player::~Player() {
@@ -111,9 +121,20 @@ Player::~Player() {
 /*
 SECTION 2A: SETTERS
 */
+bool Player::loadLaserBeamTexture(SDL_Texture* laser_beam_texture) {
+	bool success = true;
+
+	this->laser_beam_texture = laser_beam_texture;
+
+	return success;
+}
+
 /*
 SECTION 2B: GETTERS
 */
+vector<LaserBeam>& Player::getLaserBeams() {
+	return this->laser_beams;
+}
 
 /*
 SECTION 3: OTHER FUNCTIONS
@@ -421,6 +442,49 @@ void Player::collide(vector<Platform>& args) {
 	}
 }
 
+void Player::shoot() {
+	/*
+	NOTE:
+		- The button that the player will be using to shoot, for now,
+		is the space button.
+	*/
+	if (this->user_actions.current_key_states[SDL_SCANCODE_SPACE]) {
+		this->setAttackingState(true);
+
+		int shooting_bound = 0;
+		if (this->getDirectionFacing() == Direction::LEFT) {
+			shooting_bound = this->getLeftBound();
+		}
+		else if (this->getDirectionFacing() == Direction::RIGHT) {
+			shooting_bound = this->getRightBound();
+		}
+
+		/*
+		NOTE:
+			- If the player is facing left then we want the projectile
+			to come out from the left bound and if the player is facing
+			right then we want the projectile to come out from the right
+			bound.
+		*/
+		const int GUN_LEVEL_CORRECTION_FACTOR = 10;
+		LaserBeam temp(shooting_bound, (this->getTopBound() + this->getBottomBound()) / 2 
+			- GUN_LEVEL_CORRECTION_FACTOR, this->laser_beam_texture, this->getDirectionFacing());
+
+		/*
+		NOTE:
+			- We also want to load the level width and height into the
+			LaserBeam elements because we want to delete the instance
+			that is colliding with the level bounds.
+		*/
+		temp.loadLevelWidth(this->getLevelWidth());
+		temp.loadLevelHeight(this->getLevelWidth());
+
+		this->laser_beams.push_back(temp);
+	}
+	else {
+		this->setAttackingState(false);
+	}
+}
 
 void Player::setNextFrame() {
 	/*
@@ -588,6 +652,7 @@ void Player::update() {
 		No idea yet.
 	*/
 	this->move();
+	this->shoot();
 
 	this->setNextFrame();
 }

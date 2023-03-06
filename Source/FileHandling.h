@@ -456,6 +456,8 @@ Player FileHandling::loadPlayer(SDL_Renderer* renderer, string level_config_path
 
 	Player ret_obj(initial_x, initial_y, animation, user_actions);
 
+	ret_obj.loadLaserBeamTexture(this->loadTexture(renderer, "Assets/Sprite/Projectile/LaserBeam/test.png"));
+
 	return ret_obj;
 }
 
