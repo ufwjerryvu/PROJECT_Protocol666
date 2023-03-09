@@ -27,6 +27,8 @@ private:
 
 	SDL_Texture* laser_beam_texture;
 	vector<LaserBeam> laser_beams;
+
+	int shooting_cooldown_count;
 protected:
 	UserEvent user_actions;
 public:
@@ -41,10 +43,12 @@ public:
 	SECTION 2A: SETTERS
 	*/
 	bool loadLaserBeamTexture(SDL_Texture* laser_beam_texture);
+	bool setShootingCooldownCount(int val);
 	/*
 	SECTION 2B: GETTERS
 	*/
 	vector<LaserBeam>& getLaserBeams();
+	int getShootingCooldownCount();
 	/*
 	SECTION 3: OTHER FUNCTIONS
 	*/
@@ -89,6 +93,8 @@ Player::Player() : Character() {
 	this->simultaneous_horizontal_keys_pressed = false;
 
 	this->laser_beam_texture = NULL;
+
+	this->setShootingCooldownCount(0);
 }
 
 Player::Player(int x, int y, Animation animation, UserEvent user_actions)
@@ -109,6 +115,8 @@ Player::Player(int x, int y, Animation animation, UserEvent user_actions)
 	this->setRunSpeed(PIXELS_PER_FRAME);
 
 	this->laser_beam_texture = NULL;
+
+	this->setShootingCooldownCount(0);
 }
 
 Player::~Player() {
@@ -129,12 +137,19 @@ bool Player::loadLaserBeamTexture(SDL_Texture* laser_beam_texture) {
 	return success;
 }
 
+bool Player::setShootingCooldownCount(int val) {
+	bool success = true;
+
+	this->shooting_cooldown_count = val;
+
+	return success;
+}
+
 /*
 SECTION 2B: GETTERS
 */
-vector<LaserBeam>& Player::getLaserBeams() {
-	return this->laser_beams;
-}
+vector<LaserBeam>& Player::getLaserBeams() { return this->laser_beams; }
+int Player::getShootingCooldownCount() { return this->shooting_cooldown_count; }
 
 /*
 SECTION 3: OTHER FUNCTIONS
@@ -445,11 +460,28 @@ void Player::collide(vector<Platform>& args) {
 void Player::shoot() {
 	/*
 	NOTE:
+		- This part of the code is to stretch out the interval
+		between every shot.
+	*/
+	const int MAXIMUM_NUMBER_OF_COOLDOWN_FRAMES = 20;
+	if (this->getShootingCooldownCount() > 0
+		&& this->getShootingCooldownCount() < MAXIMUM_NUMBER_OF_COOLDOWN_FRAMES) {
+		this->setShootingCooldownCount(this->getShootingCooldownCount() + 1);
+
+		return;
+	}
+	else if (this->getShootingCooldownCount() >= MAXIMUM_NUMBER_OF_COOLDOWN_FRAMES) {
+		this->setShootingCooldownCount(0);
+	}
+	/*
+	NOTE:
 		- The button that the player will be using to shoot, for now,
 		is the space button.
 	*/
 	if (this->user_actions.current_key_states[SDL_SCANCODE_SPACE]) {
 		this->setAttackingState(true);
+
+		this->setShootingCooldownCount(this->getShootingCooldownCount() + 1);
 
 		int shooting_bound = 0;
 		if (this->getDirectionFacing() == Direction::LEFT) {
@@ -492,17 +524,25 @@ void Player::setNextFrame() {
 		- This is the default setNextFrame() method. Derived classes
 		can override the method if there are other preferred animation
 		sequences.
+
 		- We want the animation sequence to be updated every 10 frames
 		for the idle animation so we use a modulo operation.
+		
+		- This function is massive I'm gonna die. 
 	*/
 	int frames_per_sequence = 10;
 
+	/*
+	SUBSECTION 1: FALLING ANIMATION
+	*/
 	if (this->isFalling()) {
 		Animation temp = this->getAnimation();
 
 		temp.current_frame_idle = 0;
 		temp.current_frame_running = 0;
 		temp.current_frame_jumping = 0;
+		temp.current_frame_shooting_idle = 0;
+		temp.current_frame_shooting_running = 0;
 
 		this->setAnimation(temp);
 
@@ -531,12 +571,17 @@ void Player::setNextFrame() {
 		return;
 	}
 
+	/*
+	SUBSECTION 2: JUMPING ANIMATION
+	*/
 	if (this->isJumping()) {
 		Animation temp = this->getAnimation();
 
 		temp.current_frame_idle = 0;
 		temp.current_frame_running = 0;
 		temp.current_frame_falling = 0;
+		temp.current_frame_shooting_idle = 0;
+		temp.current_frame_shooting_running = 0;
 
 		this->setAnimation(temp);
 
@@ -565,6 +610,9 @@ void Player::setNextFrame() {
 		return;
 	}
 
+	/*
+	SUBSECTION 3: IDLE ANIMATION
+	*/
 	if (!this->isRunning()) {
 		/*
 		NOTE:
@@ -576,6 +624,8 @@ void Player::setNextFrame() {
 		temp.current_frame_running = 0;
 		temp.current_frame_falling = 0;
 		temp.current_frame_jumping = 0;
+		temp.current_frame_shooting_idle = 0;
+		temp.current_frame_shooting_running = 0;
 
 		this->setAnimation(temp);
 
@@ -619,6 +669,8 @@ void Player::setNextFrame() {
 		temp.current_frame_idle = 0;
 		temp.current_frame_falling = 0;
 		temp.current_frame_jumping = 0;
+		temp.current_frame_shooting_idle = 0;
+		temp.current_frame_shooting_running = 0;
 
 		this->setAnimation(temp);
 

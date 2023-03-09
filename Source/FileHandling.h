@@ -297,7 +297,8 @@ Animation FileHandling::loadAnimation(SDL_Renderer* renderer, string file_for_an
 			- Setting a flag for the animation type.
 		*/
 		if (anim_paths_vec[i] == "<idle>" || anim_paths_vec[i] == "<running>" 
-			|| anim_paths_vec[i] == "<jumping>" || anim_paths_vec[i] == "<falling>") {
+			|| anim_paths_vec[i] == "<jumping>" || anim_paths_vec[i] == "<falling>"
+			|| anim_paths_vec[i] == "<shooting_idle>" || anim_paths_vec[i] == "<shooting_running>") {
 			current_flag = anim_paths_vec[i];
 		}
 
@@ -316,6 +317,12 @@ Animation FileHandling::loadAnimation(SDL_Renderer* renderer, string file_for_an
 		}
 		if (current_flag == "<falling>" && anim_paths_vec[i] != current_flag && anim_paths_vec[i] != "</falling>") {
 			animation.frames_falling.push_back(loadTexture(renderer, anim_paths_vec[i]));
+		}
+		if (current_flag == "<shooting_idle>" && anim_paths_vec[i] != current_flag && anim_paths_vec[i] != "</shooting_idle>") {
+			animation.frames_shooting_idle.push_back(loadTexture(renderer, anim_paths_vec[i]));
+		}
+		if (current_flag == "<shooting_running>" && anim_paths_vec[i] != current_flag && anim_paths_vec[i] != "</shooting_running>") {
+			animation.frames_shooting_running.push_back(loadTexture(renderer, anim_paths_vec[i]));
 		}
 	}
 
