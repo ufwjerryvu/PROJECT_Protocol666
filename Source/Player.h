@@ -488,7 +488,8 @@ void Player::shoot() {
 			shooting_bound = this->getLeftBound();
 		}
 		else if (this->getDirectionFacing() == Direction::RIGHT) {
-			shooting_bound = this->getRightBound();
+			const int RIGHTBOUND_MARGIN_REDUCTION = 20;
+			shooting_bound = this->getRightBound() - RIGHTBOUND_MARGIN_REDUCTION;
 		}
 
 		/*
@@ -533,7 +534,77 @@ void Player::setNextFrame() {
 	int frames_per_sequence = 10;
 
 	/*
-	SUBSECTION 1: FALLING ANIMATION
+	SUBSECTION 1: SHOOTING IDLE
+	*/
+	if (!(this->isFalling() || this->isJumping() || this->isRunning()) && this->isAttacking()) {
+		frames_per_sequence = 18;
+		Animation temp = this->getAnimation();
+
+		temp.current_frame_idle = 0;
+		temp.current_frame_running = 0;
+		temp.current_frame_falling = 0;
+		temp.current_frame_jumping = 0;
+		temp.current_frame_shooting_running = 0;
+
+		cout << temp.current_frame_idle << endl;
+		this->setAnimation(temp);
+
+		/*
+		NOTE:
+			- Here's the modulo operation metioned earlier.
+		*/
+		if (!(temp.current_frame_shooting_idle % frames_per_sequence)) {
+			this->setTexture(temp.frames_shooting_idle[temp.current_frame_shooting_idle / frames_per_sequence]);
+		}
+
+		if (temp.current_frame_shooting_idle >= ((temp.frames_shooting_idle.size() - 1) * frames_per_sequence)) {
+			temp.current_frame_shooting_idle = 0;
+		}
+		else {
+			temp.current_frame_shooting_idle++;
+		}
+
+		this->setAnimation(temp);
+
+		return;
+	}
+	/*
+	SUBSECTION 2: SHOOTING RUNNING
+	*/
+	else if (!(this->isFalling() || this->isJumping()) && this->isRunning() && this->isAttacking()) {
+		frames_per_sequence = 5;
+		Animation temp = this->getAnimation();
+
+		temp.current_frame_idle = 0;
+		temp.current_frame_running = 0;
+		temp.current_frame_falling = 0;
+		temp.current_frame_jumping = 0;
+		temp.current_frame_shooting_idle = 0;
+
+		this->setAnimation(temp);
+
+		/*
+		NOTE:
+			- Here's the modulo operation metioned earlier.
+		*/
+		if (!(temp.current_frame_shooting_running % frames_per_sequence)) {
+			this->setTexture(temp.frames_shooting_running[temp.current_frame_shooting_running / frames_per_sequence]);
+		}
+
+		if (temp.current_frame_shooting_running >= ((temp.frames_shooting_running.size() - 1) * frames_per_sequence)) {
+			temp.current_frame_shooting_running = 0;
+		}
+		else {
+			temp.current_frame_shooting_running++;
+		}
+
+		this->setAnimation(temp);
+
+		return;
+	}
+
+	/*
+	SUBSECTION 3: FALLING ANIMATION
 	*/
 	if (this->isFalling()) {
 		Animation temp = this->getAnimation();
@@ -572,7 +643,7 @@ void Player::setNextFrame() {
 	}
 
 	/*
-	SUBSECTION 2: JUMPING ANIMATION
+	SUBSECTION 4: JUMPING ANIMATION
 	*/
 	if (this->isJumping()) {
 		Animation temp = this->getAnimation();
@@ -611,7 +682,7 @@ void Player::setNextFrame() {
 	}
 
 	/*
-	SUBSECTION 3: IDLE ANIMATION
+	SUBSECTION 5: IDLE ANIMATION
 	*/
 	if (!this->isRunning()) {
 		/*
@@ -650,7 +721,13 @@ void Player::setNextFrame() {
 		}
 
 		this->setAnimation(temp);
+
+		return;
 	}
+
+	/*
+	SUBSECTION 6: RUNNING ANIMATION
+	*/
 	else {
 		/*
 		NOTE:
@@ -690,7 +767,10 @@ void Player::setNextFrame() {
 		}
 
 		this->setAnimation(temp);
+
+		return;
 	}
+
 }
 
 void Player::update() {
