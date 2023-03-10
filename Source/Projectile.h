@@ -40,6 +40,7 @@ public:
 	/*
 	SECTION 3: OTHER METHODS
 	*/
+	void update();
 };
 
 /*
@@ -133,3 +134,11 @@ Direction Projectile::getTravelDirection() { return this->travel_direction; }
 /*
 SECTION 3: OTHER METHODS
 */
+void Projectile::update() {
+	if (this->getTravelDirection() == Direction::LEFT) {
+		this->setX(this->getX() - this->getProjectileVelocity());
+	}
+	else if (this->getTravelDirection() == Direction::RIGHT) {
+		this->setX(this->getX() + this->getProjectileVelocity());
+	}
+}

@@ -296,6 +296,10 @@ void Game::updateRenderCoordinates() {
 	*/
 	this->player.setRenderCoordinates(this->camera.x, this->camera.y);
 
+	for (int index = 0; index < this->player.getLaserBeams().size(); index++) {
+		this->player.getLaserBeams()[index].setRenderCoordinates(this->camera.x, this->camera.y);
+	}
+
 	for (int index = 0; index < this->grounds.size(); index++) {
 		this->grounds[index].setRenderCoordinates(this->camera.x, this->camera.y);
 	}
@@ -327,6 +331,18 @@ void Game::updateCollisions() {
 	*/
 	this->player.collide(this->platforms);
 	this->player.collide(this->grounds);
+
+	/*
+	NOTE:
+		- Deleting laser beams from the vector if any laser beam
+		is found to be violating the level bounds.
+	*/
+	for (int index = 0; index < this->player.getLaserBeams().size(); index++) {
+		if (this->player.getLaserBeams()[index].getRightBound() >= this->level_width
+			|| this->player.getLaserBeams()[index].getLeftBound() <= 0) {
+			this->player.getLaserBeams().erase(this->player.getLaserBeams().begin() + index);
+		}
+	}
 }
 
 void Game::update() {
@@ -343,6 +359,9 @@ void Game::update() {
 		- Updating the status of all the objects.
 	*/
 	this->player.update();
+	for (int index = 0; index < this->player.getLaserBeams().size(); index++) {
+		this->player.getLaserBeams()[index].update();
+	}
 }
 
 void Game::render() {
@@ -368,6 +387,9 @@ void Game::render() {
 	}
 	for (int index = 0; index < this->platforms.size(); index++) {
 		this->platforms[index].render(this->renderer);
+	}
+	for (int index = 0; index < this->player.getLaserBeams().size(); index++) {
+		this->player.getLaserBeams()[index].render(this->renderer);
 	}
 
 	this->player.render(this->renderer);

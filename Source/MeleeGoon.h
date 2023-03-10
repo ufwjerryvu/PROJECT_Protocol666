@@ -78,7 +78,7 @@ SECTION 3: OTHER METHODS
 
 void MeleeGoon::detectPlayer(Player& arg) {
 	const int DETECTION_RANGE = 300;
-	const int CLOSE_RANGE_DECTECTION = 20;
+	const int CLOSE_RANGE_DECTECTION = 5;
 	const int ANIMATION_RANGE = 8;
 	const int CHASING_SPEED = 4;
 	const int PIXEL_ERROR = 5;
@@ -101,6 +101,11 @@ void MeleeGoon::detectPlayer(Player& arg) {
 		*/
 
 		if (arg.getX() >= this->getX() - CLOSE_RANGE_DECTECTION && arg.getX() <= this->getX() + CLOSE_RANGE_DECTECTION) {
+			/*
+			NOTE:
+				- This is close range detection range conditional check.
+			*/
+			
 			if (arg.getX() < this->getX()) {
 				this->setRunningState(true);
 				this->setAttackingState(true);
@@ -111,6 +116,7 @@ void MeleeGoon::detectPlayer(Player& arg) {
 
 
 				this->setX(this->getX() - CHASING_SPEED);
+				this->setUpdateInterval(0);
 			}
 			else if (arg.getX() > this->getX()) {
 				this->setRunningState(true);
@@ -121,31 +127,48 @@ void MeleeGoon::detectPlayer(Player& arg) {
 				}
 
 				this->setX(this->getX() + CHASING_SPEED);
+				this->setUpdateInterval(0);
 			}
 		}
 
 		else if (this->getDirectionFacing() == Direction::RIGHT) {
+			/*
+			NOTE:
+				- This is the Enemy's detection range when facing
+				the right.
+			*/
+
 			if (arg.getX() >= this->getX() && arg.getX() <= this->getX() + DETECTION_RANGE) {
 				this->setRunningState(true);
 				this->setAttackingState(true);
 
 				this->setX(this->getX() + CHASING_SPEED);
+				this->setUpdateInterval(0);
 
 				if (this->getX() + ANIMATION_RANGE >= arg.getX() && this->getX() + ANIMATION_RANGE <= arg.getX() + arg.getWidth()) {
 					this->attack();
+					this->setUpdateInterval(0);
 				}
 			}
 		}
 
 		else if (this->getDirectionFacing() == Direction::LEFT) {
+			/*
+			NOTE:
+				- This is the Enemy's detection range when facing
+				the left.
+			*/
+			
 			if (arg.getX() <= this->getX() && arg.getX() >= this->getX() - DETECTION_RANGE) {
 				this->setRunningState(true);
 				this->setAttackingState(true);
 
 				this->setX(this->getX() - CHASING_SPEED);
+				this->setUpdateInterval(0);
 
 				if (this->getX() - ANIMATION_RANGE >= arg.getX() && this->getX() - ANIMATION_RANGE <= arg.getX() + arg.getWidth()) {
 					this->attack();
+					this->setUpdateInterval(0);
 				}
 			}
 		}
