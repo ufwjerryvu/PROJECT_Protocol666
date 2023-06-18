@@ -17,6 +17,7 @@ private:
 	string name;
 	Movement movement_logic;
 	Damage damage_dealt;
+	int update_interval;
 
 	/*
 	NOTE:
@@ -25,7 +26,10 @@ private:
 		- Movement_logic is defined in Movement struct which its unit is in pixels.
 
 		- Damage_dealt is defined in Damage which is in Health Points 
-		(presumed Player has 100 max HP)
+		(presumed Player has 100 max HP).
+
+		- Update_interval is used as a mechanism to delay Enemy's action, such as 
+		idle rotations.
 	*/
 
 public:
@@ -43,6 +47,7 @@ public:
 	bool setMovementLogic(Movement movement_logic);
 	bool setDamageDealt(Damage damage_dealt);
 	bool setAttackDamage(int attack_damage);
+	bool setUpdateInterval(int update_interval);
 
 	/*
 	SECTION 2B: GETTERS
@@ -51,6 +56,7 @@ public:
 	Movement getMovementLogic();
 	Damage getDamageDealt();
 	int getAttackDamage();
+	int getUpdateInterval();
 
 	/*
 	SECTION 3: OTHER METHODS
@@ -71,7 +77,7 @@ public:
 		has different field of vision.
 
 		- Attack() is virtual, potentially, since different Enemy has 
-		different attacks (Range, Melee, Lunge Melee, etc...).
+		different attacks (Range, Melee, etc...).
 	*/
 
 	virtual void detectPlayer(Player& arg) = 0;
@@ -101,6 +107,8 @@ Enemy::Enemy() : Character() {
 	Damage default_damage = {0, 0, 0};
 
 	this->setDamageDealt(default_damage);
+
+	this->setUpdateInterval(0);
 };
 
 Enemy::Enemy(int x, int y, Animation animation, string name, Movement movement_logic, Damage damage_dealt)
@@ -108,6 +116,7 @@ Enemy::Enemy(int x, int y, Animation animation, string name, Movement movement_l
 	this->setName(name);
 	this->setMovementLogic(movement_logic);
 	this->setDamageDealt(damage_dealt);
+	this->setUpdateInterval(0);
 
 	/* 
 	NOTE: 
@@ -164,6 +173,14 @@ bool Enemy::setAttackDamage(int attack_damage) {
 	return success;
 }
 
+bool Enemy::setUpdateInterval(int update_interval) {
+	bool success = true;
+
+	this->update_interval = update_interval;
+
+	return success;
+}
+
 /*
 SECTION 2B: GETTERS
 */
@@ -172,6 +189,7 @@ string Enemy::getName() { return this->name; };
 Movement Enemy::getMovementLogic() { return this->movement_logic; };
 Damage Enemy::getDamageDealt() { return this->damage_dealt; };
 int Enemy::getAttackDamage() { return this->getDamageDealt().attack; }
+int Enemy::getUpdateInterval() { return this->update_interval; };
 
 /*
 SECTION 3: OTHER METHODS
@@ -297,15 +315,16 @@ bool Enemy::atPlatformBoundary(vector<Platform>& platforms) {
 		which specific platform is the Enemy currently on to 
 		detect its boundary (left and right bound).
 	*/
-	
+	const int PIXEL_RANGE = 5;
+
 	bool at_platform_edge = false;
 
 	vector<int> potential_platforms;
 	bool current_platform_found = false;
-	int index_of_current_platform;
+	int index_of_current_platform = 0;
 
 	for (int i = 0; i < platforms.size(); i++) {
-		if (platforms[i].getTopBound() <= this->getBottomBound()) {
+		if (this->getBottomBound() >= platforms[i].getTopBound() - PIXEL_RANGE && this->getBottomBound() <= platforms[i].getTopBound() + PIXEL_RANGE) {
 			/*
 			NOTE:
 				- This loop is inefficient as it detects any platform
@@ -319,7 +338,7 @@ bool Enemy::atPlatformBoundary(vector<Platform>& platforms) {
 	}
 	
 	for (int j = 0; j < potential_platforms.size(); j++) {
-		if (this->getX() > platforms[potential_platforms[j]].getLeftBound() - this->getRunSpeed() && this->getX() < platforms[potential_platforms[j]].getRightBound() + this->getRunSpeed()) {
+		if (this->getLeftBound() > platforms[potential_platforms[j]].getLeftBound() - PIXEL_RANGE && this->getRightBound() < platforms[potential_platforms[j]].getRightBound() + PIXEL_RANGE) {
 			/*
 			NOTE:
 				- Checks for the left and right boundary to identify
@@ -327,7 +346,7 @@ bool Enemy::atPlatformBoundary(vector<Platform>& platforms) {
 				is standing on or floating above.
 			*/
 			
-			index_of_current_platform = j;
+			index_of_current_platform = potential_platforms[j];
 			current_platform_found = true;
 			break;
 		}
@@ -349,8 +368,12 @@ bool Enemy::atPlatformBoundary(vector<Platform>& platforms) {
 		to return whether the Enemy is at the platform's boundary.
 	*/
 
-	if (this->getRightBound() >= platforms.at(index_of_current_platform).getRightBound() || this->getLeftBound() <= platforms.at(index_of_current_platform).getLeftBound()) {
+	if (this->getRightBound() >= platforms[index_of_current_platform].getRightBound() - PIXEL_RANGE || this->getLeftBound() <= platforms[index_of_current_platform].getLeftBound() + PIXEL_RANGE) {
 		at_platform_edge = true;
+		cout << "Platform edge" << endl;
+		cout << "Plat right bound: " << platforms.at(index_of_current_platform).getRightBound() << endl << "Plat left bound: " << platforms.at(index_of_current_platform).getLeftBound() << endl << "Plat top: " << platforms.at(index_of_current_platform).getTopBound() << endl << "Plat X: " << platforms.at(index_of_current_platform).getX() << endl << "Plat Y: " << platforms.at(index_of_current_platform).getY() << endl << endl;
+		
+		cout << "Enemy right: " << this->getRightBound() << endl << "Enemy left: " << this->getLeftBound() << endl << "Enemy bottom: " << this->getBottomBound() << endl << "Enemy x: " << this->getX() << endl << "Enemy y: " << this->getY() << endl << endl;
 	}
 
 	return at_platform_edge;
@@ -363,7 +386,8 @@ bool Enemy::atGroundBoundary(vector<Ground>& grounds) {
 		this function detects its boundary and prevent the
 		Character from falling at its boundaries.
 	*/
-
+	const int PIXEL_RANGE = 8;
+	
 	bool at_ground_edge = false;
 
 	vector<int> potential_grounds;
@@ -381,7 +405,7 @@ bool Enemy::atGroundBoundary(vector<Ground>& grounds) {
 	}
 
 	for (int i = 0; i < grounds.size(); i++) {
-		if (grounds[i].getTopBound() <= this->getBottomBound()) {
+		if (this->getBottomBound() >= grounds[i].getTopBound() - PIXEL_RANGE && this->getBottomBound() <= grounds[i].getTopBound() + PIXEL_RANGE) {
 			/*
 			NOTE: 
 				- Find Ground instances that are under the Enemy y-level.
@@ -392,14 +416,14 @@ bool Enemy::atGroundBoundary(vector<Ground>& grounds) {
 	}
 
 	for (int j = 0; j < potential_grounds.size(); j++) {
-		if (this->getX() > grounds[potential_grounds[j]].getLeftBound() - this->getRunSpeed() && this->getX() < grounds[potential_grounds[j]].getRightBound() + this->getRunSpeed()) {
+		if (this->getLeftBound() > grounds[potential_grounds[j]].getLeftBound() - PIXEL_RANGE && this->getRightBound() < grounds[potential_grounds[j]].getRightBound() + PIXEL_RANGE) {
 			/*
 			NOTE:
 				- Find the Ground instance that has the Enemy
 				within boundary
 			*/
 
-			index_of_current_ground = j;
+			index_of_current_ground = potential_grounds[j];
 			current_ground_found = true;
 			break;
 		}
@@ -409,12 +433,13 @@ bool Enemy::atGroundBoundary(vector<Ground>& grounds) {
 		return at_ground_edge;
 	}
 
-	if (this->getX() >= grounds.at(index_of_current_ground).getRightBound() || this->getX() <= grounds.at(index_of_current_ground).getLeftBound()) {
+	if (this->getRightBound() >= grounds.at(index_of_current_ground).getRightBound() - PIXEL_RANGE || this->getX() <= grounds.at(index_of_current_ground).getLeftBound() + PIXEL_RANGE) {
 		/*
 		NOTE:
 			- Check if the Enemy is at the Ground instance's boundary
 		*/
 		at_ground_edge = true;
+		cout << "Ground edge" << endl;
 	}
 
 	return at_ground_edge;
@@ -488,7 +513,7 @@ void Enemy::run() {
 			the other end.
 		*/
 
-		this->setX(this->getMovementLogic().spawn_x + this->getMovementLogic().x_max_displacement - PIXEL_ERROR);
+		this->setX(this->getMovementLogic().spawn_x + this->getMovementLogic().x_max_displacement);
 		this->setDirectionFacing(Direction::LEFT);
 		return;
 	}
@@ -501,20 +526,90 @@ void Enemy::run() {
 			that we don't want the Enemy leaving its spawn_x boundary.
 		*/
 
-		this->setX(this->getMovementLogic().spawn_x + PIXEL_ERROR);
+		this->setX(this->getMovementLogic().spawn_x);
 		this->setDirectionFacing(Direction::RIGHT);
 		return;
 	}
 }
 
-void Enemy::jump() {}
+void Enemy::jump() {
+	/*
+	NOTE:
+		- Jump will not be implemented on Goons.
+	*/
+}
 
 void Enemy::move() {
+	const int ONE_DIRECTION_CHECK_TIME = 500;
+	
+	/*
+	NOTE:
+		- One_direction_check_time refers to how long the Enemy would 
+		be idle facing left or right.
+
+		- The enemy will switch after 'one_direction_check_time' (500) 
+		updates are called
+
+		- When the Enemy detects the Player, they will chase after 
+		the Player; only continuing to be idle after losing line of sight,
+		detection, then run back to its initial spawn_x coordinate.
+	*/
+
 	if (!this->isJumping()) {
 		this->fall();
 	}
 
-	if (!this->isAttacking()) {
-		this->run();
+	if (!this->isAttacking() && this->getX() == this->getMovementLogic().spawn_x) {
+		/*
+		NOTE:
+			- At spawn_x, being idle, incrementing update_interval by one
+			each time an update is called.
+		*/
+		
+		this->setRunningState(false);
+		this->setUpdateInterval(this->getUpdateInterval() + 1);
+
+		if (this->getUpdateInterval() >= ONE_DIRECTION_CHECK_TIME) {
+			this->setUpdateInterval(0);
+			/*
+			NOTE:
+				- Change facing direction to the opposite
+				of the current facing direction.
+			*/
+
+			if (this->getDirectionFacing() == Direction::RIGHT)
+				this->setDirectionFacing(Direction::LEFT);
+
+			else if (this->getDirectionFacing() == Direction::LEFT)
+				this->setDirectionFacing(Direction::RIGHT);
+		}
+	}
+
+	else if (!this->isAttacking() && this->getX() != this->getMovementLogic().spawn_x) {
+		this->setRunningState(false);
+		this->setUpdateInterval(this->getUpdateInterval() + 1);
+
+		/*
+		NOTE:
+			- Assuming the Enemy is displace from spawn_x due to 
+			chasing the Player, it becomes idle (waiting to see if
+			it will detect the Player after the chase, acts as a 
+			suspicion check).
+
+			- After the waiting for the same interval of 
+			one_direction_check_time, it will run back to its spawn_x.
+		*/
+
+		if (this->getUpdateInterval() >= ONE_DIRECTION_CHECK_TIME) {
+			if (this->getX() < this->getMovementLogic().spawn_x) {
+				this->setDirectionFacing(Direction::RIGHT);
+				this->run();
+			}
+
+			else if (this->getX() > this->getMovementLogic().spawn_x) {
+				this->setDirectionFacing(Direction::LEFT);
+				this->run();
+			}
+		}
 	}
 }

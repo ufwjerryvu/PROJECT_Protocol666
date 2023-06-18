@@ -1,23 +1,17 @@
 # NOTE: All paths are relative to the .exe (executable) file.
 
 # Dimensions format: level_width,level_height
-2400,1200,
+1500,800,
 
 # Player format: Object,initial_x,initial_y
 Player,0,0
 
 # Ground format: Object,initial_x,initial_y,width_by_units,height_by_units
-Ground,0,1104,50,3
+Ground,0,654,50,5
 
 # SinglePlatform format: Object,initial_x,initial_y,width_by_units
-HalfSinglePlatform,350,1000,5
-FullSinglePlatform,500,900,4
-HalfSinglePlatform,700,750,8
-FullSinglePlatform,550,500,12
-FullSinglePlatform,300,400,2
-FullSinglePlatform,500,750,2
-HalfSinglePlatform,1200,1000,4
-HalfSinglePlatform,1350,900,6
+HalfSinglePlatform,220,470,6
+HalfSinglePlatform,620,316,6
+HalfSinglePlatform,1020,450,6
 
 # MultiplePlatform format: Object,initial_x,initial_y,width_by_units,height_by_units
-MultiplePlatform,20,600,3,6
