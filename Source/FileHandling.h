@@ -8,10 +8,18 @@
 #include "LIBDECLARATIONS.h"
 
 #include "Utilities.h"
+#include "FileHandling.h"
 
 #include "Sprite.h"
 
+#include "Projectile.h"
+#include "LaserBeam.h"
+#include "FiftyCalibre.h"
+
 #include "Character.h"
+#include "Enemy.h"
+#include "MeleeGoon.h"
+#include "RangeGoon.h"
 #include "Player.h"
 
 #include "Terrain.h"

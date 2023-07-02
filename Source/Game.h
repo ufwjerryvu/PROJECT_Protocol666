@@ -12,13 +12,27 @@
 
 #include "Sprite.h"
 
+#include "Projectile.h"
+#include "LaserBeam.h"
+#include "FiftyCalibre.h"
+
 #include "Character.h"
+#include "Enemy.h"
+#include "MeleeGoon.h"
+#include "RangeGoon.h"
 #include "Player.h"
 
 #include "Terrain.h"
 #include "Ground.h"
 #include "Platform.h"
 #include "SinglePlatform.h"
+#include "MultiplePlatform.h"
+
+enum State{
+	MAIN_MENU,
+	GAMEPLAY,
+	PAUSE
+};
 
 class Game {
 public:
@@ -38,6 +52,8 @@ public:
 	*/
 	const int FRAME_RATE = 60;
 
+	State state;
+
 	int current_level;
 
 	int level_width;
@@ -48,7 +64,12 @@ public:
 	vector<string> level_config_paths;
 
 	/*
-	SECTION 0C: GAME ASSETS VARIABLES
+	SECTION 0C: MAIN MENU VARIABLES
+	*/
+
+
+	/*
+	SECTION 0D: GAME ASSETS VARIABLES
 	*/
 	Player player;
 	vector<Ground> grounds;
@@ -63,6 +84,7 @@ public:
 	SECTION 2: SYSTEM INITIALIZATIONS AND DESTRUCTIONS
 	*/
 	bool initialize();
+	bool loadMainMenu();
 	bool loadAllAssets();
 	bool loadCurrentLevel();
 	void close();
@@ -96,6 +118,13 @@ Game::Game(UserEvent user_actions) {
 	*/
 	SDL_Rect camera = { 0, 0, this->SCREEN_WIDTH, this->SCREEN_HEIGHT };
 	this->user_actions = user_actions;
+
+	/*
+	NOTE:
+		- Making sure the first thing that pops up
+		is the main menu when the user starts the game.
+	*/
+	this->state = MAIN_MENU;
 
 	/*
 	NOTE:
@@ -204,6 +233,13 @@ bool Game::initialize() {
 	}
 
 	return success;
+}
+
+bool Game::loadMainMenu() {
+	/*
+	NOTE:
+		- Empty for now.
+	*/
 }
 
 bool Game::loadAllAssets() {
