@@ -80,11 +80,15 @@ void MeleeGoon::detectPlayer(Player& player, vector<Ground>& grounds, vector<Pla
 	/*
 	NOTE: 
 		- Below are the logic used for MeleeGoon to detect the Player.
+
 		- MeleeGoon will always chase the Player in the X-direction.
+
 		- If Player is on another platform, MeleeGoon will stop to jump when it is in range of the platform.
-			- The Goon will continue to chase once it lands on the platform.
-			- The same will happen if the Player is on a platform under the MeleeGoon.
-		- Once in attack range, the MeleeGoon will stop for the entire attack animation and attack the player, then continues the chase.
+			+ The Goon will continue to chase once it lands on the platform.
+			+ The same will happen if the Player is on a platform under the MeleeGoon.
+
+		- Once in attack range, the MeleeGoon will stop for the entire attack animation and attack 
+		the player, then continues the chase.
 	*/
 	const int ANIMATION_RANGE = 8;
 	const int PIXEL_ERROR = 5;
@@ -299,8 +303,10 @@ void MeleeGoon::setNextFrame() {
 		NOTE:
 			- On the contrary, if the player is moving then the current
 			index for the idle frame gets reset to 0.
+
 			- Everything here is pretty similar to the previous block, just
 			that idle animation frames are accounted for instead.
+
 			- In this case, we want the next animation sequence
 			to be updated every 5 frames so a modulo operation is used to
 			make sure the animation doesn't happen too quickly.

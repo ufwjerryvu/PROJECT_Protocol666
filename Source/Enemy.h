@@ -21,14 +21,15 @@ private:
 
 	/*
 	NOTE:
-		- Name is the Enemy's categorized names (Zombie, Raider, etc...)
+		- `name` is the Enemy's categorized names (e.g., Zombie, Raider, etc.)
 
-		- Movement_logic is defined in Movement struct which its unit is in pixels.
+		- `movement_logic` is defined in the Movement structure which its unit
+		is in pixels.
 
-		- Damage_dealt is defined in Damage which is in Health Points 
-		(presumed Player has 100 max HP).
+		- Similarly, `damage_dealt` is defined in the Damage structure which 
+		is in Health Points (presumed Player has 100 max HP).
 
-		- Update_interval is used as a mechanism to delay Enemy's action, such as 
+		- `update_interval` is used as a mechanism to delay an Enemy's action, such as 
 		idle rotations.
 	*/
 
@@ -526,13 +527,13 @@ void Enemy::jump() {
 void Enemy::move() {
 	/*
 	NOTE:
-		- Move() function is kept similar to the Player's move() function.
+		- `move()` function is kept similar to the Player's move() function.
 		
-		- Jump() will be called in the condition that the Enemy is already
+		- `jump()` will be called in the condition that the Enemy is already
 		jumping, which jump() will be called respectively to their enemy 
 		class.
 
-		- By default, the Enemy is set to run() at all times, except while
+		- By default, the Enemy is set to `run()` at all times, except while
 		attacking Player.
 	*/
 	if (!this->isJumping() && this->getY() <= this->getLevelHeight()) {
