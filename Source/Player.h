@@ -545,6 +545,8 @@ void Player::setNextFrame() {
 		temp.current_frame_falling = 0;
 		temp.current_frame_jumping = 0;
 		temp.current_frame_shooting_running = 0;
+		temp.current_frame_shooting_jumping = 0;
+		temp.current_frame_shooting_falling = 0;
 
 		cout << temp.current_frame_idle << endl;
 		this->setAnimation(temp);
@@ -580,6 +582,8 @@ void Player::setNextFrame() {
 		temp.current_frame_falling = 0;
 		temp.current_frame_jumping = 0;
 		temp.current_frame_shooting_idle = 0;
+		temp.current_frame_shooting_jumping = 0;
+		temp.current_frame_shooting_falling = 0;
 
 		this->setAnimation(temp);
 
@@ -604,7 +608,95 @@ void Player::setNextFrame() {
 	}
 
 	/*
-	SUBSECTION 3: FALLING ANIMATION
+	SUBSECTION 3: SHOOTING JUMPING
+	*/
+
+	if (this->isJumping() && this->isAttacking()) {
+		frames_per_sequence = 25;
+
+		Animation temp = this->getAnimation();
+
+		temp.current_frame_idle = 0;
+		temp.current_frame_running = 0;
+		temp.current_frame_jumping = 0;
+		temp.current_frame_falling = 0;
+		temp.current_frame_shooting_idle = 0;
+		temp.current_frame_shooting_running = 0;
+		temp.current_frame_shooting_falling = 0;
+
+		this->setAnimation(temp);
+
+		/*
+		NOTE:
+			- Setting the texture to be rendered to the current shooting-jumping frame.
+		*/
+		if (!(temp.current_frame_shooting_jumping % frames_per_sequence)) {
+			this->setTexture(temp.frames_shooting_jumping[temp.current_frame_shooting_jumping / frames_per_sequence]);
+		}
+
+		/*
+		NOTE:
+			- Making sure the index doesn't access anything out of the
+			vector's range.
+		*/
+		if (temp.current_frame_shooting_jumping >= (temp.frames_shooting_jumping.size() - 1) * frames_per_sequence) {
+			temp.current_frame_shooting_jumping = 0;
+		}
+		else {
+			temp.current_frame_shooting_jumping++;
+		}
+
+		this->setAnimation(temp);
+
+		return;
+	}
+
+	/*
+	SUBSECTION 4: SHOOTING FALLING
+	*/
+
+	if (this->isFalling() && this->isAttacking()) {
+		frames_per_sequence = 25;
+
+		Animation temp = this->getAnimation();
+
+		temp.current_frame_idle = 0;
+		temp.current_frame_running = 0;
+		temp.current_frame_jumping = 0;
+		temp.current_frame_falling = 0;
+		temp.current_frame_shooting_idle = 0;
+		temp.current_frame_shooting_running = 0;
+		temp.current_frame_shooting_jumping = 0;
+
+		this->setAnimation(temp);
+
+		/*
+		NOTE:
+			- Setting the texture to be rendered to the current falling-shooting frame.
+		*/
+		if (!(temp.current_frame_shooting_falling % frames_per_sequence)) {
+			this->setTexture(temp.frames_shooting_falling[temp.current_frame_shooting_falling / frames_per_sequence]);
+		}
+
+		/*
+		NOTE:
+			- Making sure the index doesn't access anything out of the
+			vector's range.
+		*/
+		if (temp.current_frame_shooting_falling >= (temp.frames_shooting_falling.size() - 1) * frames_per_sequence) {
+			temp.current_frame_shooting_falling = 0;
+		}
+		else {
+			temp.current_frame_shooting_falling++;
+		}
+
+		this->setAnimation(temp);
+
+		return;
+	}
+
+	/*
+	SUBSECTION 5: FALLING ANIMATION
 	*/
 	if (this->isFalling()) {
 		Animation temp = this->getAnimation();
@@ -614,6 +706,8 @@ void Player::setNextFrame() {
 		temp.current_frame_jumping = 0;
 		temp.current_frame_shooting_idle = 0;
 		temp.current_frame_shooting_running = 0;
+		temp.current_frame_shooting_jumping = 0;
+		temp.current_frame_shooting_falling = 0;
 
 		this->setAnimation(temp);
 
@@ -643,7 +737,7 @@ void Player::setNextFrame() {
 	}
 
 	/*
-	SUBSECTION 4: JUMPING ANIMATION
+	SUBSECTION 6: JUMPING ANIMATION
 	*/
 	if (this->isJumping()) {
 		Animation temp = this->getAnimation();
@@ -653,12 +747,14 @@ void Player::setNextFrame() {
 		temp.current_frame_falling = 0;
 		temp.current_frame_shooting_idle = 0;
 		temp.current_frame_shooting_running = 0;
+		temp.current_frame_shooting_jumping = 0;
+		temp.current_frame_shooting_falling = 0;
 
 		this->setAnimation(temp);
 
 		/*
 		NOTE:
-			- Setting the texture to be rendered to the current falling frame.
+			- Setting the texture to be rendered to the current jumping frame.
 		*/
 		if (!(temp.current_frame_jumping % frames_per_sequence)) {
 			this->setTexture(temp.frames_jumping[temp.current_frame_jumping / frames_per_sequence]);
@@ -682,7 +778,7 @@ void Player::setNextFrame() {
 	}
 
 	/*
-	SUBSECTION 5: IDLE ANIMATION
+	SUBSECTION 7: IDLE ANIMATION
 	*/
 	if (!this->isRunning()) {
 		/*
@@ -697,6 +793,8 @@ void Player::setNextFrame() {
 		temp.current_frame_jumping = 0;
 		temp.current_frame_shooting_idle = 0;
 		temp.current_frame_shooting_running = 0;
+		temp.current_frame_shooting_jumping = 0;
+		temp.current_frame_shooting_falling = 0;
 
 		this->setAnimation(temp);
 
@@ -726,15 +824,17 @@ void Player::setNextFrame() {
 	}
 
 	/*
-	SUBSECTION 6: RUNNING ANIMATION
+	SUBSECTION 8: RUNNING ANIMATION
 	*/
 	else {
 		/*
 		NOTE:
 			- On the contrary, if the player is moving then the current
 			index for the idle frame gets reset to 0.
+
 			- Everything here is pretty similar to the previous block, just
 			that idle animation frames are accounted for instead.
+
 			- In this case, we want the next animation sequence
 			to be updated every 5 frames so a modulo operation is used to
 			make sure the animation doesn't happen too quickly.
@@ -748,6 +848,8 @@ void Player::setNextFrame() {
 		temp.current_frame_jumping = 0;
 		temp.current_frame_shooting_idle = 0;
 		temp.current_frame_shooting_running = 0;
+		temp.current_frame_shooting_jumping = 0;
+		temp.current_frame_shooting_falling = 0;
 
 		this->setAnimation(temp);
 
