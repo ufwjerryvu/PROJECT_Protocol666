@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-07-26T03:26:15.571Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36" etag="Ar-1gwtHVPDjgwbPCaTh" version="21.6.1" type="device">
+<mxfile host="app.diagrams.net" modified="2023-08-08T12:05:10.979Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36" etag="O8Og55aprrrm-5zrTxsh" version="21.6.6" type="device">
   <diagram id="c8oBW-qjvavsfD2tW6SP" name="Page-1">
-    <mxGraphModel dx="2442" dy="-211" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1740" dy="-633" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -161,7 +161,7 @@
           <mxGeometry y="96" width="390" height="354" as="geometry" />
         </mxCell>
         <mxCell id="xrFbDY1ulE0IEn7EpgWR-46" value="FileHandling" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;" parent="1" vertex="1">
-          <mxGeometry x="5315" y="2859" width="490" height="402" as="geometry" />
+          <mxGeometry x="4575" y="2600" width="490" height="402" as="geometry" />
         </mxCell>
         <mxCell id="xrFbDY1ulE0IEn7EpgWR-47" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="xrFbDY1ulE0IEn7EpgWR-46" vertex="1">
           <mxGeometry y="26" width="490" height="8" as="geometry" />
@@ -169,20 +169,20 @@
         <mxCell id="xrFbDY1ulE0IEn7EpgWR-48" value="+ loadTexture(renderer: SDL_Renderer*, path: string): SDL_Texture*&#xa;+ parseTextFile(path: string): string&#xa;&#xa;+ parseLevelConfigPaths(): vector&lt;string&gt;&#xa;+ parseLevelDimensions(level_config_path: string): vector&lt;int&gt;&#xa;+ parseLevelWidth(level_config_path: string): int&#xa;+ parseLevelHeight(level_config_path: string): int&#xa;&#xa;+ parseFileForLoadingPaths(file_path: string): vector&lt;string&gt;&#xa;+ loadAnimation(renderer: SDL_Renderer*, file_for_animation_paths: string): Animation&#xa;+ loadSetupTextures(renderer: SDL_Renderer*, file_for_assembly_paths: string): vector&lt;vector&lt;SDL_Texture*&gt;&gt;&#xa;&#xa;+ getLinesFromFlag(content: string, flag: string): vector&lt;string&gt;&#xa;+ getFirstLineFromFlag(content: string, flag: string): string&#xa;&#xa;+ loadPlayer(renderer: SDL_Renderer*, level_config_path: string, animation_path: string, animation: Animation, user_actions: UserEvent):  Player&#xa;+ loadGrounds(renderer: SDL_Renderer*, level_conig_path: string): vector&lt;Ground&gt;&#xa;+ loadSinglePlatforms(renderer: SDL_Renderer*, level_config_path: string): vector&lt;SinglePlatform&gt;&#xa;+ loadMultiplePlatforms(renderer: SDL_Renderer*, level_config_path: string): vector&lt;MultiplePlatform&gt;&#xa;+ loadPlatforms(renderer: SDL_Renderer*, level_config_path: string): vector&lt;Platform&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="xrFbDY1ulE0IEn7EpgWR-46" vertex="1">
           <mxGeometry y="34" width="490" height="368" as="geometry" />
         </mxCell>
-        <mxCell id="xrFbDY1ulE0IEn7EpgWR-49" value="Game" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
-          <mxGeometry x="4750" y="3010" width="465" height="614" as="geometry" />
+        <mxCell id="xrFbDY1ulE0IEn7EpgWR-49" value="Master" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
+          <mxGeometry x="4410" y="3100" width="465" height="384" as="geometry" />
         </mxCell>
-        <mxCell id="xrFbDY1ulE0IEn7EpgWR-50" value="+ window: SDL_Window*&#xa;+ renderer: SDL_Renderer*&#xa;&#xa;+ SCREEN_WIDTH: const int&#xa;+ SCREEN_HEIGHT: const int&#xa;&#xa;+ user_actions: UserEvent&#xa;&#xa;+ FRAME_RATE: const int&#xa;&#xa;+ state: State&#xa;&#xa;+ current_level: int&#xa;&#xa;+ level_width: int&#xa;+ level_height: int&#xa;&#xa;+ camera: SDL_Rect&#xa;&#xa;+ level_config_paths: vector&lt;string&gt;&#xa;&#xa;+ player: Player&#xa;+ grounds: vector&lt;Ground&gt;&#xa;+ platforms: vector&lt;Platform&gt;&#xa;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="xrFbDY1ulE0IEn7EpgWR-49" vertex="1">
-          <mxGeometry y="26" width="465" height="380" as="geometry" />
+        <mxCell id="xrFbDY1ulE0IEn7EpgWR-50" value="+ window: SDL_Window*&#xa;+ renderer: SDL_Renderer*&#xa;&#xa;+ SCREEN_WIDTH: const int&#xa;+ SCREEN_HEIGHT: const int&#xa;&#xa;+ user_actions: UserEvent&#xa;&#xa;+ FRAME_RATE: const int&#xa;&#xa;+ state: State&#xa;&#xa;+ gameplay: Gameplay&#xa;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="xrFbDY1ulE0IEn7EpgWR-49" vertex="1">
+          <mxGeometry y="26" width="465" height="190" as="geometry" />
         </mxCell>
         <mxCell id="xrFbDY1ulE0IEn7EpgWR-51" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="xrFbDY1ulE0IEn7EpgWR-49" vertex="1">
-          <mxGeometry y="406" width="465" height="8" as="geometry" />
+          <mxGeometry y="216" width="465" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="xrFbDY1ulE0IEn7EpgWR-52" value="+ Game(user_actions: UserEvent)&#xa;&#xa;+ initialize(): bool&#xa;+ loadMainMenu(): bool&#xa;+ loadAllAssets(): bool&#xa;+ loadCurrentLevel(): bool&#xa;+ close(): void&#xa;&#xa;+ updateCamera(): void&#xa;+ updateRenderCoordinates(): void&#xa;+ updateCollisions(): void&#xa;+ update(): void&#xa;+ render(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="xrFbDY1ulE0IEn7EpgWR-49" vertex="1">
-          <mxGeometry y="414" width="465" height="200" as="geometry" />
+        <mxCell id="xrFbDY1ulE0IEn7EpgWR-52" value="+ Master(user_actions: UserEvent)&#xa;&#xa;+ initialize(): bool&#xa;+ loadMainMenu(): bool&#xa;+ loadGameplay(): bool&#xa;+ pauseGameplay(): bool&#xa;&#xa;+ update()&#xa;&#xa;+ close(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="xrFbDY1ulE0IEn7EpgWR-49" vertex="1">
+          <mxGeometry y="224" width="465" height="160" as="geometry" />
         </mxCell>
         <mxCell id="xrFbDY1ulE0IEn7EpgWR-53" value="Utilities" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
-          <mxGeometry x="4720" y="2670" width="300" height="154" as="geometry" />
+          <mxGeometry x="4670" y="2380" width="300" height="154" as="geometry" />
         </mxCell>
         <mxCell id="xrFbDY1ulE0IEn7EpgWR-54" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="xrFbDY1ulE0IEn7EpgWR-53" vertex="1">
           <mxGeometry y="26" width="300" height="8" as="geometry" />
@@ -190,7 +190,7 @@
         <mxCell id="xrFbDY1ulE0IEn7EpgWR-55" value="+ split(arg: string, delimiter: string): vector&lt;string&gt; &#xa;&#xa;+ checkFloat(arg: string): bool&#xa;+ strToFloat(arg: string): float&#xa;&#xa;+ strToUpper(arg: string): string&#xa;+ strToLower(arg: string): string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="xrFbDY1ulE0IEn7EpgWR-53" vertex="1">
           <mxGeometry y="34" width="300" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="xrFbDY1ulE0IEn7EpgWR-56" value="&lt;h1&gt;Design update 37&amp;nbsp;&lt;span style=&quot;font-weight: normal;&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;(26/07/2023)&lt;/font&gt;&lt;/span&gt;&lt;/h1&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;By: Jerry Vu&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;b&gt;Animation:&lt;/b&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;ul&gt;&lt;li&gt;Added attributes for jump shooting and fall shooting.&amp;nbsp;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b style=&quot;background-color: initial;&quot;&gt;IMPORTANT NOTE (delete when tasks are complete):&lt;/b&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;ul&gt;&lt;li&gt;Deallocators and destructors for all the classes so far must be accounted for. I don&#39;t know if not having them would cause memory leaks - but it would definitely cause memory occupation to skyrocket.&lt;/li&gt;&lt;li&gt;Everyone must set up SDL_ttf.h header file.&lt;/li&gt;&lt;li&gt;All the setter functions might need some extra security.&lt;/li&gt;&lt;/ul&gt;&lt;div&gt;&lt;font color=&quot;#006600&quot;&gt;&lt;b&gt;MATCHED (11/07/2023)&lt;/b&gt;&lt;/font&gt;&lt;/div&gt;&lt;b&gt;&lt;/b&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
+        <mxCell id="xrFbDY1ulE0IEn7EpgWR-56" value="&lt;h1&gt;Design update 38&amp;nbsp;&lt;span style=&quot;font-weight: normal;&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;(08/08/2023)&lt;/font&gt;&lt;/span&gt;&lt;/h1&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;By: Jerry Vu&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;b&gt;Master.h&lt;/b&gt;:&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;ul&gt;&lt;li&gt;`Master` will now be handling the machine states and switching the states depending on the user&#39;s input.&amp;nbsp;&lt;/li&gt;&lt;/ul&gt;&lt;div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;Gameplay.h:&lt;/b&gt;&lt;/div&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color);&quot;&gt;&lt;ul style=&quot;border-color: var(--border-color);&quot;&gt;&lt;li style=&quot;border-color: var(--border-color);&quot;&gt;Separated the `Game` class into two components: `Navigation` and `Gameplay`. `Navigation` is to be designed and implemented later as it consists of several independent classes.&amp;nbsp;&lt;/li&gt;&lt;li style=&quot;border-color: var(--border-color);&quot;&gt;`Gameplay` has similar fields and methods to `Master` but those members are more focused on the gameplay than software flow control.&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b style=&quot;background-color: initial;&quot;&gt;IMPORTANT NOTE (delete when tasks are complete):&lt;/b&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;ul&gt;&lt;li&gt;Deallocators and destructors for all the classes so far must be accounted for. I don&#39;t know if not having them would cause memory leaks - but it would definitely cause memory occupation to skyrocket.&lt;/li&gt;&lt;li&gt;Everyone must set up SDL_ttf.h header file.&lt;/li&gt;&lt;li&gt;All the setter functions might need some extra security.&lt;/li&gt;&lt;/ul&gt;&lt;div&gt;&lt;font color=&quot;#ff0b03&quot;&gt;&lt;b&gt;NOT MATCHED (08/08/2023)&lt;/b&gt;&lt;/font&gt;&lt;/div&gt;&lt;b&gt;&lt;/b&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="2645" y="1640" width="500" height="450" as="geometry" />
         </mxCell>
         <mxCell id="xrFbDY1ulE0IEn7EpgWR-57" value="&amp;lt;&amp;lt;enumeration&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;Direction&lt;/b&gt;" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;" parent="1" vertex="1">
@@ -465,7 +465,7 @@
           <mxGeometry y="130" width="260" height="70" as="geometry" />
         </mxCell>
         <mxCell id="LEnjLOv2VGJ0EA_hLY6k-1" value="&amp;lt;&amp;lt;enumeration&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;State&lt;/b&gt;" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;" parent="1" vertex="1">
-          <mxGeometry x="4220" y="3040" width="140" height="120" as="geometry" />
+          <mxGeometry x="4030" y="3280" width="140" height="120" as="geometry" />
         </mxCell>
         <mxCell id="LEnjLOv2VGJ0EA_hLY6k-2" value="MAIN_MENU&lt;br&gt;GAMEPLAY&lt;br&gt;PAUSE" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="LEnjLOv2VGJ0EA_hLY6k-1" vertex="1">
           <mxGeometry y="40" width="140" height="80" as="geometry" />
@@ -482,9 +482,9 @@
         <mxCell id="LEnjLOv2VGJ0EA_hLY6k-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;endArrow=none;endFill=0;dashed=1;" parent="1" source="LEnjLOv2VGJ0EA_hLY6k-2" target="xrFbDY1ulE0IEn7EpgWR-50" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="LEnjLOv2VGJ0EA_hLY6k-24" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;NOTE: all in the same&lt;br&gt;header &quot;Game.h&quot;&lt;br&gt;&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=16;" parent="LEnjLOv2VGJ0EA_hLY6k-23" vertex="1" connectable="0">
+        <mxCell id="LEnjLOv2VGJ0EA_hLY6k-24" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;NOTE: all in the same&lt;br&gt;header &quot;Master.h&quot;&lt;br&gt;&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=16;" parent="LEnjLOv2VGJ0EA_hLY6k-23" vertex="1" connectable="0">
           <mxGeometry x="0.5403" y="4" relative="1" as="geometry">
-            <mxPoint x="1" as="offset" />
+            <mxPoint x="-64" y="28" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="LEnjLOv2VGJ0EA_hLY6k-29" value="Button" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
@@ -515,6 +515,18 @@
         </mxCell>
         <mxCell id="LEnjLOv2VGJ0EA_hLY6k-38" value="+ idle: SDL_Texture*&lt;br&gt;+ hovering: SDL_Texture*&lt;br&gt;+ pressed: SDL_Texture*&lt;br&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="LEnjLOv2VGJ0EA_hLY6k-37" vertex="1">
           <mxGeometry y="40" width="170" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="kDnEMcJuoY4RCUkBWO26-5" value="Gameplay" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+          <mxGeometry x="5000" y="3080" width="465" height="550" as="geometry" />
+        </mxCell>
+        <mxCell id="kDnEMcJuoY4RCUkBWO26-6" value="+ window: SDL_Window*&#xa;+ renderer: SDL_Renderer*&#xa;&#xa;+ screen_width: int&#xa;+ screen_height: int&#xa;&#xa;+ user_actions: UserEvent&#xa;&#xa;+ FRAME_RATE: const int&#xa;&#xa;+ current_level: int&#xa;&#xa;+ level_width: int&#xa;+ level_height: int&#xa;&#xa;+ camera: SDL_Rect&#xa;&#xa;+ level_config_paths: vector&lt;string&gt;&#xa;&#xa;+ player: Player&#xa;+ grounds: vector&lt;Ground&gt;&#xa;+ platforms: vector&lt;Platform&gt;&#xa;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="kDnEMcJuoY4RCUkBWO26-5">
+          <mxGeometry y="26" width="465" height="334" as="geometry" />
+        </mxCell>
+        <mxCell id="kDnEMcJuoY4RCUkBWO26-7" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="kDnEMcJuoY4RCUkBWO26-5">
+          <mxGeometry y="360" width="465" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="kDnEMcJuoY4RCUkBWO26-8" value="+ Game(user_actions: UserEvent)&#xa;&#xa;+ initialize(): bool&#xa;+ loadAllAssets(): bool&#xa;+ loadCurrentLevel(): bool&#xa;+ close(): void&#xa;&#xa;+ updateCamera(): void&#xa;+ updateRenderCoordinates(): void&#xa;+ updateCollisions(): void&#xa;+ update(): void&#xa;+ render(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="kDnEMcJuoY4RCUkBWO26-5">
+          <mxGeometry y="368" width="465" height="182" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
