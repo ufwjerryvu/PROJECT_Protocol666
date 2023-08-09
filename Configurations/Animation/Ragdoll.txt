@@ -34,3 +34,11 @@ Assets/Sprite/Character/Player/Ragdoll/run_shoot6.png
 Assets/Sprite/Character/Player/Ragdoll/run_shoot7.png
 Assets/Sprite/Character/Player/Ragdoll/run_shoot8.png
 </shooting_running>
+<shooting_jumping>
+Assets/Sprite/Character/Player/Ragdoll/jump_shoot1.png
+Assets/Sprite/Character/Player/Ragdoll/jump_shoot2.png
+</shooting_jumping>
+<shooting_falling>
+Assets/Sprite/Character/Player/Ragdoll/fall_shoot1.png
+Assets/Sprite/Character/Player/Ragdoll/fall_shoot2.png
+</shooting_falling>

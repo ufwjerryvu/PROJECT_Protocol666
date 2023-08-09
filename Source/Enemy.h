@@ -21,14 +21,15 @@ private:
 
 	/*
 	NOTE:
-		- Name is the Enemy's categorized names (Zombie, Raider, etc...)
+		- `name` is the Enemy's categorized names (e.g., Zombie, Raider, etc.)
 
-		- Movement_logic is defined in Movement struct which its unit is in pixels.
+		- `movement_logic` is defined in the Movement structure which its unit
+		is in pixels.
 
-		- Damage_dealt is defined in Damage which is in Health Points 
-		(presumed Player has 100 max HP).
+		- Similarly, `damage_dealt` is defined in the Damage structure which 
+		is in Health Points (presumed Player has 100 max HP).
 
-		- Update_interval is used as a mechanism to delay Enemy's action, such as 
+		- `update_interval` is used as a mechanism to delay an Enemy's action, such as 
 		idle rotations.
 	*/
 
@@ -80,7 +81,7 @@ public:
 		different attacks (Range, Melee, etc...).
 	*/
 
-	virtual void detectPlayer(Player& arg) = 0;
+	virtual void detectPlayer(Player& player, vector<Ground>& grounds, vector<Platform>& platforms) = 0;
 	virtual void attack() = 0;
 };
 
@@ -446,170 +447,104 @@ bool Enemy::atGroundBoundary(vector<Ground>& grounds) {
 }
 
 void Enemy::run() {
-	const int PIXEL_ERROR = 4;
-
-	/*
-	NOTE:
-		- As Enemy spawns, it has the max x-displacement to the right,
-		and by default it will be facing towards the Right.
-
-		- Enemy keeps running within their boundary if Enemy is
-		within their movement boundary
-
-		- Else setX() back into boundary if Player knock Enemy out of
-		movement zone.
-
-		- The first if-statement checks whether the Enemy is within
-		their default spawn_x coordinate and x_max_displacement boundary
-	*/
-
-	if (this->getX() < this->getMovementLogic().spawn_x - PIXEL_ERROR || this->getX() > this->getMovementLogic().spawn_x + this->getMovementLogic().x_max_displacement + PIXEL_ERROR) {
-		/*
-			NOTE:
-				- Check for Direction facing to continue its movement in that direction.
-
-				- While in that running in that direction, if there is an obstacle, stops running and returns.
-		*/
-
-		Movement new_logic;
-		new_logic.spawn_x = this->getX();
-		new_logic.spawn_y = this->getY();
-		new_logic.x_direction_velocity = this->getMovementLogic().x_direction_velocity;
-		new_logic.x_max_displacement = this->getMovementLogic().x_max_displacement;
-		new_logic.y_direction_velocity = this->getMovementLogic().y_direction_velocity;
-		new_logic.y_max_displacement = this->getMovementLogic().y_max_displacement;
-
-		this->setMovementLogic(new_logic);
-	}
-	
-	else if (this->getDirectionFacing() == Direction::RIGHT && this->getX() + this->getRunSpeed() < this->getMovementLogic().spawn_x + this->getMovementLogic().x_max_displacement) {
-		/*
-		NOTE:
-			- Moving right, not at the right boundary for movement logic
-		*/
-
-		this->setRunningState(true);
-		this->setX(this->getX() + this->getRunSpeed());
-		return;
-	}
-
-	else if (this->getDirectionFacing() == Direction::LEFT && this->getX() - this->getRunSpeed() > this->getMovementLogic().spawn_x) {
-		/*
-		NOTE:
-			- Moving left, not at the left boundary for movement logic
-		*/
-		this->setRunningState(true);
+	this->setRunningState(true);
+	if (this->getDirectionFacing() == Direction::LEFT) {
 		this->setX(this->getX() - this->getRunSpeed());
-		return;
 	}
-
-	else if (this->getDirectionFacing() == Direction::RIGHT && this->getX() + this->getRunSpeed() >= this->getMovementLogic().spawn_x + this->getMovementLogic().x_max_displacement) {
-		this->setRunningState(false);
-		/*
-		NOTE:
-			- The following code that sets the x-coordinate to ensure
-			if the Enemy crosses or comes close to its boundary, its position, 
-			direction facing is set inwards into the boundary, towards 
-			the other end.
-		*/
-
-		this->setX(this->getMovementLogic().spawn_x + this->getMovementLogic().x_max_displacement);
-		this->setDirectionFacing(Direction::LEFT);
-		return;
-	}
-
-	else if (this->getDirectionFacing() == Direction::LEFT && this->getX() - this->getRunSpeed() <= this->getMovementLogic().spawn_x) {
-		this->setRunningState(false);
-		/*
-		NOTE:
-			- The following code that sets the x-coordinate is basically saying
-			that we don't want the Enemy leaving its spawn_x boundary.
-		*/
-
-		this->setX(this->getMovementLogic().spawn_x);
-		this->setDirectionFacing(Direction::RIGHT);
-		return;
+	else if (this->getDirectionFacing() == Direction::RIGHT) {
+		this->setX(this->getX() + this->getRunSpeed());
 	}
 }
 
 void Enemy::jump() {
 	/*
 	NOTE:
-		- Jump will not be implemented on Goons.
+		- This function is kept similar to the Player's jump() function,
+		for simplicity and consistency. 
+
+		- Changes will be considered as progress is made.
 	*/
+	const int FRAME_UPDATE_INTERVAL = 3;
+
+	if (this->isJumping()) {
+		/*
+		NOTE:
+			- If the enemy is jumping mid air, jump() continues to increase the y
+			coordinate of this enemy.
+		*/
+
+		if (this->getVerticalVelocity() == 0) {
+			/*
+			NOTE:
+				- Jump is at its highest point, calls off the jump() function
+			*/
+			this->setJumpingState(false);
+			this->setFallingState(true);
+			this->setVerticalUpdateInterval(0);
+			this->setVerticalVelocity(0);
+		}
+
+		else if (this->getVerticalVelocity() > 0) {
+			/*
+			NOTE:
+				- In a static jump, if 'W' key is pressed, the jump continues until
+				max jump height is reached
+
+				- During this jump, gravitational acceleration is in effect, slowing
+				the player's jump/vertical velocity nearing the max jump height.
+
+				- A frame update interval is added to demonstrate the deceleration of
+				the vertical velocity as vertical velocity can only be change once
+				a frame update interval is met, in this case '2'.
+
+			*/
+
+			if (this->getVerticalUpdateInterval() == FRAME_UPDATE_INTERVAL) {
+				this->setVerticalVelocity(this->getVerticalVelocity() - this->getGravitationalAcceleration());
+				this->setVerticalUpdateInterval(0);
+			}
+
+			else {
+				this->setVerticalUpdateInterval(this->getVerticalUpdateInterval() + 1);
+				this->setY(this->getY() - this->getVerticalVelocity());
+			}
+		}
+	}
+
+	/*
+	NOTE:
+		- If Enemy is not mid-jump, initiate jump() sequence 
+		by setting default attributes for a jump.
+
+	*/
+	else if (!this->isJumping()) {
+		this->setJumpingState(true);
+		this->setVerticalVelocity(this->getInitialJumpVelocity());
+		this->setVerticalUpdateInterval(0);
+	}
 }
 
 void Enemy::move() {
-	const int ONE_DIRECTION_CHECK_TIME = 500;
-	
 	/*
 	NOTE:
-		- One_direction_check_time refers to how long the Enemy would 
-		be idle facing left or right.
+		- `move()` function is kept similar to the Player's move() function.
+		
+		- `jump()` will be called in the condition that the Enemy is already
+		jumping, which jump() will be called respectively to their enemy 
+		class.
 
-		- The enemy will switch after 'one_direction_check_time' (500) 
-		updates are called
-
-		- When the Enemy detects the Player, they will chase after 
-		the Player; only continuing to be idle after losing line of sight,
-		detection, then run back to its initial spawn_x coordinate.
+		- By default, the Enemy is set to `run()` at all times, except while
+		attacking Player.
 	*/
-
-	if (!this->isJumping()) {
+	if (!this->isJumping() && this->getY() <= this->getLevelHeight()) {
 		this->fall();
 	}
 
-	if (!this->isAttacking() && this->getX() == this->getMovementLogic().spawn_x) {
-		/*
-		NOTE:
-			- At spawn_x, being idle, incrementing update_interval by one
-			each time an update is called.
-		*/
-		
-		this->setRunningState(false);
-		this->setUpdateInterval(this->getUpdateInterval() + 1);
-
-		if (this->getUpdateInterval() >= ONE_DIRECTION_CHECK_TIME) {
-			this->setUpdateInterval(0);
-			/*
-			NOTE:
-				- Change facing direction to the opposite
-				of the current facing direction.
-			*/
-
-			if (this->getDirectionFacing() == Direction::RIGHT)
-				this->setDirectionFacing(Direction::LEFT);
-
-			else if (this->getDirectionFacing() == Direction::LEFT)
-				this->setDirectionFacing(Direction::RIGHT);
-		}
+	if (this->isJumping()) {
+		this->jump();
 	}
 
-	else if (!this->isAttacking() && this->getX() != this->getMovementLogic().spawn_x) {
-		this->setRunningState(false);
-		this->setUpdateInterval(this->getUpdateInterval() + 1);
-
-		/*
-		NOTE:
-			- Assuming the Enemy is displace from spawn_x due to 
-			chasing the Player, it becomes idle (waiting to see if
-			it will detect the Player after the chase, acts as a 
-			suspicion check).
-
-			- After the waiting for the same interval of 
-			one_direction_check_time, it will run back to its spawn_x.
-		*/
-
-		if (this->getUpdateInterval() >= ONE_DIRECTION_CHECK_TIME) {
-			if (this->getX() < this->getMovementLogic().spawn_x) {
-				this->setDirectionFacing(Direction::RIGHT);
-				this->run();
-			}
-
-			else if (this->getX() > this->getMovementLogic().spawn_x) {
-				this->setDirectionFacing(Direction::LEFT);
-				this->run();
-			}
-		}
+	if (!this->isAttacking()) {
+		this->run();
 	}
 }

@@ -8,10 +8,18 @@
 #include "LIBDECLARATIONS.h"
 
 #include "Utilities.h"
+#include "FileHandling.h"
 
 #include "Sprite.h"
 
+#include "Projectile.h"
+#include "LaserBeam.h"
+#include "FiftyCalibre.h"
+
 #include "Character.h"
+#include "Enemy.h"
+#include "MeleeGoon.h"
+#include "RangeGoon.h"
 #include "Player.h"
 
 #include "Terrain.h"
@@ -298,7 +306,8 @@ Animation FileHandling::loadAnimation(SDL_Renderer* renderer, string file_for_an
 		*/
 		if (anim_paths_vec[i] == "<idle>" || anim_paths_vec[i] == "<running>" 
 			|| anim_paths_vec[i] == "<jumping>" || anim_paths_vec[i] == "<falling>"
-			|| anim_paths_vec[i] == "<shooting_idle>" || anim_paths_vec[i] == "<shooting_running>") {
+			|| anim_paths_vec[i] == "<shooting_idle>" || anim_paths_vec[i] == "<shooting_running>"
+			|| anim_paths_vec[i] == "<shooting_jumping>" || anim_paths_vec[i] == "<shooting_falling>") {
 			current_flag = anim_paths_vec[i];
 		}
 
@@ -323,6 +332,12 @@ Animation FileHandling::loadAnimation(SDL_Renderer* renderer, string file_for_an
 		}
 		if (current_flag == "<shooting_running>" && anim_paths_vec[i] != current_flag && anim_paths_vec[i] != "</shooting_running>") {
 			animation.frames_shooting_running.push_back(loadTexture(renderer, anim_paths_vec[i]));
+		}
+		if (current_flag == "<shooting_jumping>" && anim_paths_vec[i] != current_flag && anim_paths_vec[i] != "</shooting_jumping>") {
+			animation.frames_shooting_jumping.push_back(loadTexture(renderer, anim_paths_vec[i]));
+		}
+		if (current_flag == "<shooting_falling>" && anim_paths_vec[i] != current_flag && anim_paths_vec[i] != "</shooting_falling>") {
+			animation.frames_shooting_falling.push_back(loadTexture(renderer, anim_paths_vec[i]));
 		}
 	}
 

@@ -31,7 +31,7 @@ public:
 	/*
 	SECTION 3: OTHER METHODS
 	*/
-	void detectPlayer(Player& arg);
+	void detectPlayer(Player& player, vector<Ground>& grounds, vector<Platform>& platforms);
 	void attack();
 
 	void setNextFrame();
@@ -76,114 +76,114 @@ SECTION 2B: GETTERS
 SECTION 3: OTHER METHODS
 */
 
-void MeleeGoon::detectPlayer(Player& arg) {
-	const int DETECTION_RANGE = 300;
-	const int CLOSE_RANGE_DECTECTION = 5;
+void MeleeGoon::detectPlayer(Player& player, vector<Ground>& grounds, vector<Platform>& platforms) {
+	/*
+	NOTE: 
+		- Below are the logic used for MeleeGoon to detect the Player.
+
+		- MeleeGoon will always chase the Player in the X-direction.
+
+		- If Player is on another platform, MeleeGoon will stop to jump when it is in range of the platform.
+			+ The Goon will continue to chase once it lands on the platform.
+			+ The same will happen if the Player is on a platform under the MeleeGoon.
+
+		- Once in attack range, the MeleeGoon will stop for the entire attack animation and attack 
+		the player, then continues the chase.
+	*/
 	const int ANIMATION_RANGE = 8;
-	const int CHASING_SPEED = 4;
 	const int PIXEL_ERROR = 5;
+	const int JUMP_X_RANGE = 150;
+	const int DROP_HEIGHT = 20;
+	const int ATTACK_RANGE = 10;
+	int player_center_x = (player.getLeftBound() + player.getRightBound()) / 2;
 
-	if (arg.getY() <= this->getY() + PIXEL_ERROR && arg.getY() >= this->getY() - this->getHeight() - PIXEL_ERROR) {
+	/*
+	NOTE: 
+		- While the Enemy is not within attack range, it will chase the Player.
+	*/
+	if (!this->isAttacking()) {
 		/*
-		NOTE:
-			- The MeleeGoons detect Player in a rectangular box in the direction
-			the MeleeGoon is facing.
+		NOTE: 
+			- MeleeGoon faces the Player at all times.
 
-			- This rectangular detection zone is defined by the height of the
-			EnemyGoon x 300 pixels (half and a little less than the width of the
-			game window).
-
-			- Once the player is detected, the Enemy has to run toward the Player
-			and will then attack.
-
-			- DEVELOPMENT: The animation range will be defined by the pixel art's
-			animation, to be develop after Enemy is designed and animated.
+			- If MeleeGoon is within attack range, it will stop and attack.
 		*/
 
-		if (arg.getX() >= this->getX() - CLOSE_RANGE_DECTECTION && arg.getX() <= this->getX() + CLOSE_RANGE_DECTECTION) {
-			/*
-			NOTE:
-				- This is close range detection range conditional check.
-			*/
+		if (player.getX() + player.getWidth() <= this->getX() + this->getWidth()) {
+			this->setDirectionFacing(Direction::LEFT);
 			
-			if (arg.getX() < this->getX()) {
-				this->setRunningState(true);
-				this->setAttackingState(true);
-
-				if (this->getDirectionFacing() == Direction::RIGHT) {
-					this->setDirectionFacing(Direction::LEFT);
-				}
-
-
-				this->setX(this->getX() - CHASING_SPEED);
-				this->setUpdateInterval(0);
+			if (this->getLeftBound() - ATTACK_RANGE > player_center_x && this->getLeftBound() - ATTACK_RANGE < player.getRightBound()) {
+				this->attack();
 			}
-			else if (arg.getX() > this->getX()) {
-				this->setRunningState(true);
-				this->setAttackingState(true);
-
-				if (this->getDirectionFacing() == Direction::LEFT) {
-					this->setDirectionFacing(Direction::RIGHT);
-				}
-
-				this->setX(this->getX() + CHASING_SPEED);
-				this->setUpdateInterval(0);
+		}
+		else if (player.getX() >= this->getX()) {
+			this->setDirectionFacing(Direction::RIGHT);
+			
+			if (this->getRightBound() + ATTACK_RANGE < player_center_x && this->getRightBound() + ATTACK_RANGE > player.getLeftBound()) {
+				this->attack();
 			}
 		}
 
-		else if (this->getDirectionFacing() == Direction::RIGHT) {
-			/*
-			NOTE:
-				- This is the Enemy's detection range when facing
-				the right.
-			*/
+		/*
+		NOTE:
+			- Check if MeleeGoon is on the same platform as the Player.
 
-			if (arg.getX() >= this->getX() && arg.getX() <= this->getX() + DETECTION_RANGE) {
-				this->setRunningState(true);
-				this->setAttackingState(true);
+			- MeleeGoon will jump onto same platform as the Player, to ensure 
+			that the MeleeGoon jumps onto the platform, it must meet the Player's
+			current platform's boundary to jump on.
 
-				this->setX(this->getX() + CHASING_SPEED);
-				this->setUpdateInterval(0);
+			- MeleeGoon will drop if it is above the Player y-level.
+		*/
+		if (player.getBottomBound() < this->getBottomBound() && player.getCollisionDirections().bottom && this->getCollisionDirections().bottom) {
+			Platform current_platform_ptr;
 
-				if (this->getX() + ANIMATION_RANGE >= arg.getX() && this->getX() + ANIMATION_RANGE <= arg.getX() + arg.getWidth()) {
-					this->attack();
-					this->setUpdateInterval(0);
+			for (Platform current_platform : platforms) {
+				if (player.getBottomBound() >= current_platform.getTopBound() - PIXEL_ERROR && player.getBottomBound() <= current_platform.getTopBound() + PIXEL_ERROR) {
+					current_platform_ptr = current_platform;
+					break;
 				}
+			}
+
+			if (this->getLeftBound() > current_platform_ptr.getLeftBound() - JUMP_X_RANGE && this->getRightBound() < current_platform_ptr.getRightBound() + JUMP_X_RANGE) {
+				this->jump();
+				return;
 			}
 		}
 
-		else if (this->getDirectionFacing() == Direction::LEFT) {
-			/*
-			NOTE:
-				- This is the Enemy's detection range when facing
-				the left.
-			*/
-			
-			if (arg.getX() <= this->getX() && arg.getX() >= this->getX() - DETECTION_RANGE) {
-				this->setRunningState(true);
-				this->setAttackingState(true);
-
-				this->setX(this->getX() - CHASING_SPEED);
-				this->setUpdateInterval(0);
-
-				if (this->getX() - ANIMATION_RANGE >= arg.getX() && this->getX() - ANIMATION_RANGE <= arg.getX() + arg.getWidth()) {
-					this->attack();
-					this->setUpdateInterval(0);
-				}
-			}
+		else if (player.getTopBound() > this->getBottomBound() && player.getCollisionDirections().bottom && this->getCollisionDirections().bottom && !this->isJumping()) {
+			this->setY(this->getY() + DROP_HEIGHT);
+			this->fall();
+			return;
 		}
 	}
-
 	else {
-		this->setAttackingState(false);
+		this->attack();
 	}
 }
 
 void MeleeGoon::attack() {
 	/*
 	NOTE:
-		- Empty for now.
+		- Temporarily triggers idle animation, since 
+		Enemy stops moving during attack.
 	*/
+
+	const int ANIMATION_FRAMES = 10;
+	this->setRunningState(false);
+
+	if (!this->isAttacking()) {
+		this->setAttackingState(true);	
+		this->setUpdateInterval(0);
+	}
+	else {
+		if(this->getUpdateInterval() == ANIMATION_FRAMES){
+			this->setAttackingState(false);
+			this->setUpdateInterval(0);
+		}
+		else {
+			this->setUpdateInterval(this->getUpdateInterval() + 1);
+		}
+	}
 }
 
 void MeleeGoon::setNextFrame() {
@@ -303,8 +303,10 @@ void MeleeGoon::setNextFrame() {
 		NOTE:
 			- On the contrary, if the player is moving then the current
 			index for the idle frame gets reset to 0.
+
 			- Everything here is pretty similar to the previous block, just
 			that idle animation frames are accounted for instead.
+
 			- In this case, we want the next animation sequence
 			to be updated every 5 frames so a modulo operation is used to
 			make sure the animation doesn't happen too quickly.
