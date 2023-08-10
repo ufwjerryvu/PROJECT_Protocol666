@@ -1,6 +1,6 @@
 #include "LIBDECLARATIONS.h"
 
-#include "Game.h"
+#include "Master.h"
 
 int main(int argc, char* argv[]) {
 
@@ -23,7 +23,7 @@ int main(int argc, char* argv[]) {
 		- Declaring the game object and within it, SDL
 		subsystems are initialized.
 	*/
-	Game game(user_actions);
+	Master game(user_actions);
 
 	/*
 	NOTE:
