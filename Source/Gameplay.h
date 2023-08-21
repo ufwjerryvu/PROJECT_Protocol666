@@ -28,13 +28,7 @@
 #include "SinglePlatform.h"
 #include "MultiplePlatform.h"
 
-enum State{
-	MAIN_MENU,
-	GAMEPLAY,
-	PAUSE
-};
-
-class Game {
+class Gameplay {
 public:
 	/*
 	SECTION 0A: SYSTEM VARIABLES, CONSTANTS, AND THE EVENT HANDLER
@@ -42,18 +36,14 @@ public:
 	SDL_Window* window = NULL;
 	SDL_Renderer* renderer = NULL;
 
-	static const int SCREEN_WIDTH = 900;
-	static const int SCREEN_HEIGHT = 500;
+	int screen_width;
+	int screen_height;
 
 	UserEvent user_actions;
 
 	/*
 	SECTION 0B: GAME BACKGROUND VARIABLES
 	*/
-	const int FRAME_RATE = 60;
-
-	State state;
-
 	int current_level;
 
 	int level_width;
@@ -64,12 +54,7 @@ public:
 	vector<string> level_config_paths;
 
 	/*
-	SECTION 0C: MAIN MENU VARIABLES
-	*/
-
-
-	/*
-	SECTION 0D: GAME ASSETS VARIABLES
+	SECTION 0C: GAME ASSET VARIABLES
 	*/
 	Player player;
 	vector<Ground> grounds;
@@ -78,16 +63,14 @@ public:
 	/*
 	SECTION 1: CONSTRUCTORS AND DESTRUCTORS
 	*/
-	Game(UserEvent user_actions);
-
+	Gameplay();
+	Gameplay(UserEvent user_actions, int screen_width, int screen_height,
+		SDL_Renderer* renderer);
 	/*
-	SECTION 2: SYSTEM INITIALIZATIONS AND DESTRUCTIONS
+	SECTION 2: GAME LOADING
 	*/
-	bool initialize();
-	bool loadMainMenu();
-	bool loadAllAssets();
+	bool loadAllGameplayAssets();
 	bool loadCurrentLevel();
-	void close();
 
 	/*
 	SECTION 3: GAME LOGIC
@@ -95,6 +78,7 @@ public:
 	void updateCamera();
 	void updateRenderCoordinates();
 	void updateCollisions();
+
 	void update();
 	void render();
 };
@@ -102,170 +86,61 @@ public:
 /*
 SECTION 1: CONSTRUCTORS AND DESTRUCTORS
 */
-Game::Game(UserEvent user_actions) {
+Gameplay::Gameplay() {
 	/*
 	NOTE:
-		- Initializing all SDL subsystems.
+		- Setting uninitialized fields to their default states.
 	*/
 
-	if (!this->initialize()) {
-		cerr << "Error from Game(): cannot initialize SDL subsystems." << endl;
-	}
+	this->screen_width = 0;
+	this->screen_height = 0;
+
+	this->level_width = 0;
+	this->level_height = 0;
+
+	this->camera = SDL_Rect();
+
+	this->user_actions = UserEvent();
+	this->current_level = 0;
+}
+
+Gameplay::Gameplay(UserEvent user_actions, int screen_width, int screen_height,
+	SDL_Renderer* renderer) {
 
 	/*
 	NOTE:
-		- Initializing the camera.
+		- Just simply assigning the arguments to their respective
+		member fields.
 	*/
-	SDL_Rect camera = { 0, 0, this->SCREEN_WIDTH, this->SCREEN_HEIGHT };
+	this->renderer = renderer;
 	this->user_actions = user_actions;
 
-	/*
-	NOTE:
-		- Making sure the first thing that pops up
-		is the main menu when the user starts the game.
-	*/
-	this->state = MAIN_MENU;
+	this->screen_width = screen_width;
+	this->screen_height = screen_height;
 
 	/*
 	NOTE:
-		- Loading the first level of the game
-		as we are initializing the game.
+		- Same deal.
 	*/
 	this->current_level = 0;
 
-	if (!this->loadCurrentLevel()) {
-		cerr << "Error from Game(): cannot load the current level configurations." << endl;
-	}
 
 	/*
 	NOTE:
-		- Loading all assets.
+		- The gameplay variables are set using the loading member
+		methods.
+
+		- The function `loadCurrentLevel()` must come before
+		`loadAllGameplayAssets()` or there will be a runtime error.
 	*/
-	if (!this->loadAllAssets()) {
-		cerr << "Error from Game(): cannot load some or all assets properly." << endl;
-	}
+	this->loadCurrentLevel();
+	this->loadAllGameplayAssets();
 }
 
 /*
-SECTION 2: SYSTEM INITIALIZATIONS AND DESTRUCTIONS
+SECTION 2: LOADING
 */
-bool Game::initialize() {
-	bool success = true;
-
-	/*
-	NOTE:
-		- Initializing the SDL video subsystems. This step is modified
-		from lazyfoo.net.
-	*/
-	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		cerr << "Error from Game.initialize(): cannot initialize the SDL video subsystems." << endl;
-		success = false;
-		return success;
-	}
-
-	/*
-	NOTE:
-		- Attempting to create a window. This step is also modified
-		from lazyfoo.net.
-	*/
-	this->window = SDL_CreateWindow("Protocol 666", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-		SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-	if (this->window == NULL) {
-		cerr << "Error from Game.initialize(): cannot create window." << endl;
-		success = false;
-		return success;
-	}
-
-	/*
-	NOTE:
-		- Also modified from lazyfoo.net. All textures of the game
-		objects will be rendered via this renderer. If it fails then
-		nothing gets displayed.
-	*/
-	this->renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	if (this->renderer == NULL) {
-		cerr << "Error from Game.initialize(): cannot create renderer." << endl;
-		success = false;
-		return success;
-	}
-
-	/*
-	NOTE:
-		- Initializing the SDL IMG library, specifically to load
-		in and display PNG images. Modified from lazyfoo.net.
-
-		- The bitwise AND operation below is used to make sure
-		the IMG_Init() function returns its argument. If the function
-		doesn't return the value of its argument then the whole
-		expression evaluates to 1, and 0 if vice versa.
-
-		- In the document, IMG_INIT_PNG = 2. If IMG_Init(IMG_INIT_PNG)
-		returns 2, then IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG is 2 & 2
-		which would be evaluated to 1. At this point, we've successfully
-		initiated the IMG subsystem for PNG images.
-
-		- However, if IMG_Init(IMG_INIT_PNG) would return something else
-		like 4, which presumably is the value for IMG_INIT_JPEG then
-		the expression IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG is 4 & 2,
-		which would then be evaluated to 0. A zero means we've failed
-		to initialize the PNG subsystems.
-
-		- This was just my rationale --- Jerry.
-	*/
-	if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
-		cerr << "Error from Game.initialize(): cannot initialize IMG subsystems." << endl;
-		success = false;
-		return success;
-	}
-	else {
-		SDL_SetRenderDrawColor(renderer, 90, 90, 90, 90);
-	}
-
-	/*
-	NOTE:
-		- Modified from lazyfoo.net. A negative one means the
-		TTF subsystem has failed to initialize.
-	*/
-	if (TTF_Init() == -1) {
-		cerr << "Error from Game.initialize(): could not initialize TTF subsystems." << endl;
-		success = false;
-		return success;
-	}
-
-	return success;
-}
-
-bool Game::loadMainMenu() {
-	/*
-	NOTE:
-		- Empty for now.
-	*/
-}
-
-bool Game::loadAllAssets() {
-	bool success = true;
-
-	FileHandling file_io;
-
-	this->player = file_io.loadPlayer(this->renderer, this->level_config_paths[this->current_level],
-		this->user_actions);
-	
-	this->grounds = file_io.loadGrounds(this->renderer, this->level_config_paths[this->current_level]);
-	this->platforms = file_io.loadPlatforms(this->renderer, this->level_config_paths[this->current_level]);
-
-	/*
-	NOTE:
-		- We kind of have to update the player regarding how big
-		the level is everytime the level changes. This is purely
-		because of bad design.
-	*/
-	this->player.loadLevelWidth(this->level_width);
-	this->player.loadLevelHeight(this->level_height);
-
-	return success;
-}
-
-bool Game::loadCurrentLevel() {
+bool Gameplay::loadCurrentLevel() {
 	bool success = true;
 	/*
 	NOTE:
@@ -281,25 +156,40 @@ bool Game::loadCurrentLevel() {
 	return success;
 }
 
-void Game::close() {
+bool Gameplay::loadAllGameplayAssets() {
+	bool success = true;
+
+	FileHandling file_io;
+
+	this->player = file_io.loadPlayer(this->renderer, this->level_config_paths[this->current_level],
+		this->user_actions);
+
+	this->grounds = file_io.loadGrounds(this->renderer, this->level_config_paths[this->current_level]);
+	this->platforms = file_io.loadPlatforms(this->renderer, this->level_config_paths[this->current_level]);
+
 	/*
 	NOTE:
-		- To be added later.
+		- We kind of have to update the player regarding how big
+		the level is everytime the level changes. This is purely
+		because of bad design.
 	*/
+	this->player.loadLevelWidth(this->level_width);
+	this->player.loadLevelHeight(this->level_height);
+
+	return success;
 }
 
 /*
 SECTION 3: GAME LOGIC
 */
-
-void Game::updateCamera() {
+void Gameplay::updateCamera() {
 	/*
 	NOTE:
 		- The code below centers the player.
 		- Code modified from lazyfoo.net.
 	*/
-	camera.x = (this->player.getX() + this->player.getWidth() / 2) - this->SCREEN_WIDTH / 2;
-	camera.y = (this->player.getY() + this->player.getHeight() / 2) - this->SCREEN_HEIGHT / 2;
+	camera.x = (this->player.getX() + this->player.getWidth() / 2) - this->screen_width / 2;
+	camera.y = (this->player.getY() + this->player.getHeight() / 2) - this->screen_height / 2;
 
 	/*
 	NOTE:
@@ -309,15 +199,15 @@ void Game::updateCamera() {
 	if (this->camera.x < 0) { this->camera.x = 0; }
 	if (this->camera.y < 0) { this->camera.y = 0; }
 
-	if (this->camera.x > this->level_width - this->SCREEN_WIDTH) {
-		this->camera.x = this->level_width - this->SCREEN_WIDTH;
+	if (this->camera.x > this->level_width - this->screen_width) {
+		this->camera.x = this->level_width - this->screen_width;
 	}
-	if (this->camera.y > this->level_height - this->SCREEN_HEIGHT) {
-		this->camera.y = this->level_height - this->SCREEN_HEIGHT;
+	if (this->camera.y > this->level_height - this->screen_height) {
+		this->camera.y = this->level_height - this->screen_height;
 	}
 }
 
-void Game::updateRenderCoordinates() {
+void Gameplay::updateRenderCoordinates() {
 	/*
 	NOTE:
 		- We update the camera first.
@@ -351,18 +241,18 @@ void Game::updateRenderCoordinates() {
 	*/
 }
 
-void Game::updateCollisions() {
+void Gameplay::updateCollisions() {
 	/*
 	NOTE:
-		- We must clear all collision directions 
-		for all objects that detect collision 
+		- We must clear all collision directions
+		for all objects that detect collision
 		directions first.
 	*/
 	this->player.setCollision(Collision());
 
 	/*
 	NOTE:
-		- Then we call all the objects that have a collide() 
+		- Then we call all the objects that have a collide()
 		function.
 	*/
 	this->player.collide(this->platforms);
@@ -381,7 +271,7 @@ void Game::updateCollisions() {
 	}
 }
 
-void Game::update() {
+void Gameplay::update() {
 	/*
 	NOTE:
 		- Updating the render coordinates to make sure
@@ -400,7 +290,7 @@ void Game::update() {
 	}
 }
 
-void Game::render() {
+void Gameplay::render() {
 	/*
 	NOTE:
 		- Clearing everything in the renderer.
