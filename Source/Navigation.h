@@ -1,3 +1,8 @@
+/*
+@ COLLABORATORS: Jerry Vu
+@ CLASS DESIGNERS: Jerry Vu
+*/
+
 #pragma once
 
 #include "LIBDECLARATIONS.h"

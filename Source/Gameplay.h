@@ -75,6 +75,8 @@ public:
 	/*
 	SECTION 3: GAME LOGIC
 	*/
+	int stateQuery();
+
 	void updateCamera();
 	void updateRenderCoordinates();
 	void updateCollisions();
@@ -182,6 +184,13 @@ bool Gameplay::loadAllGameplayAssets() {
 /*
 SECTION 3: GAME LOGIC
 */
+int Gameplay::stateQuery() {
+	/*
+	NOTE:
+		- Empty for now.
+	*/
+}
+
 void Gameplay::updateCamera() {
 	/*
 	NOTE:

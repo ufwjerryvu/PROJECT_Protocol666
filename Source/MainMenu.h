@@ -1,3 +1,8 @@
+/*
+@ COLLABORATORS: Jerry Vu
+@ CLASS DESIGNERS: Jerry Vu
+*/
+
 #pragma once
 
 #include "LIBDECLARATIONS.h"
@@ -46,7 +51,12 @@ public:
 		SDL_Renderer* renderer);
 
 	/*
-	SECTION 2: NAVIGATION LOGIC
+	SECTION 2: ASSET LOADING
+	*/
+	bool loadAllMainMenuAssets();
+
+	/*
+	SECTION 3: NAVIGATION LOGIC
 	*/
 	int stateQuery();
 	void update();
@@ -73,32 +83,98 @@ MainMenu::MainMenu(UserEvent user_actions, int screen_width, int screen_height,
 		similar to the one in `Gameplay.h`. 
 	*/
 	
-	/*
-	NOTE:
-		- Button and background loading to be added later. 
-	*/
+	this->loadAllMainMenuAssets();
 }
 
 /*
-SECTION 2: NAVIGATION LOGIC
+SECTION 2: ASSET LOADING
+*/
+bool MainMenu::loadAllMainMenuAssets() {
+	bool success = true;
+
+	FileHandling file_io = FileHandling();
+
+	/*
+	NOTE:
+		- Loading the buttons.
+	*/
+	int play_button_x = 0, play_button_y = 200;
+	this->play = file_io.loadButton(this->renderer, play_button_x, play_button_y, 
+		"play", this->user_actions);
+
+	/*
+	NOTE:
+		- All the other buttons will be loaded later.
+	*/
+	this->about = Button();
+	this->instructions = Button();
+	this->settings = Button();
+	this->exit = Button();
+
+	return success;
+}
+
+/*
+SECTION 3: NAVIGATION LOGIC
 */
 int MainMenu::stateQuery() {
 	/*
 	NOTE:
-		- Empty for now.
+		- Refer to the UML state diagram machine for more
+		information regarding the return values for this function.
 	*/
+	const int NO_CHANGE = 0, GAMEPLAY = 1,
+		SETTINGS = 2, INSTRUCTIONS = 3, ABOUT = 4, EXIT = 5;
+	if (this->play.isPressed()) {
+		return GAMEPLAY;
+	}
+	else if (this->settings.isPressed()) {
+		return SETTINGS;
+	}
+	else if (this->instructions.isPressed()) {
+		return INSTRUCTIONS;
+	}
+	else if (this->about.isPressed()) {
+		return ABOUT;
+	}
+	else if (this->exit.isPressed()) {
+		return EXIT;
+	}
+
+	return NO_CHANGE;
 }
 
 void MainMenu::update() {
 	/*
 	NOTE:
-		- Empty for now.
+		- Centering/aligning the buttons.
 	*/
+	this->play.setX(this->screen_width / 2 - this->play.getWidth() / 2);
+
+	/*
+	NOTE:
+		- We constantly run the state query function
+		to make sure it's updated every frame and
+		we update the buttons' status, too.
+	*/
+	this->play.update();
+
+	this->stateQuery();
 }
 
 void MainMenu::render() {
 	/*
 	NOTE:
-		- Empty for now.
+		- Clearing the renderer is important.
 	*/
+	SDL_RenderClear(this->renderer);
+
+	this->play.render(this->renderer, false);
+
+	/*
+	NOTE:
+		- Presenting to the renderer is also equally
+		important.
+	*/
+	SDL_RenderPresent(this->renderer);
 }

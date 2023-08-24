@@ -22,21 +22,27 @@ private:
 	bool pressed;
 
 	ButtonAnimation animation;
+
+	UserEvent user_actions;
+
 public:
 	/*
 	SECTION 1: CONSTRUCTORS AND DESTRUCTORS 
 	*/
 	Button();
-	Button(int x, int y, ButtonAnimation animation);
+	Button(int x, int y, ButtonAnimation animation,
+		UserEvent user_actions);
 	~Button();
+
 	/*
 	SECTION 2: OTHER METHODS
 	*/
+	bool isPressed();
 	bool hide();
 	bool appear();
-	bool hover(UserEvent user_actions);
+	bool hover();
 
-	bool update(UserEvent user_actions);
+	bool update();
 };
 
 /*
@@ -48,14 +54,19 @@ Button::Button() : Sprite() {
 	this->pressed = false;
 
 	this->animation = {NULL, NULL, NULL};
+
+	user_actions = UserEvent{};
 }
 
-Button::Button(int x, int y, ButtonAnimation animation) : Sprite(x, y, NULL) {
+Button::Button(int x, int y, ButtonAnimation animation,
+	UserEvent user_actions): Sprite(x, y, NULL) {
 	this->appears = false;
 	this->hovering = false;
 	this->pressed = false;
 
 	this->animation = animation;
+
+	this->user_actions = user_actions;
 }
 
 Button::~Button() {
@@ -68,6 +79,9 @@ Button::~Button() {
 /*
 SECTION 2: OTHER METHODS
 */
+bool Button::isPressed() {
+	return pressed;
+}
 
 bool Button::hide() {
 	bool success = true;
@@ -85,7 +99,7 @@ bool Button::appear() {
 	return success;
 }
 
-bool Button::hover(UserEvent user_actions) {
+bool Button::hover() {
 	bool success = true;
 
 	/*
@@ -95,10 +109,13 @@ bool Button::hover(UserEvent user_actions) {
 		otherwise. If the user is pressing on the button
 		then `pressing` gets set to true. False if otherwise.
 	*/
-	if (*user_actions.mouse_x >= this->getLeftBound() && *user_actions.mouse_x <= this->getRightBound()
-		&& *user_actions.mouse_y >= this->getTopBound() && *user_actions.mouse_y <= this->getBottomBound()) {
+	if (*this->user_actions.mouse_x >= this->getLeftBound() 
+		&& *this->user_actions.mouse_x <= this->getRightBound()
+		&& *this->user_actions.mouse_y >= this->getTopBound() 
+		&& *this->user_actions.mouse_y <= this->getBottomBound()) {
+
 		this->hovering = true;
-		if (*user_actions.mouse_down) {
+		if (*this->user_actions.mouse_down) {
 			this->pressed = true;
 		}
 	}
@@ -110,15 +127,15 @@ bool Button::hover(UserEvent user_actions) {
 	return success;
 }
 
-bool Button::update(UserEvent user_actions) {
+bool Button::update() {
 	bool success = true;
-	
+
 	/*
 	NOTE:
 		- Calling `hover()` to set the relevant variables
 		depending on the user.
 	*/
-	this->hover(user_actions);
+	this->hover();
 
 	this->setTexture(this->animation.idle);
 

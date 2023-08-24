@@ -8,9 +8,10 @@
 #include "LIBDECLARATIONS.h"
 
 #include "Utilities.h"
-#include "FileHandling.h"
 
 #include "Sprite.h"
+
+#include "Button.h"
 
 #include "Projectile.h"
 #include "LaserBeam.h"
@@ -60,6 +61,8 @@ public:
 	*/
 	vector<string> getLinesFromFlag(string content, string flag);
 	string getFirstLineFromFlag(string content, string flag);
+
+	Button loadButton(SDL_Renderer* renderer, int x, int y, string prefix, UserEvent user_actions);
 
 	Player loadPlayer(SDL_Renderer* renderer, string level_config_path, UserEvent user_actions, string chosen_type);
 	vector<Ground> loadGrounds(SDL_Renderer* renderer, string level_config_path);
@@ -440,6 +443,35 @@ string FileHandling::getFirstLineFromFlag(string content, string flag) {
 	}
 
 	return "";
+}
+
+Button FileHandling::loadButton(SDL_Renderer* renderer, int x, int y, string prefix, UserEvent user_actions) {
+	/*
+	NOTE:
+		- All button animations will be in the following directory path:
+			'Assets/Sprite/Button/'
+
+		- Any button will have a prefix. The prefix is the name of the 
+		button or what the button actually displays in order to be more
+		descriptive. 
+
+		- For example, the `play` button would have the following paths
+		for its animations:
+			'Assets/Sprite/Button/play_idle.png'
+			'Assets/Sprite/Button/play_hover.png'
+			'Assets/Sprite/Button/play_pressed.png'
+	*/
+	string base_path = "Assets/Sprite/Button/" + prefix;
+
+	string idle_path = base_path + "_idle.png";
+	string hover_path = base_path + "_hover.png";
+	string pressed_path = base_path + "_pressed.png";
+
+	ButtonAnimation temp = { this->loadTexture(renderer, idle_path),
+						this->loadTexture(renderer, hover_path),
+						this->loadTexture(renderer, pressed_path) };
+
+	return Button(x, y, temp, user_actions);
 }
 
 Player FileHandling::loadPlayer(SDL_Renderer* renderer, string level_config_path, UserEvent user_actions, string chosen_type = "ragdoll") {
