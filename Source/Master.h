@@ -10,6 +10,8 @@
 #include "Utilities.h"
 #include "FileHandling.h"
 #include "Gameplay.h"
+#include "Navigation.h"
+#include "MainMenu.h"
 
 #include "Sprite.h"
 
@@ -56,6 +58,8 @@ public:
 	SECTION 0B: STATE CONTROL AND BRANCHES
 	*/
 	State state;
+
+	MainMenu main_menu;
 	Gameplay gameplay;
 
 	/*
@@ -101,13 +105,16 @@ Master::Master(UserEvent user_actions) {
 		- Making sure the first thing that pops up is the main menu when 
 		the user starts the game.
 	*/
-	this->state = GAMEPLAY;
+	this->state = MAIN_MENU;
 
 	/*
 	NOTE:
 		 - Passing the system variables and the event handler into the 
-		 gameplay object.
+		 main menu and gameplay objects.
 	*/
+	this->main_menu = MainMenu(this->user_actions, this->SCREEN_WIDTH, this->SCREEN_HEIGHT,
+		this->renderer);
+
 	this->gameplay = Gameplay(this->user_actions, this->SCREEN_WIDTH, this->SCREEN_HEIGHT,
 		this->renderer);
 }
@@ -212,12 +219,29 @@ void Master::close() {
 SECTION 3: UPDATE AND DISPLAY
 */
 void Master::update() {
+	/*
+	NOTE:
+		- Check the UML state diagram for more information regarding
+		the stateQuery() methods and their return values.
+	*/
+	if (this->state == MAIN_MENU) {
+		this->main_menu.update();
+
+		if (this->main_menu.stateQuery() == 1) {
+			this->state = GAMEPLAY;
+		}
+
+	}
 	if (this->state == GAMEPLAY) {
 		this->gameplay.update();
 	}
 }
 
 void Master::render() {
+	if (this->state == MAIN_MENU) {
+		this->main_menu.render();
+	}
+
 	if (this->state == GAMEPLAY) {
 		this->gameplay.render();
 	}

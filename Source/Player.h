@@ -548,7 +548,6 @@ void Player::setNextFrame() {
 		temp.current_frame_shooting_jumping = 0;
 		temp.current_frame_shooting_falling = 0;
 
-		cout << temp.current_frame_idle << endl;
 		this->setAnimation(temp);
 
 		/*
