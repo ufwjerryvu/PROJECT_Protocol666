@@ -98,7 +98,7 @@ bool MainMenu::loadAllMainMenuAssets() {
 	NOTE:
 		- Loading the buttons.
 	*/
-	int play_button_x = 0, play_button_y = 200;
+	int play_button_x = 0, play_button_y = 220;
 	this->play = file_io.loadButton(this->renderer, play_button_x, play_button_y, 
 		"play", this->user_actions);
 
