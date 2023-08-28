@@ -37,11 +37,11 @@ public:
 	/*
 	SECTION 0: BUTTONS
 	*/
-	Button play;
-	Button settings;
-	Button instructions;
-	Button about;
-	Button exit;
+	Button button_play;
+	Button button_settings;
+	Button button_instructions;
+	Button button_about;
+	Button button_exit;
 
 	/*
 	SECTION 1: CONSTRUCTORS AND DESTRUCTORS
@@ -96,20 +96,42 @@ bool MainMenu::loadAllMainMenuAssets() {
 
 	/*
 	NOTE:
-		- Loading the buttons.
+		- Loading the buttons. This is done by creating an array of
+		Button pointers and dereferencing the pointer members as we
+		try to construct the buttons. I think this is genius.
 	*/
-	int play_button_x = 0, play_button_y = 220;
-	this->play = file_io.loadButton(this->renderer, play_button_x, play_button_y, 
-		"play", this->user_actions);
+	const int SPACING_Y = 5;
+	const int START_X = 0;
+	const int START_Y = 130;
+	
+	string prefixes[] = { "play", "instructions", "settings",
+		"about", "exit" };
+
+	Button* init[] = {&this->button_play, &this->button_instructions,
+		&this->button_settings, &this->button_about, &this->button_exit};
 
 	/*
 	NOTE:
-		- All the other buttons will be loaded later.
+		- Looping through the array of pointers and constructing
+		buttons based on the array of prefixes. We dereference the
+		pointers.
 	*/
-	this->about = Button();
-	this->instructions = Button();
-	this->settings = Button();
-	this->exit = Button();
+	int size_of_init = sizeof(init) / sizeof(Button*);
+
+	int greatest_y = START_Y;
+
+	for (int index = 0; index < size_of_init; index++) {
+		*init[index] = file_io.loadButton(this->renderer, START_X, 
+			greatest_y + SPACING_Y, prefixes[index], this->user_actions);
+
+		greatest_y = init[index]->getBottomBound() + SPACING_Y;
+
+		/*
+		NOTE:
+			- Centering/aligning the buttons.
+		*/
+		init[index]->setX(this->screen_width / 2 - init[index]->getWidth() / 2);
+	}
 
 	return success;
 }
@@ -125,19 +147,19 @@ int MainMenu::stateQuery() {
 	*/
 	const int NO_CHANGE = 0, GAMEPLAY = 1,
 		SETTINGS = 2, INSTRUCTIONS = 3, ABOUT = 4, EXIT = 5;
-	if (this->play.isPressed()) {
+	if (this->button_play.isPressed()) {
 		return GAMEPLAY;
 	}
-	else if (this->settings.isPressed()) {
+	else if (this->button_settings.isPressed()) {
 		return SETTINGS;
 	}
-	else if (this->instructions.isPressed()) {
+	else if (this->button_instructions.isPressed()) {
 		return INSTRUCTIONS;
 	}
-	else if (this->about.isPressed()) {
+	else if (this->button_about.isPressed()) {
 		return ABOUT;
 	}
-	else if (this->exit.isPressed()) {
+	else if (this->button_exit.isPressed()) {
 		return EXIT;
 	}
 
@@ -147,17 +169,15 @@ int MainMenu::stateQuery() {
 void MainMenu::update() {
 	/*
 	NOTE:
-		- Centering/aligning the buttons.
-	*/
-	this->play.setX(this->screen_width / 2 - this->play.getWidth() / 2);
-
-	/*
-	NOTE:
 		- We constantly run the state query function
 		to make sure it's updated every frame and
 		we update the buttons' status, too.
 	*/
-	this->play.update();
+	this->button_play.update();
+	this->button_instructions.update();
+	this->button_settings.update();
+	this->button_about.update();
+	this->button_exit.update();
 
 	this->stateQuery();
 }
@@ -169,7 +189,11 @@ void MainMenu::render() {
 	*/
 	SDL_RenderClear(this->renderer);
 
-	this->play.render(this->renderer, false);
+	this->button_play.render(this->renderer, false);
+	this->button_instructions.render(this->renderer, false);
+	this->button_settings.render(this->renderer, false);
+	this->button_about.render(this->renderer, false);
+	this->button_exit.render(this->renderer, false);
 
 	/*
 	NOTE:

@@ -66,6 +66,13 @@ Button::Button(int x, int y, ButtonAnimation animation,
 
 	this->animation = animation;
 
+	/*
+	NOTE:
+		- Setting the default texture to the idling
+		image.
+	*/
+	this->setTexture(animation.idle);
+
 	this->user_actions = user_actions;
 }
 
