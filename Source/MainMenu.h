@@ -11,6 +11,9 @@
 #include "FileHandling.h"
 
 #include "Navigation.h"
+#include "SettingsPage.h"
+#include "InstructionsPage.h"
+#include "AboutPage.h"
 
 #include "Sprite.h"
 
@@ -43,6 +46,10 @@ public:
 	Button button_about;
 	Button button_exit;
 
+	SettingsPage page_settings;
+	InstructionsPage page_instructions;
+	AboutPage page_about;
+
 	/*
 	SECTION 1: CONSTRUCTORS AND DESTRUCTORS
 	*/
@@ -59,7 +66,9 @@ public:
 	SECTION 3: NAVIGATION LOGIC
 	*/
 	int stateQuery();
+	void updateButtons();
 	void update();
+	void renderButtons();
 	void render();
 };
 
@@ -91,6 +100,13 @@ SECTION 2: ASSET LOADING
 */
 bool MainMenu::loadAllMainMenuAssets() {
 	bool success = true;
+
+	this->page_instructions = InstructionsPage(this->user_actions, this->screen_width,
+		this->screen_height, this->renderer);
+	this->page_settings = SettingsPage(this->user_actions, this->screen_width,
+		this->screen_height, this->renderer);
+	this->page_about = AboutPage(this->user_actions, this->screen_width,
+		this->screen_height, this->renderer);
 
 	FileHandling file_io = FileHandling();
 
@@ -154,7 +170,7 @@ int MainMenu::stateQuery() {
 		return SETTINGS;
 	}
 	else if (this->button_instructions.isPressed()) {
-		return INSTRUCTIONS;
+		return INSTRUCTIONS; 
 	}
 	else if (this->button_about.isPressed()) {
 		return ABOUT;
@@ -166,20 +182,65 @@ int MainMenu::stateQuery() {
 	return NO_CHANGE;
 }
 
-void MainMenu::update() {
-	/*
-	NOTE:
-		- We constantly run the state query function
-		to make sure it's updated every frame and
-		we update the buttons' status, too.
-	*/
+void MainMenu::updateButtons() {
 	this->button_play.update();
 	this->button_instructions.update();
 	this->button_settings.update();
 	this->button_about.update();
 	this->button_exit.update();
+}
+
+void MainMenu::update() {
+	/*
+	NOTE:
+		- We constantly run the state query function
+		to make sure it's updated every frame and
+		we update the buttons' status, too. 
+	*/
+	const int NO_CHANGE = 0, GAMEPLAY = 1,
+		SETTINGS = 2, INSTRUCTIONS = 3, ABOUT = 4, EXIT = 5;
+	
+	int page = this->stateQuery();
+
+	/*
+	NOTE:
+		- This is kind of shitty code but I'm writing this 
+		while I'm on a train after a 17-hour day so we're
+		gonna have to make do. 
+	*/
+	switch (page) {
+		case NO_CHANGE:
+			this->updateButtons();
+			break;
+		case GAMEPLAY:
+			break;
+		case SETTINGS:
+			this->page_settings.update();
+			break;
+		case INSTRUCTIONS:
+			this->page_instructions.update();
+			break;
+		case ABOUT:
+			this->page_about.update();
+			break;
+	}
+
+	/*
+	NOTE:
+		- We can always refactor the code later. Right now,
+		I'm just trying to finish this part so we can finish
+		the game as soon as possible.
+	*/
 
 	this->stateQuery();
+}
+
+void MainMenu::renderButtons() {
+	this->button_play.render(this->renderer, false);
+	this->button_instructions.render(this->renderer, false);
+	this->button_settings.render(this->renderer, false);
+	this->button_about.render(this->renderer, false);
+	this->button_exit.render(this->renderer, false);
 }
 
 void MainMenu::render() {
@@ -189,11 +250,27 @@ void MainMenu::render() {
 	*/
 	SDL_RenderClear(this->renderer);
 
-	this->button_play.render(this->renderer, false);
-	this->button_instructions.render(this->renderer, false);
-	this->button_settings.render(this->renderer, false);
-	this->button_about.render(this->renderer, false);
-	this->button_exit.render(this->renderer, false);
+	const int NO_CHANGE = 0, GAMEPLAY = 1,
+		SETTINGS = 2, INSTRUCTIONS = 3, ABOUT = 4, EXIT = 5;
+
+	int page = this->stateQuery();
+
+	switch(page){
+		case NO_CHANGE:
+			this->renderButtons();
+			break;
+		case GAMEPLAY:
+			break;
+		case SETTINGS:
+			this->page_settings.render();
+			break;
+		case INSTRUCTIONS:
+			this->page_instructions.render();
+			break;
+		case ABOUT:
+			this->page_about.render();
+			break;
+	}
 
 	/*
 	NOTE:
