@@ -160,6 +160,7 @@ void InstructionsPage::update() {
 		to make sure it's updated every frame and
 		we update the buttons' status, too.
 	*/
+	this->updateButtons();
 	this->stateQuery();
 	/*
 	NOTE:

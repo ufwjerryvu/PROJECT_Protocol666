@@ -37,6 +37,7 @@ public:
 	/*
 	SECTION 2: OTHER METHODS
 	*/
+	bool unpress();
 	bool isPressed();
 	bool hide();
 	bool appear();
@@ -86,8 +87,16 @@ Button::~Button() {
 /*
 SECTION 2: OTHER METHODS
 */
+bool Button::unpress() {
+	bool success = true;
+
+	this->pressed = false;
+
+	return success;
+}
+
 bool Button::isPressed() {
-	return pressed;
+	return this->pressed;
 }
 
 bool Button::hide() {

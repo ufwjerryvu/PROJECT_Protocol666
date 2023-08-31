@@ -162,17 +162,47 @@ int MainMenu::stateQuery() {
 		information regarding the return values for this function.
 	*/
 	const int NO_CHANGE = 0, GAMEPLAY = 1,
-		SETTINGS = 2, INSTRUCTIONS = 3, ABOUT = 4, EXIT = 5;
+		SETTINGS = 2, INSTRUCTIONS = 3, ABOUT = 4, EXIT = 5, REVERT = 1;
+
 	if (this->button_play.isPressed()) {
 		return GAMEPLAY;
 	}
 	else if (this->button_settings.isPressed()) {
+		/*
+		NOTE:
+			- Don't forget to call .update() on the page.
+			If this is forgotten then the page's stateQuery()
+			is always going to revert back to the main menu.
+		*/
+		this->page_settings.update();
+		if (this->page_settings.stateQuery() == REVERT) {
+			return NO_CHANGE;
+		}
 		return SETTINGS;
 	}
 	else if (this->button_instructions.isPressed()) {
+		/*
+		NOTE:
+			- Same here. We've gotta call the update() method
+			so the buttons can work on their own.
+		*/
+		this->page_instructions.update();
+		if (this->page_instructions.stateQuery() == REVERT) {
+			return NO_CHANGE;
+		}
 		return INSTRUCTIONS; 
 	}
 	else if (this->button_about.isPressed()) {
+		/*
+		NOTE:
+			- Calling update() again. Spent probably an hour debugging
+			this. This is simply bad design, not gonna lie.
+
+		*/
+		this->page_about.update();
+		if (this->page_about.stateQuery() == REVERT) {
+			return NO_CHANGE;
+		}
 		return ABOUT;
 	}
 	else if (this->button_exit.isPressed()) {
@@ -183,6 +213,13 @@ int MainMenu::stateQuery() {
 }
 
 void MainMenu::updateButtons() {
+	/*
+	NOTE:
+		- Updating all the buttons at once. Since all the
+		buttons have different functions, we simply just 
+		can't use a loop to update all of them. This is the
+		best I can do, for now.
+	*/
 	this->button_play.update();
 	this->button_instructions.update();
 	this->button_settings.update();

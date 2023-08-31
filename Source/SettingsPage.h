@@ -142,6 +142,7 @@ int SettingsPage::stateQuery() {
 		information regarding the return values for this function.
 	*/
 	const int NO_CHANGE = 0, MAIN_MENU = 1;
+
 	if (this->button_back.isPressed()) {
 		return MAIN_MENU;
 	}
@@ -160,6 +161,7 @@ void SettingsPage::update() {
 		to make sure it's updated every frame and
 		we update the buttons' status, too.
 	*/
+	this->updateButtons();
 	this->stateQuery();
 	/*
 	NOTE:
