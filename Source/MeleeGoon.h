@@ -19,7 +19,7 @@ public:
 	SECTION 1: CONSTRUCTORS AND DESTRUCTORS
 	*/
 	MeleeGoon();
-	MeleeGoon(int x, int y, Animation animation, string name, Movement movement_logic, Damage damage_dealt);
+	MeleeGoon(int x, int y, CharacterAnimation animation, string name, Movement movement_logic, Damage damage_dealt);
 	~MeleeGoon();
 
 	/*
@@ -49,7 +49,7 @@ MeleeGoon::MeleeGoon() : Enemy(){
 	*/
 }
 
-MeleeGoon::MeleeGoon(int x, int y, Animation animation, string name, Movement movement_logic, Damage damage_dealt) 
+MeleeGoon::MeleeGoon(int x, int y, CharacterAnimation animation, string name, Movement movement_logic, Damage damage_dealt) 
 	: Enemy(x, y, animation, name, movement_logic, damage_dealt) {
 	/*
 	NOTE:
@@ -195,7 +195,7 @@ void MeleeGoon::setNextFrame() {
 	int frames_per_sequence = 10;
 
 	if (this->isFalling()) {
-		Animation temp = this->getAnimation();
+		CharacterAnimation temp = this->getAnimation();
 
 		temp.current_frame_idle = 0;
 		temp.current_frame_running = 0;
@@ -229,7 +229,7 @@ void MeleeGoon::setNextFrame() {
 	}
 
 	if (this->isJumping()) {
-		Animation temp = this->getAnimation();
+		CharacterAnimation temp = this->getAnimation();
 
 		temp.current_frame_idle = 0;
 		temp.current_frame_running = 0;
@@ -268,7 +268,7 @@ void MeleeGoon::setNextFrame() {
 			- If the user isn't moving then the current moving frame
 			must be reset to 0.
 		*/
-		Animation temp = this->getAnimation();
+		CharacterAnimation temp = this->getAnimation();
 
 		temp.current_frame_running = 0;
 		temp.current_frame_falling = 0;
@@ -313,7 +313,7 @@ void MeleeGoon::setNextFrame() {
 		*/
 
 		frames_per_sequence = 5;
-		Animation temp = this->getAnimation();
+		CharacterAnimation temp = this->getAnimation();
 
 		temp.current_frame_idle = 0;
 		temp.current_frame_falling = 0;

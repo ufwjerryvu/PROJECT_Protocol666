@@ -8,7 +8,7 @@
 #include "LIBDECLARATIONS.h"
 
 #include "Utilities.h"
-#include "FileHandling.h"
+#include "FileHandler.h"
 
 #include "Navigation.h"
 
@@ -77,7 +77,7 @@ SettingsPage::SettingsPage(UserEvent user_actions, int screen_width, int screen_
 	NOTE:
 		- Using the base class's parameterized constructor.
 
-		- All buttons are loaded using the `FileHandling` class,
+		- All buttons are loaded using the `FileHandler` class,
 		similar to the one in `Gameplay.h`.
 	*/
 
@@ -90,7 +90,7 @@ SECTION 2: ASSET LOADING
 bool SettingsPage::loadAllSettingsPageAssets() {
 	bool success = true;
 
-	FileHandling file_io = FileHandling();
+	FileHandler file_io = FileHandler();
 
 	/*
 	NOTE:

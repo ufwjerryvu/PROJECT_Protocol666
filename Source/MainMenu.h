@@ -8,7 +8,7 @@
 #include "LIBDECLARATIONS.h"
 
 #include "Utilities.h"
-#include "FileHandling.h"
+#include "FileHandler.h"
 
 #include "Navigation.h"
 #include "SettingsPage.h"
@@ -88,7 +88,7 @@ MainMenu::MainMenu(UserEvent user_actions, int screen_width, int screen_height,
 	NOTE:
 		- Using the base class's parameterized constructor.
 
-		- All buttons are loaded using the `FileHandling` class,
+		- All buttons are loaded using the `FileHandler` class,
 		similar to the one in `Gameplay.h`. 
 	*/
 	
@@ -108,7 +108,7 @@ bool MainMenu::loadAllMainMenuAssets() {
 	this->page_about = AboutPage(this->user_actions, this->screen_width,
 		this->screen_height, this->renderer);
 
-	FileHandling file_io = FileHandling();
+	FileHandler file_io = FileHandler();
 
 	/*
 	NOTE:

@@ -8,7 +8,7 @@
 #include "LIBDECLARATIONS.h"
 
 #include "Utilities.h"
-#include "FileHandling.h"
+#include "FileHandler.h"
 
 #include "Sprite.h"
 

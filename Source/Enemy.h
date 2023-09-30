@@ -38,7 +38,7 @@ public:
 	SECTION 1: CONSTRUCTOR AND DESTRUCTORS
 	*/
 	Enemy();
-	Enemy(int x, int y, Animation animation, string name, Movement movement_logic, Damage damage_dealt);
+	Enemy(int x, int y, CharacterAnimation animation, string name, Movement movement_logic, Damage damage_dealt);
 	~Enemy();
 
 	/*
@@ -112,7 +112,7 @@ Enemy::Enemy() : Character() {
 	this->setUpdateInterval(0);
 };
 
-Enemy::Enemy(int x, int y, Animation animation, string name, Movement movement_logic, Damage damage_dealt)
+Enemy::Enemy(int x, int y, CharacterAnimation animation, string name, Movement movement_logic, Damage damage_dealt)
 	: Character(x, y, animation) {
 	this->setName(name);
 	this->setMovementLogic(movement_logic);

@@ -19,7 +19,7 @@ public:
 	SECTION 1: CONSTRUCTORS AND DESTRUCTORS
 	*/
 	RangeGoon();
-	RangeGoon(int x, int y, Animation animation, string name, Movement movement_logic, Damage damage_dealt);
+	RangeGoon(int x, int y, CharacterAnimation animation, string name, Movement movement_logic, Damage damage_dealt);
 	~RangeGoon();
 	/*
 	SECTION 2A: SETTERS
@@ -44,7 +44,7 @@ RangeGoon::RangeGoon() : Enemy() {
 	*/
 }
 
-RangeGoon::RangeGoon(int x, int y, Animation animation, string name, Movement movement_logic, Damage damage_dealt) 
+RangeGoon::RangeGoon(int x, int y, CharacterAnimation animation, string name, Movement movement_logic, Damage damage_dealt) 
 	: Enemy(x, y, animation, name, movement_logic, damage_dealt) {
 	/*
 	NOTE:
