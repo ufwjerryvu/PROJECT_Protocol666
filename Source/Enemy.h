@@ -5,12 +5,7 @@
 
 #pragma once
 
-#include "LIBDECLARATIONS.h"
-
-#include "Sprite.h"
-
-#include "Character.h"
-#include "Player.h"
+#include "../Players/Player.h"
 
 class Enemy : public Character {
 private:

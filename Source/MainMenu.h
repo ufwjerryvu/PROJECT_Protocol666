@@ -5,35 +5,10 @@
 
 #pragma once
 
-#include "LIBDECLARATIONS.h"
-
-#include "Utilities.h"
-#include "FileHandling.h"
-
 #include "Navigation.h"
 #include "SettingsPage.h"
 #include "InstructionsPage.h"
 #include "AboutPage.h"
-
-#include "Sprite.h"
-
-#include "Button.h"
-
-#include "Projectile.h"
-#include "LaserBeam.h"
-#include "FiftyCalibre.h"
-
-#include "Character.h"
-#include "Enemy.h"
-#include "MeleeGoon.h"
-#include "RangeGoon.h"
-#include "Player.h"
-
-#include "Terrain.h"
-#include "Ground.h"
-#include "Platform.h"
-#include "SinglePlatform.h"
-#include "MultiplePlatform.h"
 
 class MainMenu : public Navigation {
 public:

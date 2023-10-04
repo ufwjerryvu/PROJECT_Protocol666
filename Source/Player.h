@@ -5,20 +5,9 @@
 
 #pragma once
 
-#include "LIBDECLARATIONS.h"
-
-#include "Sprite.h"
-
-#include "Character.h"
-
-#include "Terrain.h"
-#include "Ground.h"
-#include "Platform.h"
-#include "SinglePlatform.h"
-
-#include "Projectile.h"
-#include "LaserBeam.h"
-#include "FiftyCalibre.h"
+#include "../../Terrains/Terrain.h"
+#include "../../Terrains/Ground.h"
+#include "../../Terrains/Platform.h"
 
 class Player : public Character{
 private:

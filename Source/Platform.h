@@ -5,12 +5,6 @@
 
 #pragma once
 
-#include "LIBDECLARATIONS.h"
-
-#include "Sprite.h"
-
-#include "Terrain.h"
-
 class Platform : public Terrain {
 private:
 public:

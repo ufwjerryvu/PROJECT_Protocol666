@@ -7,31 +7,9 @@
 
 #include "LIBDECLARATIONS.h"
 
-#include "Utilities.h"
 #include "FileHandling.h"
-#include "Gameplay.h"
-#include "Navigation.h"
-#include "MainMenu.h"
-
-#include "Sprite.h"
-
-#include "Button.h"
-
-#include "Projectile.h"
-#include "LaserBeam.h"
-#include "FiftyCalibre.h"
-
-#include "Character.h"
-#include "Enemy.h"
-#include "MeleeGoon.h"
-#include "RangeGoon.h"
-#include "Player.h"
-
-#include "Terrain.h"
-#include "Ground.h"
-#include "Platform.h"
-#include "SinglePlatform.h"
-#include "MultiplePlatform.h"
+#include "../DisplayPages/Gameplay.h"
+#include "../DisplayPages/MainMenu.h"
 
 enum State {
 	MAIN_MENU,

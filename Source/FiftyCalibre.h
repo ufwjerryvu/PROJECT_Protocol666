@@ -7,10 +7,6 @@
 
 #include "LIBDECLARATIONS.h"
 
-#include "Sprite.h"
-
-#include "Projectile.h"
-
 class FiftyCalibre : public Projectile {
 private:
 public:

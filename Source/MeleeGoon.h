@@ -5,14 +5,6 @@
 
 #pragma once
 
-#include "LIBDECLARATIONS.h"
-
-#include "Sprite.h"
-
-#include "Character.h"
-#include "Player.h"
-#include "Enemy.h"
-
 class MeleeGoon : public Enemy {
 public:
 	/*

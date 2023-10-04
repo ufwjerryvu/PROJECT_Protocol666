@@ -5,13 +5,6 @@
 
 #pragma once
 
-#include "LIBDECLARATIONS.h"
-
-#include "Sprite.h"
-
-#include "Terrain.h"
-#include "Platform.h"
-
 class SinglePlatform : public Platform {
 private:
 public:

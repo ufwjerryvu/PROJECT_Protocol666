@@ -5,10 +5,6 @@
 
 #pragma once
 
-#include "LIBDECLARATIONS.h"
-
-#include "Sprite.h"
-
 class Projectile : public Sprite {
 private:
 	int damage;

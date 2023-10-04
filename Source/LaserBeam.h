@@ -5,12 +5,6 @@
 
 #pragma once
 
-#include "LIBDECLARATIONS.h"
-
-#include "Sprite.h"
-
-#include "Projectile.h"
-
 class LaserBeam : public Projectile {
 private:
 public:
