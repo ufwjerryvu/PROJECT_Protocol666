@@ -5,37 +5,23 @@
 
 #pragma once
 
-#include "LIBDECLARATIONS.h"
-
 #include "Sprite.h"
 
-struct CharacterAnimation {
-    vector<SDL_Texture*> frames_idle;
-    vector<SDL_Texture*> frames_running;
-    vector<SDL_Texture*> frames_jumping;
-    vector<SDL_Texture*> frames_falling;
-    vector<SDL_Texture*> frames_shooting_idle;
-    vector<SDL_Texture*> frames_shooting_running;
-    vector<SDL_Texture*> frames_shooting_jumping;
-    vector<SDL_Texture*> frames_shooting_falling;
-
-    int current_frame_idle = 0;
-    int current_frame_running = 0;
-    int current_frame_jumping = 0;
-    int current_frame_falling = 0;
-    int current_frame_shooting_idle = 0;
-    int current_frame_shooting_running = 0;
-    int current_frame_shooting_jumping = 0;
-    int current_frame_shooting_falling = 0;
+struct Knockback {
+    int self;
+    int attack;
+    int contact;
 };
 
 class Character : public Sprite {
 private:
-    CharacterAnimation animation;
+    Animation animation;
 
     Collision collided;
 
     Direction facing_direction;
+
+    Knockback knockback;
 
     bool is_running;
     bool is_jumping;
@@ -44,6 +30,9 @@ private:
 
     /*
     NOTE:
+        - The member attributes below are motion-related 
+        attributes.
+
         - Speed is in pixels per frame.
 
         - Gravitational acceleration is in pixels per frame
@@ -51,11 +40,6 @@ private:
         - Fall velocity is in pixels per frame
 
         - Terminal velocity is in pixels per frame
-    */
-    /*
-    NOTE:
-        - The member attributes below are motion-related 
-        attributes.
     */
     int run_speed;
     int gravitational_acceleration;
@@ -69,15 +53,16 @@ public:
     SECTION 1: CONSTRUCTORS AND DESTRUCTORS
     */
     Character();
-    Character(int x, int y, CharacterAnimation animation);
+    Character(int x, int y, Animation animation);
     ~Character();
 
     /*
     SECTION 2A: SETTERS
     */
-    bool setAnimation(CharacterAnimation animation);
+    bool setAnimation(Animation animation);
     bool setCollision(Collision collided);
     bool setDirectionFacing(Direction facing);
+    bool setKnockback(Knockback knockback);
     bool setRunningState(bool is_running);
     bool setJumpingState(bool is_jumping);
     bool setFallingState(bool is_falling);
@@ -92,9 +77,10 @@ public:
     /*
     SECTION 2B: GETTERS
     */
-    CharacterAnimation getAnimation();
+    Animation getAnimation();
     Collision getCollisionDirections();
     Direction getDirectionFacing();
+    Knockback getKnockback();
     bool isRunning();
     bool isJumping();
     bool isFalling();
@@ -166,7 +152,7 @@ Character::Character() : Sprite() {
     this->setVerticalUpdateInterval(OVERRIDABLE_INITIAL_VERT_UPDATE_INTERVAL);
 }
 
-Character::Character(int x, int y, CharacterAnimation animation) : Sprite(x, y, NULL) {
+Character::Character(int x, int y, Animation animation) : Sprite(x, y, NULL) {
     this->setAnimation(animation);
     
     /*
@@ -219,7 +205,7 @@ Character::~Character() {
 /*
 SECTION 2A: SETTERS
 */
-bool Character::setAnimation(CharacterAnimation animation) {
+bool Character::setAnimation(Animation animation) {
     bool success = true;
 
     /*
@@ -351,6 +337,14 @@ bool Character::setDirectionFacing(Direction facing) {
     return true;
 }
 
+bool Character::setKnockback(Knockback knockback) {
+	bool success = true;
+
+	this->knockback = knockback;
+
+	return success;
+}
+
 bool Character::setRunningState(bool is_running) {
     bool success = true;
 
@@ -434,9 +428,10 @@ bool Character::setVerticalUpdateInterval(int vertical_update_interval) {
 /*
 SECTION 2B: GETTERS
 */
-CharacterAnimation Character::getAnimation() { return this->animation; }
+Animation Character::getAnimation() { return this->animation; }
 Collision Character::getCollisionDirections() { return this->collided; }
 Direction Character::getDirectionFacing() { return this->facing_direction; }
+Knockback Character::getKnockback() { return this->knockback; }
 bool Character::isRunning() { return this->is_running; }
 bool Character::isJumping() { return this->is_jumping; }
 bool Character::isFalling() { return this->is_falling; }
