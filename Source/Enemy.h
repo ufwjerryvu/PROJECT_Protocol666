@@ -5,7 +5,10 @@
 
 #pragma once
 
-#include "../Players/Player.h"
+#include "Player.h"
+
+#include "Ground.h"
+#include "Platform.h"
 
 class Enemy : public Character {
 private:

@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include "Sprite.h"
+
 class Projectile : public Sprite {
 private:
 	int damage;

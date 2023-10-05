@@ -5,6 +5,9 @@
 
 #pragma once
 
+#include "Player.h"
+#include "Enemy.h"
+
 class MeleeGoon : public Enemy {
 public:
 	/*

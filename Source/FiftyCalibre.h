@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "LIBDECLARATIONS.h"
+#include "Projectile.h"
 
 class FiftyCalibre : public Projectile {
 private:

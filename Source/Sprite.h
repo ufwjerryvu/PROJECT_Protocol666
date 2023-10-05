@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include "LIBDECLARATIONS.h"
+
 enum class Direction {
 	NONE,
 	LEFT,

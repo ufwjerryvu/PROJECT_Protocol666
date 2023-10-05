@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include "Terrain.h"
+
 class Platform : public Terrain {
 private:
 public:

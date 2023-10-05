@@ -5,11 +5,8 @@
 
 #pragma once
 
-#include "LIBDECLARATIONS.h"
-
-#include "FileHandling.h"
-#include "../DisplayPages/Gameplay.h"
-#include "../DisplayPages/MainMenu.h"
+#include "Gameplay.h"
+#include "MainMenu.h"
 
 enum State {
 	MAIN_MENU,

@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include "Projectile.h"
+
 class LaserBeam : public Projectile {
 private:
 public:

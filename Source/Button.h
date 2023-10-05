@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include "Sprite.h"
+
 struct ButtonAnimation {
 	SDL_Texture* idle;
 	SDL_Texture* hovering;

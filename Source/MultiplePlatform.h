@@ -5,8 +5,9 @@
 
 #pragma once
 
+#include "Platform.h"
+
 class MultiplePlatform : public Platform {
-private:
 public:
 	/*
 	SECTION 1: CONSTRUCTORS AND DESTRUCTORS

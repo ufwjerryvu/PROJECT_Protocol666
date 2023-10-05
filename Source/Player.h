@@ -5,9 +5,14 @@
 
 #pragma once
 
-#include "../../Terrains/Terrain.h"
-#include "../../Terrains/Ground.h"
-#include "../../Terrains/Platform.h"
+#include "Character.h"
+
+#include "Ground.h"
+#include "Platform.h"
+#include "SinglePlatform.h"
+
+#include "LaserBeam.h"
+#include "FiftyCalibre.h"
 
 class Player : public Character{
 private:

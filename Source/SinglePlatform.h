@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include "Platform.h"
+
 class SinglePlatform : public Platform {
 private:
 public:

@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include "Sprite.h"
+
 struct DiscreteDimensions {
 	int width_by_units;
 	int height_by_units;

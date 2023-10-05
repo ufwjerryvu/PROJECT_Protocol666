@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include "Master.h"
+
 class Navigation {
 public:
 	/*

@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include "Navigation.h"
+
 class InstructionsPage : public Navigation {
 public:
 	/*
