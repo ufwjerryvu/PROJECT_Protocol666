@@ -12,6 +12,7 @@ struct CharacterAnimation {
     vector<SDL_Texture*> frames_running;
     vector<SDL_Texture*> frames_jumping;
     vector<SDL_Texture*> frames_falling;
+    vector<SDL_Texture*> frames_rolling;
     vector<SDL_Texture*> frames_shooting_idle;
     vector<SDL_Texture*> frames_shooting_running;
     vector<SDL_Texture*> frames_shooting_jumping;
@@ -21,10 +22,34 @@ struct CharacterAnimation {
     int current_frame_running = 0;
     int current_frame_jumping = 0;
     int current_frame_falling = 0;
+    int current_frame_rolling = 0;
     int current_frame_shooting_idle = 0;
     int current_frame_shooting_running = 0;
     int current_frame_shooting_jumping = 0;
     int current_frame_shooting_falling = 0;
+};
+
+struct Damage {
+    int collision = 0;
+    int attack = 0;
+    int self_destruct = 0;
+};
+
+struct Movement {
+    int spawn_x = 0;
+    int spawn_y = 0;
+
+    int x_max_displacement = 0;
+    int y_max_displacement = 0;
+
+    int x_direction_velocity = 0;
+    int y_direction_velocity = 0;
+};
+
+struct Knockback {
+    int self = 0;
+    int attack = 0;
+    int contact = 0;
 };
 
 class Character : public Sprite {
@@ -40,7 +65,9 @@ private:
     bool is_running;
     bool is_jumping;
     bool is_falling;
+    bool is_rolling;
     bool is_attacking;
+
 
     /*
     NOTE:
@@ -80,6 +107,7 @@ public:
     bool setRunningState(bool is_running);
     bool setJumpingState(bool is_jumping);
     bool setFallingState(bool is_falling);
+    bool setRollingState(bool is_rolling);
     bool setAttackingState(bool is_attacking);
     bool setRunSpeed(int pixels_per_frame);
     bool setGravitationalAcceleration(float grav_accel);
@@ -98,6 +126,7 @@ public:
     bool isRunning();
     bool isJumping();
     bool isFalling();
+    bool isRolling();
     bool isAttacking();
     int getRunSpeed();
     int getGravitationalAcceleration();
@@ -383,6 +412,14 @@ bool Character::setFallingState(bool is_falling) {
     return success;
 }
 
+bool Character::setRollingState(bool is_rolling) {
+    bool success = true;
+
+    this->is_rolling = is_rolling;
+
+    return success;
+}
+
 bool Character::setAttackingState(bool is_attacking) {
     bool success = true;
 
@@ -449,6 +486,7 @@ Knockback Character::getKnockback() { return this->knockback; }
 bool Character::isRunning() { return this->is_running; }
 bool Character::isJumping() { return this->is_jumping; }
 bool Character::isFalling() { return this->is_falling; }
+bool Character::isRolling() { return this->is_rolling; }
 bool Character::isAttacking() { return this->is_attacking; }
 int Character::getRunSpeed() { return this->run_speed; }
 int Character::getGravitationalAcceleration() { return this->gravitational_acceleration; }
