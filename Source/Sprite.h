@@ -39,6 +39,12 @@ struct Movement {
 	int y_direction_velocity = 0;
 };
 
+struct Knockback {
+	int self = 0;
+	int attack = 0;
+	int contact = 0;
+};
+
 class Sprite {
 private:
 	int x;

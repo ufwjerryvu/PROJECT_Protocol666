@@ -7,15 +7,29 @@
 
 #include "Sprite.h"
 
-struct Knockback {
-    int self;
-    int attack;
-    int contact;
+struct CharacterAnimation {
+    vector<SDL_Texture*> frames_idle;
+    vector<SDL_Texture*> frames_running;
+    vector<SDL_Texture*> frames_jumping;
+    vector<SDL_Texture*> frames_falling;
+    vector<SDL_Texture*> frames_shooting_idle;
+    vector<SDL_Texture*> frames_shooting_running;
+    vector<SDL_Texture*> frames_shooting_jumping;
+    vector<SDL_Texture*> frames_shooting_falling;
+
+    int current_frame_idle = 0;
+    int current_frame_running = 0;
+    int current_frame_jumping = 0;
+    int current_frame_falling = 0;
+    int current_frame_shooting_idle = 0;
+    int current_frame_shooting_running = 0;
+    int current_frame_shooting_jumping = 0;
+    int current_frame_shooting_falling = 0;
 };
 
 class Character : public Sprite {
 private:
-    Animation animation;
+    CharacterAnimation animation;
 
     Collision collided;
 
@@ -53,13 +67,13 @@ public:
     SECTION 1: CONSTRUCTORS AND DESTRUCTORS
     */
     Character();
-    Character(int x, int y, Animation animation);
+    Character(int x, int y, CharacterAnimation animation);
     ~Character();
 
     /*
     SECTION 2A: SETTERS
     */
-    bool setAnimation(Animation animation);
+    bool setAnimation(CharacterAnimation animation);
     bool setCollision(Collision collided);
     bool setDirectionFacing(Direction facing);
     bool setKnockback(Knockback knockback);
@@ -77,7 +91,7 @@ public:
     /*
     SECTION 2B: GETTERS
     */
-    Animation getAnimation();
+    CharacterAnimation getAnimation();
     Collision getCollisionDirections();
     Direction getDirectionFacing();
     Knockback getKnockback();
@@ -152,7 +166,7 @@ Character::Character() : Sprite() {
     this->setVerticalUpdateInterval(OVERRIDABLE_INITIAL_VERT_UPDATE_INTERVAL);
 }
 
-Character::Character(int x, int y, Animation animation) : Sprite(x, y, NULL) {
+Character::Character(int x, int y, CharacterAnimation animation) : Sprite(x, y, NULL) {
     this->setAnimation(animation);
     
     /*
@@ -205,7 +219,7 @@ Character::~Character() {
 /*
 SECTION 2A: SETTERS
 */
-bool Character::setAnimation(Animation animation) {
+bool Character::setAnimation(CharacterAnimation animation) {
     bool success = true;
 
     /*
@@ -428,7 +442,7 @@ bool Character::setVerticalUpdateInterval(int vertical_update_interval) {
 /*
 SECTION 2B: GETTERS
 */
-Animation Character::getAnimation() { return this->animation; }
+CharacterAnimation Character::getAnimation() { return this->animation; }
 Collision Character::getCollisionDirections() { return this->collided; }
 Direction Character::getDirectionFacing() { return this->facing_direction; }
 Knockback Character::getKnockback() { return this->knockback; }

@@ -30,7 +30,7 @@ public:
 	SECTION 1: CONSTRUCTOR AND DESTRUCTORS
 	*/
 	Enemy();
-	Enemy(int x, int y, Animation animation, Damage damage_dealt, Knockback knockback);
+	Enemy(int x, int y, CharacterAnimation animation, Damage damage_dealt, Knockback knockback);
 	~Enemy();
 
 	/*
@@ -98,7 +98,7 @@ Enemy::Enemy() : Character() {
 	this->setUpdateInterval(0);
 };
 
-Enemy::Enemy(int x, int y, Animation animation, Damage damage_dealt, Knockback knockback)
+Enemy::Enemy(int x, int y, CharacterAnimation animation, Damage damage_dealt, Knockback knockback)
 	: Character(x, y, animation) {
 	this->setDamageDealt(damage_dealt);
 	this->setKnockback(knockback);

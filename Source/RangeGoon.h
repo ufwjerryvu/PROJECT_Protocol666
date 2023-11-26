@@ -15,7 +15,7 @@ public:
 	SECTION 1: CONSTRUCTORS AND DESTRUCTORS
 	*/
 	RangeGoon();
-	RangeGoon(int x, int y, Animation animation, Damage damage_dealt, Knockback knockback);
+	RangeGoon(int x, int y, CharacterAnimation animation, Damage damage_dealt, Knockback knockback);
 	~RangeGoon();
 	/*
 	SECTION 2A: SETTERS
@@ -40,7 +40,7 @@ RangeGoon::RangeGoon() : Goon() {
 	*/
 }
 
-RangeGoon::RangeGoon(int x, int y, Animation animation, Damage damage_dealt, Knockback knockback) 
+RangeGoon::RangeGoon(int x, int y, CharacterAnimation animation, Damage damage_dealt, Knockback knockback) 
 	: Goon(x, y, animation, damage_dealt, knockback) {
 	/*
 	NOTE:
