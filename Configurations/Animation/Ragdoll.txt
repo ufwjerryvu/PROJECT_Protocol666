@@ -20,6 +20,16 @@ Assets/Sprite/Character/Player/Ragdoll/jump1.png
 <falling>
 Assets/Sprite/Character/Player/Ragdoll/fall1.png
 </falling>
+<rolling>
+Assets/Sprite/Character/Player/Ragdoll/roll1.png
+Assets/Sprite/Character/Player/Ragdoll/roll2.png
+Assets/Sprite/Character/Player/Ragdoll/roll3.png
+Assets/Sprite/Character/Player/Ragdoll/roll4.png
+Assets/Sprite/Character/Player/Ragdoll/roll5.png
+Assets/Sprite/Character/Player/Ragdoll/roll6.png
+Assets/Sprite/Character/Player/Ragdoll/roll7.png
+Assets/Sprite/Character/Player/Ragdoll/roll8.png
+</rolling>
 <shooting_idle>
 Assets/Sprite/Character/Player/Ragdoll/idle_shoot1.png
 Assets/Sprite/Character/Player/Ragdoll/idle_shoot2.png
