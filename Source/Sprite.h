@@ -22,26 +22,6 @@ struct Collision {
 	bool bottom = false;
 };
 
-struct Animation {
-	vector<SDL_Texture*> frames_idle;
-	vector<SDL_Texture*> frames_running;
-	vector<SDL_Texture*> frames_jumping;
-	vector<SDL_Texture*> frames_falling;
-	vector<SDL_Texture*> frames_shooting_idle;
-	vector<SDL_Texture*> frames_shooting_running;
-	vector<SDL_Texture*> frames_shooting_jumping;
-	vector<SDL_Texture*> frames_shooting_falling;
-
-	int current_frame_idle = 0;
-	int current_frame_running = 0;
-	int current_frame_jumping = 0;
-	int current_frame_falling = 0;
-	int current_frame_shooting_idle = 0;
-	int current_frame_shooting_running = 0;
-	int current_frame_shooting_jumping = 0;
-	int current_frame_shooting_falling = 0;
-};
-
 struct Damage {
 	int collision = 0;
 	int attack = 0;

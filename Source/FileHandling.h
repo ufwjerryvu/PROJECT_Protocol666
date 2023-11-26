@@ -1,5 +1,5 @@
 /*
-@ COLLABORATORS: Jerry Vu, An Luu
+@ COLLABORATORS: Jerry Vu, An Luu, Kenny Nguyen
 @ CLASS DESIGNERS: Jerry Vu, An Luu
 */
 
@@ -11,16 +11,7 @@
 
 #include "Sprite.h"
 
-#include "Button.h"
-
-#include "Projectile.h"
-#include "LaserBeam.h"
-#include "FiftyCalibre.h"
-
 #include "Character.h"
-#include "Enemy.h"
-#include "MeleeGoon.h"
-#include "RangeGoon.h"
 #include "Player.h"
 
 #include "Terrain.h"
@@ -28,6 +19,7 @@
 #include "Platform.h"
 #include "SinglePlatform.h"
 #include "MultiplePlatform.h"
+#include "MeleeGoon.h"
 
 /*
 NOTE:
@@ -62,9 +54,8 @@ public:
 	vector<string> getLinesFromFlag(string content, string flag);
 	string getFirstLineFromFlag(string content, string flag);
 
-	Button loadButton(SDL_Renderer* renderer, int x, int y, string prefix, UserEvent user_actions);
-
 	Player loadPlayer(SDL_Renderer* renderer, string level_config_path, UserEvent user_actions, string chosen_type);
+	MeleeGoon loadMeleeGoon(SDL_Renderer* renderer, string level_config_path);
 	vector<Ground> loadGrounds(SDL_Renderer* renderer, string level_config_path);
 	vector<SinglePlatform> loadSinglePlatforms(SDL_Renderer* renderer, string level_config_path);
 	vector<MultiplePlatform> loadMultiplePlatforms(SDL_Renderer* renderer, string level_config_path);
@@ -309,8 +300,7 @@ Animation FileHandling::loadAnimation(SDL_Renderer* renderer, string file_for_an
 		*/
 		if (anim_paths_vec[i] == "<idle>" || anim_paths_vec[i] == "<running>" 
 			|| anim_paths_vec[i] == "<jumping>" || anim_paths_vec[i] == "<falling>"
-			|| anim_paths_vec[i] == "<shooting_idle>" || anim_paths_vec[i] == "<shooting_running>"
-			|| anim_paths_vec[i] == "<shooting_jumping>" || anim_paths_vec[i] == "<shooting_falling>") {
+			|| anim_paths_vec[i] == "<shooting_idle>" || anim_paths_vec[i] == "<shooting_running>") {
 			current_flag = anim_paths_vec[i];
 		}
 
@@ -335,12 +325,6 @@ Animation FileHandling::loadAnimation(SDL_Renderer* renderer, string file_for_an
 		}
 		if (current_flag == "<shooting_running>" && anim_paths_vec[i] != current_flag && anim_paths_vec[i] != "</shooting_running>") {
 			animation.frames_shooting_running.push_back(loadTexture(renderer, anim_paths_vec[i]));
-		}
-		if (current_flag == "<shooting_jumping>" && anim_paths_vec[i] != current_flag && anim_paths_vec[i] != "</shooting_jumping>") {
-			animation.frames_shooting_jumping.push_back(loadTexture(renderer, anim_paths_vec[i]));
-		}
-		if (current_flag == "<shooting_falling>" && anim_paths_vec[i] != current_flag && anim_paths_vec[i] != "</shooting_falling>") {
-			animation.frames_shooting_falling.push_back(loadTexture(renderer, anim_paths_vec[i]));
 		}
 	}
 
@@ -445,35 +429,6 @@ string FileHandling::getFirstLineFromFlag(string content, string flag) {
 	return "";
 }
 
-Button FileHandling::loadButton(SDL_Renderer* renderer, int x, int y, string prefix, UserEvent user_actions) {
-	/*
-	NOTE:
-		- All button animations will be in the following directory path:
-			'Assets/Sprite/Button/'
-
-		- Any button will have a prefix. The prefix is the name of the 
-		button or what the button actually displays in order to be more
-		descriptive. 
-
-		- For example, the `play` button would have the following paths
-		for its animations:
-			'Assets/Sprite/Button/play_idle.png'
-			'Assets/Sprite/Button/play_hover.png'
-			'Assets/Sprite/Button/play_pressed.png'
-	*/
-	string base_path = "Assets/Sprite/Button/" + prefix;
-
-	string idle_path = base_path + "_idle.png";
-	string hover_path = base_path + "_hover.png";
-	string pressed_path = base_path + "_pressed.png";
-
-	ButtonAnimation temp = { this->loadTexture(renderer, idle_path),
-						this->loadTexture(renderer, hover_path),
-						this->loadTexture(renderer, pressed_path) };
-
-	return Button(x, y, temp, user_actions);
-}
-
 Player FileHandling::loadPlayer(SDL_Renderer* renderer, string level_config_path, UserEvent user_actions, string chosen_type = "ragdoll") {
 	Utilities util;
 	Animation animation;
@@ -511,6 +466,47 @@ Player FileHandling::loadPlayer(SDL_Renderer* renderer, string level_config_path
 	Player ret_obj(initial_x, initial_y, animation, user_actions);
 
 	ret_obj.loadLaserBeamTexture(this->loadTexture(renderer, "Assets/Sprite/Projectile/LaserBeam/test.png"));
+
+	return ret_obj;
+}
+
+MeleeGoon FileHandling::loadMeleeGoon(SDL_Renderer* renderer, string level_config_path) {
+	Utilities util;
+	Animation animation;
+
+	/*
+	NOTE:
+		- These are the standard characters and animation frames
+		for the enemies
+	*/
+	animation = this->loadAnimation(renderer, "Configurations/Animation/MeleeGoon_Ragdoll.txt");
+
+
+	/*
+	NOTE:
+		- We get the line that we want to initialize the player.
+	*/
+	string goon_config = this->getFirstLineFromFlag(this->parseTextFile(level_config_path), "MeleeGoon");
+
+	const int NUMBER_OF_ARGUMENTS = 8;
+	if (util.split(goon_config, ",").size() != NUMBER_OF_ARGUMENTS) {
+		cerr << "Error from FileHandling::loadMeleeGoon(): invalid configuration formatting." << endl;
+		return MeleeGoon();
+	}
+
+	int initial_x = util.strToFloat(util.split(goon_config, ",")[1]);
+	int initial_y = util.strToFloat(util.split(goon_config, ",")[2]);
+	int attack_dmg = util.strToFloat(util.split(goon_config, ",")[3]);
+	int collision_dmg = util.strToFloat(util.split(goon_config, ",")[4]);
+	int self_kb = util.strToFloat(util.split(goon_config, ",")[5]);
+	int attack_kb = util.strToFloat(util.split(goon_config, ",")[6]);
+	int contact_kb = util.strToFloat(util.split(goon_config, ",")[7]);
+
+	Damage damage_enemy = { collision_dmg, attack_dmg };
+	Knockback knockback = { self_kb, attack_kb, contact_kb };
+
+	MeleeGoon ret_obj(initial_x, initial_y, animation, damage_enemy, knockback);
+
 
 	return ret_obj;
 }
@@ -692,6 +688,7 @@ vector<MultiplePlatform> FileHandling::loadMultiplePlatforms(SDL_Renderer* rende
 		vector<string> current_line_split = util.split(lines_mult_platform[index], ",");
 
 		const int NUMBER_OF_ARGUMENTS = 5;
+
 		/*
 		NOTE:
 			- If the level config line has an invalid format

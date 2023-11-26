@@ -37,6 +37,7 @@ public:
 	/*
 	SECTION 2: OTHER METHODS
 	*/
+	bool unpress();
 	bool isPressed();
 	bool hide();
 	bool appear();
@@ -66,6 +67,13 @@ Button::Button(int x, int y, ButtonAnimation animation,
 
 	this->animation = animation;
 
+	/*
+	NOTE:
+		- Setting the default texture to the idling
+		image.
+	*/
+	this->setTexture(animation.idle);
+
 	this->user_actions = user_actions;
 }
 
@@ -79,8 +87,16 @@ Button::~Button() {
 /*
 SECTION 2: OTHER METHODS
 */
+bool Button::unpress() {
+	bool success = true;
+
+	this->pressed = false;
+
+	return success;
+}
+
 bool Button::isPressed() {
-	return pressed;
+	return this->pressed;
 }
 
 bool Button::hide() {

@@ -8,7 +8,7 @@
 #include "LIBDECLARATIONS.h"
 
 #include "Utilities.h"
-#include "FileHandling.h"
+#include "FileHandler.h"
 
 #include "Sprite.h"
 
@@ -149,7 +149,7 @@ bool Gameplay::loadCurrentLevel() {
 		- Initializing current level configs.
 	*/
 
-	FileHandling file_io;
+	FileHandler file_io;
 	this->level_config_paths = file_io.parseLevelConfigPaths();
 
 	this->level_width = file_io.parseLevelWidth(level_config_paths[this->current_level]);
@@ -161,7 +161,7 @@ bool Gameplay::loadCurrentLevel() {
 bool Gameplay::loadAllGameplayAssets() {
 	bool success = true;
 
-	FileHandling file_io;
+	FileHandler file_io;
 
 	this->player = file_io.loadPlayer(this->renderer, this->level_config_paths[this->current_level],
 		this->user_actions);

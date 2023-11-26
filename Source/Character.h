@@ -5,9 +5,13 @@
 
 #pragma once
 
-#include "LIBDECLARATIONS.h"
-
 #include "Sprite.h"
+
+struct Knockback {
+    int self;
+    int attack;
+    int contact;
+};
 
 class Character : public Sprite {
 private:
@@ -17,6 +21,8 @@ private:
 
     Direction facing_direction;
 
+    Knockback knockback;
+
     bool is_running;
     bool is_jumping;
     bool is_falling;
@@ -24,6 +30,9 @@ private:
 
     /*
     NOTE:
+        - The member attributes below are motion-related 
+        attributes.
+
         - Speed is in pixels per frame.
 
         - Gravitational acceleration is in pixels per frame
@@ -31,11 +40,6 @@ private:
         - Fall velocity is in pixels per frame
 
         - Terminal velocity is in pixels per frame
-    */
-    /*
-    NOTE:
-        - The member attributes below are motion-related 
-        attributes.
     */
     int run_speed;
     int gravitational_acceleration;
@@ -58,6 +62,7 @@ public:
     bool setAnimation(Animation animation);
     bool setCollision(Collision collided);
     bool setDirectionFacing(Direction facing);
+    bool setKnockback(Knockback knockback);
     bool setRunningState(bool is_running);
     bool setJumpingState(bool is_jumping);
     bool setFallingState(bool is_falling);
@@ -75,6 +80,7 @@ public:
     Animation getAnimation();
     Collision getCollisionDirections();
     Direction getDirectionFacing();
+    Knockback getKnockback();
     bool isRunning();
     bool isJumping();
     bool isFalling();
@@ -331,6 +337,14 @@ bool Character::setDirectionFacing(Direction facing) {
     return true;
 }
 
+bool Character::setKnockback(Knockback knockback) {
+	bool success = true;
+
+	this->knockback = knockback;
+
+	return success;
+}
+
 bool Character::setRunningState(bool is_running) {
     bool success = true;
 
@@ -417,6 +431,7 @@ SECTION 2B: GETTERS
 Animation Character::getAnimation() { return this->animation; }
 Collision Character::getCollisionDirections() { return this->collided; }
 Direction Character::getDirectionFacing() { return this->facing_direction; }
+Knockback Character::getKnockback() { return this->knockback; }
 bool Character::isRunning() { return this->is_running; }
 bool Character::isJumping() { return this->is_jumping; }
 bool Character::isFalling() { return this->is_falling; }

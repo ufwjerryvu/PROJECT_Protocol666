@@ -36,7 +36,7 @@ public:
 	SECTION 1: CONSTRUCTORS AND DESTRUCTORS
 	*/
 	Player();
-	Player(int x, int y, Animation animation, UserEvent user_actions);
+	Player(int x, int y, CharacterAnimation animation, UserEvent user_actions);
 	~Player();
 
 	/*
@@ -97,7 +97,7 @@ Player::Player() : Character() {
 	this->setShootingCooldownCount(0);
 }
 
-Player::Player(int x, int y, Animation animation, UserEvent user_actions)
+Player::Player(int x, int y, CharacterAnimation animation, UserEvent user_actions)
 	: Character(x, y, animation) {
 
 	/*
@@ -538,7 +538,7 @@ void Player::setNextFrame() {
 	*/
 	if (!(this->isFalling() || this->isJumping() || this->isRunning()) && this->isAttacking()) {
 		frames_per_sequence = 18;
-		Animation temp = this->getAnimation();
+		CharacterAnimation temp = this->getAnimation();
 
 		temp.current_frame_idle = 0;
 		temp.current_frame_running = 0;
@@ -574,7 +574,7 @@ void Player::setNextFrame() {
 	*/
 	else if (!(this->isFalling() || this->isJumping()) && this->isRunning() && this->isAttacking()) {
 		frames_per_sequence = 5;
-		Animation temp = this->getAnimation();
+		CharacterAnimation temp = this->getAnimation();
 
 		temp.current_frame_idle = 0;
 		temp.current_frame_running = 0;
@@ -613,7 +613,7 @@ void Player::setNextFrame() {
 	if (this->isJumping() && this->isAttacking()) {
 		frames_per_sequence = 25;
 
-		Animation temp = this->getAnimation();
+		CharacterAnimation temp = this->getAnimation();
 
 		temp.current_frame_idle = 0;
 		temp.current_frame_running = 0;
@@ -657,7 +657,7 @@ void Player::setNextFrame() {
 	if (this->isFalling() && this->isAttacking()) {
 		frames_per_sequence = 25;
 
-		Animation temp = this->getAnimation();
+		CharacterAnimation temp = this->getAnimation();
 
 		temp.current_frame_idle = 0;
 		temp.current_frame_running = 0;
@@ -698,7 +698,7 @@ void Player::setNextFrame() {
 	SUBSECTION 5: FALLING ANIMATION
 	*/
 	if (this->isFalling()) {
-		Animation temp = this->getAnimation();
+		CharacterAnimation temp = this->getAnimation();
 
 		temp.current_frame_idle = 0;
 		temp.current_frame_running = 0;
@@ -739,7 +739,7 @@ void Player::setNextFrame() {
 	SUBSECTION 6: JUMPING ANIMATION
 	*/
 	if (this->isJumping()) {
-		Animation temp = this->getAnimation();
+		CharacterAnimation temp = this->getAnimation();
 
 		temp.current_frame_idle = 0;
 		temp.current_frame_running = 0;
@@ -785,7 +785,7 @@ void Player::setNextFrame() {
 			- If the user isn't moving then the current moving frame
 			must be reset to 0.
 		*/
-		Animation temp = this->getAnimation();
+		CharacterAnimation temp = this->getAnimation();
 
 		temp.current_frame_running = 0;
 		temp.current_frame_falling = 0;
@@ -840,7 +840,7 @@ void Player::setNextFrame() {
 		*/
 
 		frames_per_sequence = 5;
-		Animation temp = this->getAnimation();
+		CharacterAnimation temp = this->getAnimation();
 
 		temp.current_frame_idle = 0;
 		temp.current_frame_falling = 0;
