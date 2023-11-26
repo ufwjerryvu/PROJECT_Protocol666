@@ -5,21 +5,17 @@
 
 #pragma once
 
-#include "LIBDECLARATIONS.h"
-
-#include "Sprite.h"
-
-#include "Character.h"
+#include "Goon.h"
 #include "Player.h"
-#include "Enemy.h"
 
-class RangeGoon : public Enemy {
+
+class RangeGoon : public Goon {
 public:
 	/*
 	SECTION 1: CONSTRUCTORS AND DESTRUCTORS
 	*/
 	RangeGoon();
-	RangeGoon(int x, int y, CharacterAnimation animation, string name, Movement movement_logic, Damage damage_dealt);
+	RangeGoon(int x, int y, Animation animation, Damage damage_dealt, Knockback knockback);
 	~RangeGoon();
 	/*
 	SECTION 2A: SETTERS
@@ -30,22 +26,22 @@ public:
 	/*
 	SECTION 3: OTHER METHODS
 	*/
-	void detectPlayer(Player& arg);
+	void detectAndAttack(Player& arg);
 	void attack();
 };
 
 /*
 SECTION 1: CONSTRUCTORS AND DESTRUCTORS
 */
-RangeGoon::RangeGoon() : Enemy() {
+RangeGoon::RangeGoon() : Goon() {
 	/*
 	NOTE:
 		- Do not use this constructor if not needed.
 	*/
 }
 
-RangeGoon::RangeGoon(int x, int y, CharacterAnimation animation, string name, Movement movement_logic, Damage damage_dealt) 
-	: Enemy(x, y, animation, name, movement_logic, damage_dealt) {
+RangeGoon::RangeGoon(int x, int y, Animation animation, Damage damage_dealt, Knockback knockback) 
+	: Goon(x, y, animation, damage_dealt, knockback) {
 	/*
 	NOTE:
 		- This is the preferred constructor.
@@ -69,7 +65,7 @@ SECTION 2B: GETTERS
 SECTION 3: OTHER METHODS
 */
 
-void RangeGoon::detectPlayer(Player& arg) {
+void RangeGoon::detectAndAttack(Player& arg) {
 	const int DETECTION_RANGE = 300;
 	const int ATTACK_RANGE = 200;
 

@@ -5,32 +5,24 @@
 
 #pragma once
 
-#include "LIBDECLARATIONS.h"
-
-#include "Sprite.h"
-
-#include "Character.h"
 #include "Player.h"
 
 class Enemy : public Character {
 private:
-	string name;
-	Movement movement_logic;
 	Damage damage_dealt;
 	int update_interval;
+	int attack_range;
 
 	/*
 	NOTE:
-		- `name` is the Enemy's categorized names (e.g., Zombie, Raider, etc.)
+		- Damage_dealt is defined in Damage which is in Health Points 
+		(presumed Player has 100 max HP).
 
-		- `movement_logic` is defined in the Movement structure which its unit
-		is in pixels.
-
-		- Similarly, `damage_dealt` is defined in the Damage structure which 
-		is in Health Points (presumed Player has 100 max HP).
-
-		- `update_interval` is used as a mechanism to delay an Enemy's action, such as 
+		- Update_interval is used as a mechanism to delay Enemy's action, such as 
 		idle rotations.
+
+		- attack_range is the range of the Enemy's attack, which is used to detect
+		Player's presence in the Enemy's range of attack.
 	*/
 
 public:
@@ -38,26 +30,24 @@ public:
 	SECTION 1: CONSTRUCTOR AND DESTRUCTORS
 	*/
 	Enemy();
-	Enemy(int x, int y, CharacterAnimation animation, string name, Movement movement_logic, Damage damage_dealt);
+	Enemy(int x, int y, Animation animation, Damage damage_dealt, Knockback knockback);
 	~Enemy();
 
 	/*
 	SECTION 2A: SETTERS
 	*/
-	bool setName(string name);
-	bool setMovementLogic(Movement movement_logic);
 	bool setDamageDealt(Damage damage_dealt);
 	bool setAttackDamage(int attack_damage);
 	bool setUpdateInterval(int update_interval);
+	bool setAttackRange(int attack_range);
 
 	/*
 	SECTION 2B: GETTERS
 	*/
-	string getName();
-	Movement getMovementLogic();
 	Damage getDamageDealt();
 	int getAttackDamage();
 	int getUpdateInterval();
+	int getAttackRange();
 
 	/*
 	SECTION 3: OTHER METHODS
@@ -81,7 +71,7 @@ public:
 		different attacks (Range, Melee, etc...).
 	*/
 
-	virtual void detectPlayer(Player& player, vector<Ground>& grounds, vector<Platform>& platforms) = 0;
+	virtual void chasePlayer(Player& player, vector<Ground>& grounds, vector<Platform>& platforms) = 0;
 	virtual void attack() = 0;
 };
 
@@ -99,32 +89,26 @@ Enemy::Enemy() : Character() {
 		default Enemy coordinates.
 	*/
 	
-	this->setName("Default");
-	
 	Movement default_logic = {0, 0, 0, 0, 0, 0};
 
-	this->setMovementLogic(default_logic);
-
-	Damage default_damage = {0, 0, 0};
+	Damage default_damage = {0, 0};
 
 	this->setDamageDealt(default_damage);
 
 	this->setUpdateInterval(0);
 };
 
-Enemy::Enemy(int x, int y, CharacterAnimation animation, string name, Movement movement_logic, Damage damage_dealt)
+Enemy::Enemy(int x, int y, Animation animation, Damage damage_dealt, Knockback knockback)
 	: Character(x, y, animation) {
-	this->setName(name);
-	this->setMovementLogic(movement_logic);
 	this->setDamageDealt(damage_dealt);
-	this->setUpdateInterval(0);
+	this->setKnockback(knockback);
 
 	/* 
 	NOTE: 
 		- By default, Enemy needs to be facing the right as 
 		they spawn, to ensure the consistency of their movement.
 	*/
-
+	this->setUpdateInterval(0);
 	this->setDirectionFacing(Direction::RIGHT);
 };
 
@@ -139,26 +123,10 @@ Enemy::~Enemy() {
 SECTION 2A: SETTERS
 */
 
-bool Enemy::setName(string name) {
-	bool success = true;
-
-	this->name = name;
-
-	return success;
-}
-
-bool Enemy::setMovementLogic(Movement movement_logic) {
-	bool success = true;
-
-	this->movement_logic = { movement_logic.spawn_x, movement_logic.spawn_y, movement_logic.x_max_displacement, movement_logic.y_max_displacement, movement_logic.x_direction_velocity, movement_logic.y_direction_velocity };
-
-	return success;
-}
-
 bool Enemy::setDamageDealt(Damage damage_dealt) {
 	bool success = true;
 
-	this->damage_dealt = {damage_dealt.attack, damage_dealt.collision, damage_dealt.self_destruct};
+	this->damage_dealt = { damage_dealt.attack, damage_dealt.collision };
 
 	return success;
 }
@@ -182,15 +150,22 @@ bool Enemy::setUpdateInterval(int update_interval) {
 	return success;
 }
 
+bool Enemy::setAttackRange(int attack_range) {
+	bool success = true;
+
+	this->attack_range = attack_range;
+
+	return success;
+}
+
 /*
 SECTION 2B: GETTERS
 */
 
-string Enemy::getName() { return this->name; };
-Movement Enemy::getMovementLogic() { return this->movement_logic; };
 Damage Enemy::getDamageDealt() { return this->damage_dealt; };
-int Enemy::getAttackDamage() { return this->getDamageDealt().attack; }
+int Enemy::getAttackDamage() { return this->getDamageDealt().attack; };
 int Enemy::getUpdateInterval() { return this->update_interval; };
+int Enemy::getAttackRange() { return this->attack_range; };
 
 /*
 SECTION 3: OTHER METHODS
@@ -447,6 +422,11 @@ bool Enemy::atGroundBoundary(vector<Ground>& grounds) {
 }
 
 void Enemy::run() {
+	/*
+	NOTE:
+		- This function is kept simple, to keep the Enemy moving
+		in its current direction.
+	*/
 	this->setRunningState(true);
 	if (this->getDirectionFacing() == Direction::LEFT) {
 		this->setX(this->getX() - this->getRunSpeed());
@@ -527,13 +507,13 @@ void Enemy::jump() {
 void Enemy::move() {
 	/*
 	NOTE:
-		- `move()` function is kept similar to the Player's move() function.
+		- Move() function is kept similar to the Player's move() function.
 		
-		- `jump()` will be called in the condition that the Enemy is already
+		- Jump() will be called in the condition that the Enemy is already
 		jumping, which jump() will be called respectively to their enemy 
 		class.
 
-		- By default, the Enemy is set to `run()` at all times, except while
+		- By default, the Enemy is set to run() at all times, except while
 		attacking Player.
 	*/
 	if (!this->isJumping() && this->getY() <= this->getLevelHeight()) {
