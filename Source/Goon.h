@@ -19,7 +19,7 @@ public:
 	SECTION 1: CONSTRUCTOR AND DESTRUCTORS
 	*/
 	Goon();
-	Goon(int x, int y, Animation animation, Damage damage_dealt, Knockback knockback);
+	Goon(int x, int y, CharacterAnimation animation, Damage damage_dealt, Knockback knockback);
 	~Goon();
 
 	/*
@@ -65,7 +65,7 @@ Goon::Goon() : Enemy() {
 	this->setUpdateInterval(0);
 };
 
-Goon::Goon(int x, int y, Animation animation, Damage damage_dealt, Knockback knockback)
+Goon::Goon(int x, int y, CharacterAnimation animation, Damage damage_dealt, Knockback knockback)
 	: Enemy(x, y, animation, damage_dealt, knockback) {
 	this->setDamageDealt(damage_dealt);
 	this->setUpdateInterval(0);
@@ -217,7 +217,7 @@ void Goon::setNextFrame() {
 	int frames_per_sequence = 10;
 
 	if (this->isFalling()) {
-		Animation temp = this->getAnimation();
+		CharacterAnimation temp = this->getAnimation();
 
 		temp.current_frame_idle = 0;
 		temp.current_frame_running = 0;
@@ -251,7 +251,7 @@ void Goon::setNextFrame() {
 	}
 
 	if (this->isJumping()) {
-		Animation temp = this->getAnimation();
+		CharacterAnimation temp = this->getAnimation();
 
 		temp.current_frame_idle = 0;
 		temp.current_frame_running = 0;
@@ -290,7 +290,7 @@ void Goon::setNextFrame() {
 			- If the user isn't moving then the current moving frame
 			must be reset to 0.
 		*/
-		Animation temp = this->getAnimation();
+		CharacterAnimation temp = this->getAnimation();
 
 		temp.current_frame_running = 0;
 		temp.current_frame_falling = 0;
@@ -335,7 +335,7 @@ void Goon::setNextFrame() {
 		*/
 
 		frames_per_sequence = 5;
-		Animation temp = this->getAnimation();
+		CharacterAnimation temp = this->getAnimation();
 
 		temp.current_frame_idle = 0;
 		temp.current_frame_falling = 0;
