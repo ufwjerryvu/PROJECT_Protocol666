@@ -54,6 +54,7 @@ public:
 	*/
 	void run();
 	void jump();
+	void roll();
 	void move();
 
 	void collide(vector<Ground>& args);
@@ -315,6 +316,68 @@ void Player::jump() {
 		this->setJumpingState(true);
 		this->setVerticalVelocity(this->getInitialJumpVelocity());
 		this->setVerticalUpdateInterval(0);
+		this->setRollingState(false);
+	}
+}
+
+void Player::roll() {
+	/*
+	NOTE:
+		- Defines the logic for the action of rolling. Press 'LEFT SHIFT' to roll.
+		The player can roll before they jump.
+	*/
+	if (this->user_actions.current_key_states[SDL_SCANCODE_LSHIFT] && !(this->isAttacking() 
+		|| this->isFalling() || this->isJumping())) {
+		this->setRollingState(true);
+		this->setRunningState(false);
+	}
+
+	if (this->isRolling()) {
+		int additional_rolling_speed = 2;
+
+		if (this->isFalling() || this->isJumping()) {
+			additional_rolling_speed = 0;
+		}
+		if (this->getDirectionFacing() == Direction::LEFT) {
+			/*
+			NOTE:
+				- Checking if the player is going out of the left bound. If they
+				are then stop them.
+			*/
+			if (this->getX() - this->getRunSpeed() <= 0) {
+				this->setRollingState(false);
+				/*
+				NOTE:
+					- The following code that sets the x-coordinate is basically saying
+					that we don't want to leave a gap between the player and the edge
+					of the screen.
+				*/
+				this->setX(0);
+				return;
+			}
+			/*
+			NOTE:
+				- The player is rolling left.
+			*/
+			this->setX(this->getX() - this->getRunSpeed() - additional_rolling_speed);
+		}
+
+		if (this->getDirectionFacing() == Direction::RIGHT) {
+			/*
+			NOTE:
+				- Checking if the player is going out of the right bound. If they
+				are then stop them.
+			*/
+			if (this->getX() + this->getRunSpeed() + this->getWidth() >= this->getLevelWidth()) {
+				this->setRollingState(false);
+				return;
+			}
+			/*
+			NOTE:
+				- The player is rolling right.
+			*/
+			this->setX(this->getX() + this->getRunSpeed() + additional_rolling_speed);
+		}
 	}
 }
 
@@ -346,7 +409,11 @@ void Player::move() {
 		this->jump();
 	}
 
-	this->run();
+	if (!this->isRolling() || this->isFalling() || this->isJumping()) {
+		this->run();
+	}
+
+	this->roll();
 }
 
 void Player::collide(vector<Ground>& args) {
@@ -534,7 +601,50 @@ void Player::setNextFrame() {
 	int frames_per_sequence = 10;
 
 	/*
-	SUBSECTION 1: SHOOTING IDLE
+	SUBSECTION 1: ROLLING ANIMATION
+	*/
+	if (this->isRolling() && !this->isAttacking()) {
+		frames_per_sequence = 4;
+		CharacterAnimation temp = this->getAnimation();
+
+		temp.current_frame_idle = 0;
+		temp.current_frame_running = 0;
+		temp.current_frame_falling = 0;
+		temp.current_frame_jumping = 0;
+		temp.current_frame_shooting_idle = 0;
+		temp.current_frame_shooting_running = 0;
+		temp.current_frame_shooting_jumping = 0;
+		temp.current_frame_shooting_falling = 0;
+
+		this->setAnimation(temp);
+
+		/*
+		NOTE:
+			- Here's the modulo operation metioned earlier.
+		*/
+		if (!(temp.current_frame_rolling % frames_per_sequence)) {
+			this->setTexture(temp.frames_rolling[temp.current_frame_rolling / frames_per_sequence]);
+		}
+
+		if (temp.current_frame_rolling >= ((temp.frames_rolling.size() - 1) * frames_per_sequence)) {
+			temp.current_frame_rolling = 0;
+			/*
+			NOTE:
+				- We also set the falling state to false.
+			*/
+			this->setRollingState(false);
+		}
+		else {
+			temp.current_frame_rolling++;
+		}
+
+		this->setAnimation(temp);
+
+		return;
+	}
+
+	/*
+	SUBSECTION 2: SHOOTING IDLE
 	*/
 	if (!(this->isFalling() || this->isJumping() || this->isRunning()) && this->isAttacking()) {
 		frames_per_sequence = 18;
@@ -544,6 +654,7 @@ void Player::setNextFrame() {
 		temp.current_frame_running = 0;
 		temp.current_frame_falling = 0;
 		temp.current_frame_jumping = 0;
+		temp.current_frame_rolling = 0;
 		temp.current_frame_shooting_running = 0;
 		temp.current_frame_shooting_jumping = 0;
 		temp.current_frame_shooting_falling = 0;
@@ -570,7 +681,7 @@ void Player::setNextFrame() {
 		return;
 	}
 	/*
-	SUBSECTION 2: SHOOTING RUNNING
+	SUBSECTION 3: SHOOTING RUNNING
 	*/
 	else if (!(this->isFalling() || this->isJumping()) && this->isRunning() && this->isAttacking()) {
 		frames_per_sequence = 5;
@@ -580,6 +691,7 @@ void Player::setNextFrame() {
 		temp.current_frame_running = 0;
 		temp.current_frame_falling = 0;
 		temp.current_frame_jumping = 0;
+		temp.current_frame_rolling = 0;
 		temp.current_frame_shooting_idle = 0;
 		temp.current_frame_shooting_jumping = 0;
 		temp.current_frame_shooting_falling = 0;
@@ -607,7 +719,7 @@ void Player::setNextFrame() {
 	}
 
 	/*
-	SUBSECTION 3: SHOOTING JUMPING
+	SUBSECTION 4: SHOOTING JUMPING
 	*/
 
 	if (this->isJumping() && this->isAttacking()) {
@@ -619,6 +731,7 @@ void Player::setNextFrame() {
 		temp.current_frame_running = 0;
 		temp.current_frame_jumping = 0;
 		temp.current_frame_falling = 0;
+		temp.current_frame_rolling = 0;
 		temp.current_frame_shooting_idle = 0;
 		temp.current_frame_shooting_running = 0;
 		temp.current_frame_shooting_falling = 0;
@@ -651,7 +764,7 @@ void Player::setNextFrame() {
 	}
 
 	/*
-	SUBSECTION 4: SHOOTING FALLING
+	SUBSECTION 5: SHOOTING FALLING
 	*/
 
 	if (this->isFalling() && this->isAttacking()) {
@@ -663,6 +776,7 @@ void Player::setNextFrame() {
 		temp.current_frame_running = 0;
 		temp.current_frame_jumping = 0;
 		temp.current_frame_falling = 0;
+		temp.current_frame_rolling = 0;
 		temp.current_frame_shooting_idle = 0;
 		temp.current_frame_shooting_running = 0;
 		temp.current_frame_shooting_jumping = 0;
@@ -695,7 +809,7 @@ void Player::setNextFrame() {
 	}
 
 	/*
-	SUBSECTION 5: FALLING ANIMATION
+	SUBSECTION 6: FALLING ANIMATION
 	*/
 	if (this->isFalling()) {
 		CharacterAnimation temp = this->getAnimation();
@@ -703,6 +817,7 @@ void Player::setNextFrame() {
 		temp.current_frame_idle = 0;
 		temp.current_frame_running = 0;
 		temp.current_frame_jumping = 0;
+		temp.current_frame_rolling = 0;
 		temp.current_frame_shooting_idle = 0;
 		temp.current_frame_shooting_running = 0;
 		temp.current_frame_shooting_jumping = 0;
@@ -736,7 +851,7 @@ void Player::setNextFrame() {
 	}
 
 	/*
-	SUBSECTION 6: JUMPING ANIMATION
+	SUBSECTION 7: JUMPING ANIMATION
 	*/
 	if (this->isJumping()) {
 		CharacterAnimation temp = this->getAnimation();
@@ -744,6 +859,7 @@ void Player::setNextFrame() {
 		temp.current_frame_idle = 0;
 		temp.current_frame_running = 0;
 		temp.current_frame_falling = 0;
+		temp.current_frame_rolling = 0;
 		temp.current_frame_shooting_idle = 0;
 		temp.current_frame_shooting_running = 0;
 		temp.current_frame_shooting_jumping = 0;
@@ -777,7 +893,7 @@ void Player::setNextFrame() {
 	}
 
 	/*
-	SUBSECTION 7: IDLE ANIMATION
+	SUBSECTION 8: IDLE ANIMATION
 	*/
 	if (!this->isRunning()) {
 		/*
@@ -790,6 +906,7 @@ void Player::setNextFrame() {
 		temp.current_frame_running = 0;
 		temp.current_frame_falling = 0;
 		temp.current_frame_jumping = 0;
+		temp.current_frame_rolling = 0;
 		temp.current_frame_shooting_idle = 0;
 		temp.current_frame_shooting_running = 0;
 		temp.current_frame_shooting_jumping = 0;
@@ -823,7 +940,7 @@ void Player::setNextFrame() {
 	}
 
 	/*
-	SUBSECTION 8: RUNNING ANIMATION
+	SUBSECTION 9: RUNNING ANIMATION
 	*/
 	else {
 		/*
@@ -845,6 +962,7 @@ void Player::setNextFrame() {
 		temp.current_frame_idle = 0;
 		temp.current_frame_falling = 0;
 		temp.current_frame_jumping = 0;
+		temp.current_frame_rolling = 0;
 		temp.current_frame_shooting_idle = 0;
 		temp.current_frame_shooting_running = 0;
 		temp.current_frame_shooting_jumping = 0;
@@ -871,7 +989,6 @@ void Player::setNextFrame() {
 
 		return;
 	}
-
 }
 
 void Player::update() {

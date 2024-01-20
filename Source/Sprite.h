@@ -22,23 +22,6 @@ struct Collision {
 	bool bottom = false;
 };
 
-struct Damage {
-	int collision = 0;
-	int attack = 0;
-	int self_destruct = 0;
-};
-
-struct Movement {
-	int spawn_x = 0;
-	int spawn_y = 0;
-
-	int x_max_displacement = 0;
-	int y_max_displacement = 0;
-
-	int x_direction_velocity = 0;
-	int y_direction_velocity = 0;
-};
-
 class Sprite {
 private:
 	int x;

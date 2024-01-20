@@ -15,7 +15,7 @@ public:
 	SECTION 1: CONSTRUCTORS AND DESTRUCTORS
 	*/
 	MeleeGoon();
-	MeleeGoon(int x, int y, Animation animation, Damage damage_dealt, Knockback knockback);
+	MeleeGoon(int x, int y, CharacterAnimation animation, Damage damage_dealt, Knockback knockback);
 	~MeleeGoon();
 
 	/*
@@ -43,7 +43,7 @@ MeleeGoon::MeleeGoon() : Goon(){
 	*/
 }
 
-MeleeGoon::MeleeGoon(int x, int y, Animation animation,Damage damage_dealt, Knockback knockback) 
+MeleeGoon::MeleeGoon(int x, int y, CharacterAnimation animation,Damage damage_dealt, Knockback knockback) 
 	: Goon(x, y, animation, damage_dealt, knockback) {
 	/*
 	NOTE:
