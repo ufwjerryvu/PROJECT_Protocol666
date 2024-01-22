@@ -1,9 +1,31 @@
-all:
-	g++ -I"Libraries/SDL2/include" -I"Libraries/SDL2_image/include" -I"Libraries/SDL2_mixer/include"\
-	 	-I"Libraries/SDL2_ttf/include" -I"Libraries/SQLite3/include" -L"Libraries/SDL2/lib"\
-		-L"Libraries/SDL2_image/lib" -L"Libraries/SDL2_mixer/lib" -L"Libraries/SDL2_ttf/lib"\
-	  	-o "Executables/Play.exe" "Source/Main.cpp" "Executables/SQLite3.dll" -lmingw32 -lSDL2main\
-		-lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf\
-		\
-		\
-		-I"Source" -I"Source/physics" -I"Source/renderables" -I"Source/database" -I"Source/temp"
+# Directories
+SDL_DIR := Libraries/SDL2
+SDL_IMG_DIR := Libraries/SDL2_image
+SDL_MIX_DIR := Libraries/SDL2_mixer
+SDL_TTF_DIR := Libraries/SDL2_ttf
+SQLITE_DIR := Libraries/SQLite3
+
+SRC_DIR := Source
+
+EXE_DIR := Executables
+
+# Compiler and flags
+CC := g++
+CFLAGS := -I$(SDL_DIR)/include -I$(SDL_IMG_DIR)/include -I$(SDL_MIX_DIR)/include -I$(SDL_TTF_DIR)/include -I$(SQLITE_DIR)/include -I$(SRC_DIR)
+LDFLAGS := -L$(SDL_DIR)/lib -L$(SDL_IMG_DIR)/lib -L$(SDL_MIX_DIR)/lib -L$(SDL_TTF_DIR)/lib
+
+LIBS := -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf
+# Targets
+all: Subsystems Executable Clean
+
+# Compiling the systems object to run other things (no linking)
+Subsystems:
+	$(CC) -c $(SRC_DIR)/Systems.cpp $(CFLAGS) $(LDFLAGS) $(LIBS)
+
+# Compiling the systems object with main
+Executable:
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $(EXE_DIR)/Play.exe $(SRC_DIR)/Main.cpp Systems.o $(EXE_DIR)/SQLite3.dll $(LIBS)
+
+# Delete all object files
+Clean:	
+	del *.o

@@ -1,5 +1,3 @@
-#pragma once
-
 /*
 IMPORTING THE STANDARD LIBRARIES
 */
@@ -35,10 +33,3 @@ struct UserEvent {
 	bool* mouse_down, * mouse_up;
 	int* mouse_x, * mouse_y;
 };
-
-/*
-REDEFINING THE EXCEPTION THROWING
-*/
-void throwException(string msg = "Error: exception thrown\n"){
-	throw runtime_error(msg + "\n");
-}
