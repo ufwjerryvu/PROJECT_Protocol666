@@ -1,11 +1,11 @@
-#include "Menu.h"
+#include "Instructions.h"
 
 #include <Master.h>
 
 /*
 SECTION 1: CONSTRUCTORS AND DESTRUCTORS
 */
-Menu::Menu()
+Instructions::Instructions()
 {
     /*
     NOTE:
@@ -13,7 +13,7 @@ Menu::Menu()
     */
 }
 
-Menu::Menu(Master *context) : Navigation(context)
+Instructions::Instructions(Master *context) : Navigation(context)
 {
     /*
     NOTE:
@@ -24,7 +24,7 @@ Menu::Menu(Master *context) : Navigation(context)
     this->loadButtons();
 }
 
-Menu::~Menu()
+Instructions::~Instructions()
 {
     /*
     TEMPORARY:
@@ -32,7 +32,7 @@ Menu::~Menu()
     */
 }
 
-void Menu::loadButtons()
+void Instructions::loadButtons()
 {
     /*
     NOTE:
@@ -46,11 +46,7 @@ void Menu::loadButtons()
         to the button (second).
     */
     pair<string, Button *> list[] = {
-        {"play", &this->play},
-        {"instructions", &this->instructions},
-        {"settings", &this->settings},
-        {"about", &this->about},
-        {"quit", &this->quit}};
+        {"back", &this->back}};
 
     /*
     NOTE:
@@ -58,7 +54,7 @@ void Menu::loadButtons()
         `0`. We will align it later to the center.
     */
 
-    const int START_X = 0, START_Y = 130, SPACING_Y = 5;
+    const int START_X = 0, START_Y = 400, SPACING_Y = 5;
     int greatest_y = START_Y;
     for (int i = 0; i < sizeof(list) / sizeof(pair<string, Button *>); i++)
     {
@@ -97,10 +93,9 @@ void Menu::loadButtons()
 /*
 SECTION 2: OTHER METHODS
 */
-void Menu::switchState()
+void Instructions::switchState()
 {
-    Button *buttons[] = {&this->play, &this->settings, &this->about,
-                         &this->instructions, &this->quit};
+    Button *buttons[] = {&this->back};
 
     UserEvent *actions = this->getContext()->getUserActions();
 
@@ -131,49 +126,17 @@ void Menu::switchState()
     NOTE:
         - Manipulating the context from here.
     */
-    if (this->play.isPressed())
-    {
-        /*
-        TEMPORARY:
-            - Empty for now.
-        */
-    }
-    else if (this->settings.isPressed())
+    if (this->back.isPressed())
     {
         /*
         NOTE:
-            - Switching the page to settings.
+            - Switching back to the main menu.
         */
-        this->getContext()->setNavigation(new Settings(this->getContext()));
-    }
-    else if (this->instructions.isPressed())
-    {
-        /*
-        NOTE:
-            - Switching the page to instructions.
-        */
-        this->getContext()->setNavigation(new Instructions(this->getContext()));
-    }
-    else if (this->about.isPressed())
-    {
-        /*
-        NOTE:
-            - Switching the page to about.
-        */
-        this->getContext()->setNavigation(new About(this->getContext()));
-    }
-    else if (this->quit.isPressed())
-    {
-        /*
-        NOTE:
-            - Exiting the program but also freeing the memory.
-        */
-        this->getContext()->close();
-        exit(0);
+        this->getContext()->setNavigation(new Menu(this->getContext()));
     }
 }
 
-void Menu::update()
+void Instructions::update()
 {
     /*
     NOTE:
@@ -188,16 +151,12 @@ void Menu::update()
     this->switchState();
 }
 
-void Menu::render()
+void Instructions::render()
 {
     /*
     TEMPORARY:
         - Rendering all the buttons. Would be better if this was
         done using a loop instead.
     */
-    this->play.render(this->getContext()->getRenderer(), false);
-    this->about.render(this->getContext()->getRenderer(), false);
-    this->instructions.render(this->getContext()->getRenderer(), false);
-    this->settings.render(this->getContext()->getRenderer(), false);
-    this->quit.render(this->getContext()->getRenderer(), false);
+    this->back.render(this->getContext()->getRenderer(), false);
 }

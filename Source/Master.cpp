@@ -27,10 +27,12 @@ Master::Master(UserEvent user_actions)
 
     /*
     NOTE:
-         - Passing the system variables and the event handler into the
-         main menu and gameplay objects. Making sure the first navigat-
-         on page is the main menu.
+         - Allocating a new object. Remember to free memory when the state
+        changes or when the master class is closed. Since `Navigation` is
+        the parent class of `Menu`, we need to dynamically allocate these
+        things using pointers.
     */
+
     this->navigation = new Menu(this);
     // this->gameplay = Gameplay();
 }
@@ -144,7 +146,22 @@ void Master::close()
 /*
 SECTION 3: STATE CHANGES
 */
-// setNavigation(Navigation page){ this->navigation = page;}
+void Master::setNavigation(Navigation *page)
+{
+    /*
+    NOTE:
+        - We first need to dynamically free the memory from
+        the old navigation member.
+    */
+    delete this->navigation;
+
+    /*
+    NOTE:
+        - Now set the member. Memory is dynamically allocated
+        upon calling the function. 
+    */
+    this->navigation = page;
+}
 // setGameplay(Gameplay gameplay){this->gameplay = gameplay;}
 
 /*
@@ -162,6 +179,12 @@ SECTION 5: UPDATE AND DISPLAY
 */
 void Master::update()
 {
+    /*
+    NOTE:
+        - Updates from multiple objects.
+    */
+    this->navigation->update();
+    //this->gameplay.update();
 }
 
 void Master::render()
@@ -173,10 +196,11 @@ void Master::render()
     SDL_RenderClear(this->renderer);
 
     /*
-    NOTE: 
+    NOTE:
         - Rendering the current state.
     */
     this->navigation->render();
+
     /*
     NOTE:
         - Finally rendering everything.

@@ -48,7 +48,7 @@ public:
 	/*
 	SECTION 3: STATE CHANGES
 	*/
-	// void setNavigation(Navigation navigation);
+	void setNavigation(Navigation *navigation);
 	// void setGameplay(Gameplay gameplay);
 
 	/*

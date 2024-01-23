@@ -9,30 +9,24 @@
 
 #include <Button.h>
 #include <FileHandler.h>
-
 #include <Navigation.h>
-#include <Settings.h>
-#include <About.h>
-#include <Instructions.h>
+
+#include <Menu.h>
 
 class Master;
 
-class Menu : public Navigation
+class About : public Navigation
 {
 private:
-    Button play;
-    Button settings;
-    Button about;
-    Button instructions;
-    Button quit;
+    Button back;
 
 public:
     /*
     SECTION 1: CONSTRUCTORS AND DESTRUCTORS
     */
-    Menu();
-    Menu(Master *context);
-    ~Menu();
+    About();
+    About(Master *context);
+    ~About();
     void loadButtons();
 
     /*

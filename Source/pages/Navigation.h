@@ -26,6 +26,7 @@ public:
     SECTION 2: GETTERS (AND MAYBE, SETTERS)
     */
     Master *getContext();
+    
     /*
     SECTION 3: OTHER METHODS
     */

@@ -6,6 +6,7 @@ IMPORTING THE C++ STANDARD LIBRARIES
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cstdlib>
 #include <algorithm>
 #include <fstream>
 #include <stdexcept>
@@ -16,6 +17,9 @@ IMPORTING THE C++ STANDARD LIBRARIES
 IMPORTING THE C STANDARD LIBRARIES
 */
 #include <assert.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
 
 /*
 IMPORTING THE SDL LIBRARIES
