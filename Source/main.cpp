@@ -2,8 +2,8 @@
 @ COLLABORATORS: Jerry Vu
 @ DESIGNERS: Jerry Vu
 */
-
 #include <Systems.h>
+
 #include <Master.h>
 
 int main(int argc, char* argv[]) {
@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
 	bool quit = false;
 	SDL_Event action;
 
-	const int TIME_PER_FRAME_MS = 1000 / master.FRAME_RATE;
+	const int TIME_PER_FRAME_MS = 1000 / master.getFrameRate();
 	while (!quit) {
 		int start_time = SDL_GetTicks();
 
