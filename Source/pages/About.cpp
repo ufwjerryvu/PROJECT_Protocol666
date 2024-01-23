@@ -36,12 +36,6 @@ void About::loadButtons()
 {
     /*
     NOTE:
-        - Loading the buttons in the file.
-    */
-    FileHandler file = FileHandler();
-
-    /*
-    NOTE:
         - The pair consists of the prefix (first) and the pointer
         to the button (second).
     */
@@ -63,12 +57,9 @@ void About::loadButtons()
             - This part is just constructing the buttons. The prefix
             in the pair will determine its corresponding image asset.
         */
-        string path = "Assets/Sprite/Button/" + list[i].first + "_idle.png";
-
         Coordinates position = Coordinates(START_X, SPACING_Y + greatest_y);
-        SDL_Texture *texture = file.loadTexture(this->getContext()->getRenderer(), path);
-
-        (*list[i].second) = Button(position, texture);
+        SDL_Renderer *rend = this->getContext()->getRenderer();
+        (*list[i].second) = Creator().createButton(rend, list[i].first, position);
 
         /*
         NOTE:
@@ -86,7 +77,7 @@ void About::loadButtons()
         position = Coordinates(this->getContext()->getScreenWidth() / 2 -
                                    list[i].second->getWidth() / 2,
                                position.getY());
-        (*list[i].second) = Button(position, texture);
+        (*list[i].second) = Creator().createButton(rend, list[i].first, position);
     }
 }
 
@@ -118,7 +109,13 @@ void About::switchState()
                 - We use the boolean value of the user event
                 structure to directly set the button.
             */
+            button->setHovering(true);
             button->setPressed(*actions->mouse_down);
+        }
+        else
+        {
+            button->setHovering(false);
+            button->setPressed(false);
         }
     }
 
@@ -143,7 +140,7 @@ void About::update()
         - Calling all the related functions (accounted for 
         more number of functions in the future).
     */
-
+    this->back.update();
     /*
     NOTE:
         - Switching pages

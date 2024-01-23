@@ -24,8 +24,21 @@ Pressable::~Pressable()
 /*
 SECTION 2A: SETTERS
 */
-void Pressable::setPressed(bool pressed) { this->pressed = pressed; }
-void Pressable::setHovering(bool hovering) { this->hovering = hovering; }
+void Pressable::setPressed(bool pressed)
+{
+    this->pressed = pressed;
+    if (pressed)
+    {
+        this->hovering = false;
+    }
+}
+void Pressable::setHovering(bool hovering)
+{
+    this->hovering = hovering;
+    if(hovering){
+        this->pressed = false;
+    }
+}
 /*
 SECTION 2B: GETTERS
 */

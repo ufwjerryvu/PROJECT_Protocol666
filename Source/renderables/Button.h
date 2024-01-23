@@ -10,12 +10,14 @@
 #include <Sprite.h>
 
 class Button : public Sprite, public Pressable{
+private:
+    map<string, SDL_Texture*> animation;
 public:
     /*
     SECTION 1: CONSTRUCTORS AND DESTRUCTORS
     */
     Button();
-    Button(Coordinates position, SDL_Texture* texture);
+    Button(Coordinates position, map<string, SDL_Texture*> animation);
     ~Button();
 
     /*
