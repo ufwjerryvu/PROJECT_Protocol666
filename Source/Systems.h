@@ -1,5 +1,7 @@
+#pragma once
+
 /*
-IMPORTING THE STANDARD LIBRARIES
+IMPORTING THE C++ STANDARD LIBRARIES
 */
 #include <iostream>
 #include <string>
@@ -7,6 +9,11 @@ IMPORTING THE STANDARD LIBRARIES
 #include <algorithm>
 #include <fstream>
 #include <stdexcept>
+
+/*
+IMPORTING THE C STANDARD LIBRARIES
+*/
+#include <assert.h>
 
 /*
 IMPORTING THE SDL LIBRARIES
