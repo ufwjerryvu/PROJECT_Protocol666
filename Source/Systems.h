@@ -26,10 +26,11 @@ using namespace std;
 /*
 DECLARING THE USER-EVENT STRUCTURE
 */
-struct UserEvent {
-	bool* key_down, * key_up;
-	const Uint8* current_key_states;
+struct UserEvent
+{
+	bool *key_down, *key_up;
+	const Uint8 *current_key_states;
 
-	bool* mouse_down, * mouse_up;
-	int* mouse_x, * mouse_y;
+	bool *mouse_down, *mouse_up;
+	int *mouse_x, *mouse_y;
 };
