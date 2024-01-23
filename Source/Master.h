@@ -7,7 +7,7 @@
 
 #include <Systems.h>
 
-#include <Navigation.h>
+#include <Sprite.h>
 
 class Navigation;
 
@@ -30,8 +30,8 @@ private:
 	/*
 	SECTION 0B: STATE CONTROL AND BRANCHES
 	*/
-	// Navigation navigation
-	// Gameplay gampelay;
+	Navigation *navigation;
+	// Gameplay *gampelay;
 
 public:
 	/*

@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-01-23T03:16:50.122Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" etag="-7RjOzOgoeeWdWyEuqLR" version="22.1.21" type="device">
+<mxfile host="app.diagrams.net" modified="2024-01-23T03:36:25.380Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" etag="QyvN8TRGKLr2WUmHhjAX" version="22.1.21" type="device">
   <diagram id="c8oBW-qjvavsfD2tW6SP" name="Page-1">
     <mxGraphModel dx="-149" dy="-436" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -70,7 +70,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="lK5_xKgjRE9GB2Mp260N-17" value="Navigation" style="swimlane;fontStyle=3;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;labelBackgroundColor=none;fillColor=#9AC7BF;strokeColor=#000000;" parent="1" vertex="1">
-          <mxGeometry x="3530" y="1914" width="270" height="194" as="geometry" />
+          <mxGeometry x="3530" y="1914" width="270" height="184" as="geometry" />
         </mxCell>
         <mxCell id="lK5_xKgjRE9GB2Mp260N-18" value="- context: Master*&#xa;&#xa;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="lK5_xKgjRE9GB2Mp260N-17" vertex="1">
           <mxGeometry y="26" width="270" height="26" as="geometry" />
@@ -79,7 +79,7 @@
           <mxGeometry y="52" width="270" height="8" as="geometry" />
         </mxCell>
         <mxCell id="lK5_xKgjRE9GB2Mp260N-20" value="+ «Create» Navigation()&#xa;+ «Create» Navigation(context: Master*)&#xa;+ ~Navigation()&#xa;&#xa;+ getContext(): Master*&#xa;&#xa;+ update() = 0: void&#xa;+ render() = 0: void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="lK5_xKgjRE9GB2Mp260N-17" vertex="1">
-          <mxGeometry y="60" width="270" height="134" as="geometry" />
+          <mxGeometry y="60" width="270" height="124" as="geometry" />
         </mxCell>
         <mxCell id="lK5_xKgjRE9GB2Mp260N-22" value="Menu" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;labelBackgroundColor=none;fillColor=#9AC7BF;strokeColor=#000000;" parent="1" vertex="1">
           <mxGeometry x="3190" y="2360" width="230" height="234" as="geometry" />
@@ -90,11 +90,11 @@
         <mxCell id="lK5_xKgjRE9GB2Mp260N-24" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="lK5_xKgjRE9GB2Mp260N-22" vertex="1">
           <mxGeometry y="112" width="230" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="lK5_xKgjRE9GB2Mp260N-25" value="+ «Create» Menu(user_actions: UserEvent, screen_width: int, screen_height: int, renderer: SDL_Renderer*, context: Master&amp;)&#xa;&#xa;+ update(): void&#xa;+ render(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="lK5_xKgjRE9GB2Mp260N-22" vertex="1">
+        <mxCell id="lK5_xKgjRE9GB2Mp260N-25" value="+ «Create» Menu()&#xa;+ «Create» Menu(context: Master*)&#xa;+ ~Menu()&#xa;+ loadButtons(): void&#xa;&#xa;+ update(): void&#xa;+ render(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="lK5_xKgjRE9GB2Mp260N-22" vertex="1">
           <mxGeometry y="120" width="230" height="114" as="geometry" />
         </mxCell>
         <mxCell id="lK5_xKgjRE9GB2Mp260N-26" value="Settings" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;labelBackgroundColor=none;fillColor=#9AC7BF;strokeColor=#000000;" parent="1" vertex="1">
-          <mxGeometry x="3460" y="2360" width="230" height="176" as="geometry" />
+          <mxGeometry x="3460" y="2360" width="230" height="172" as="geometry" />
         </mxCell>
         <mxCell id="lK5_xKgjRE9GB2Mp260N-27" value="- back: Button" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="lK5_xKgjRE9GB2Mp260N-26" vertex="1">
           <mxGeometry y="26" width="230" height="28" as="geometry" />
@@ -102,11 +102,11 @@
         <mxCell id="lK5_xKgjRE9GB2Mp260N-28" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="lK5_xKgjRE9GB2Mp260N-26" vertex="1">
           <mxGeometry y="54" width="230" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="lK5_xKgjRE9GB2Mp260N-29" value="+ «Create» Settings(user_actions: UserEvent, screen_width: int, screen_height: int, renderer: SDL_Renderer*, context: Master&amp;)&#xa;&#xa;+ update(): void&#xa;+ render(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="lK5_xKgjRE9GB2Mp260N-26" vertex="1">
-          <mxGeometry y="62" width="230" height="114" as="geometry" />
+        <mxCell id="lK5_xKgjRE9GB2Mp260N-29" value="+ «Create» Settings()&#xa;+ «Create» Settings(context: Master*)&#xa;+ ~Settings()&#xa;+ loadButtons(): void&#xa;&#xa;+ update(): void&#xa;+ render(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;fontStyle=0" parent="lK5_xKgjRE9GB2Mp260N-26" vertex="1">
+          <mxGeometry y="62" width="230" height="110" as="geometry" />
         </mxCell>
         <mxCell id="lK5_xKgjRE9GB2Mp260N-30" value="Instructions" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;labelBackgroundColor=none;fillColor=#9AC7BF;strokeColor=#000000;" parent="1" vertex="1">
-          <mxGeometry x="3730" y="2360" width="230" height="176" as="geometry" />
+          <mxGeometry x="3730" y="2360" width="230" height="172" as="geometry" />
         </mxCell>
         <mxCell id="lK5_xKgjRE9GB2Mp260N-31" value="- back: Button" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="lK5_xKgjRE9GB2Mp260N-30" vertex="1">
           <mxGeometry y="26" width="230" height="28" as="geometry" />
@@ -114,8 +114,8 @@
         <mxCell id="lK5_xKgjRE9GB2Mp260N-32" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="lK5_xKgjRE9GB2Mp260N-30" vertex="1">
           <mxGeometry y="54" width="230" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="lK5_xKgjRE9GB2Mp260N-33" value="+ «Create» Instructions(user_actions: UserEvent, screen_width: int, screen_height: int, renderer: SDL_Renderer*, context: Master&amp;)&#xa;&#xa;+ update(): void&#xa;+ render(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="lK5_xKgjRE9GB2Mp260N-30" vertex="1">
-          <mxGeometry y="62" width="230" height="114" as="geometry" />
+        <mxCell id="lK5_xKgjRE9GB2Mp260N-33" value="+ «Create» Instructions()&#xa;+ «Create» Instructions(context: Master*)&#xa;+ ~Instructions()&#xa;+ loadButtons(): void&#xa;&#xa;+ update(): void&#xa;+ render(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="lK5_xKgjRE9GB2Mp260N-30" vertex="1">
+          <mxGeometry y="62" width="230" height="110" as="geometry" />
         </mxCell>
         <mxCell id="lK5_xKgjRE9GB2Mp260N-40" value="FileHandler" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;fillColor=#CC99FF;strokeColor=#000000;" parent="1" vertex="1">
           <mxGeometry x="4370" y="2046" width="490" height="444" as="geometry" />
@@ -153,7 +153,7 @@
           <mxGeometry x="4950" y="1900" width="160" height="146" as="geometry" />
         </mxCell>
         <mxCell id="lK5_xKgjRE9GB2Mp260N-51" value="About" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;labelBackgroundColor=none;fillColor=#9AC7BF;strokeColor=#000000;" parent="1" vertex="1">
-          <mxGeometry x="4000" y="2360" width="230" height="176" as="geometry" />
+          <mxGeometry x="4000" y="2360" width="230" height="172" as="geometry" />
         </mxCell>
         <mxCell id="lK5_xKgjRE9GB2Mp260N-52" value="- back: Button" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="lK5_xKgjRE9GB2Mp260N-51" vertex="1">
           <mxGeometry y="26" width="230" height="28" as="geometry" />
@@ -161,8 +161,8 @@
         <mxCell id="lK5_xKgjRE9GB2Mp260N-53" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="lK5_xKgjRE9GB2Mp260N-51" vertex="1">
           <mxGeometry y="54" width="230" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="lK5_xKgjRE9GB2Mp260N-54" value="+ «Create» About(user_actions: UserEvent, screen_width: int, screen_height: int, renderer: SDL_Renderer*, context: Master&amp;)&#xa;&#xa;+ update(): void&#xa;+ render(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="lK5_xKgjRE9GB2Mp260N-51" vertex="1">
-          <mxGeometry y="62" width="230" height="114" as="geometry" />
+        <mxCell id="lK5_xKgjRE9GB2Mp260N-54" value="+ «Create» About()&#xa;+ «Create» About(context: Master*)&#xa;+ ~About()&#xa;+ loadButtons(): void&#xa;&#xa;+ update(): void&#xa;+ render(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="lK5_xKgjRE9GB2Mp260N-51" vertex="1">
+          <mxGeometry y="62" width="230" height="110" as="geometry" />
         </mxCell>
         <mxCell id="lK5_xKgjRE9GB2Mp260N-61" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;dashed=1;dashPattern=8 8;" parent="1" source="lK5_xKgjRE9GB2Mp260N-60" target="lK5_xKgjRE9GB2Mp260N-13" edge="1">
           <mxGeometry relative="1" as="geometry" />

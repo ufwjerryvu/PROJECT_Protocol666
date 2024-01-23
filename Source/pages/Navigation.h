@@ -7,8 +7,6 @@
 
 #include <Systems.h>
 
-#include <Master.h>
-
 class Master;
 
 class Navigation

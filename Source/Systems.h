@@ -9,6 +9,8 @@ IMPORTING THE C++ STANDARD LIBRARIES
 #include <algorithm>
 #include <fstream>
 #include <stdexcept>
+#include <utility>
+#include <map>
 
 /*
 IMPORTING THE C STANDARD LIBRARIES

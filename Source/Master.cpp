@@ -1,5 +1,8 @@
 #include "Master.h"
 
+#include <Navigation.h>
+#include <Menu.h>
+
 /*
 SECTION 1: CONSTRUCTORS AND DESTRUCTORS
 */
@@ -28,7 +31,7 @@ Master::Master(UserEvent user_actions)
          main menu and gameplay objects. Making sure the first navigat-
          on page is the main menu.
     */
-    // this->navigation = Menu()
+    this->navigation = new Menu(this);
     // this->gameplay = Gameplay();
 }
 
@@ -56,8 +59,9 @@ bool Master::initialize()
         - Attempting to create a window. This step is also modified
         from lazyfoo.net.
     */
-    this->window = SDL_CreateWindow("Protocol 666", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                                    SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    this->window = SDL_CreateWindow("Protocol 666", SDL_WINDOWPOS_UNDEFINED,
+                                    SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH,
+                                    SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (this->window == NULL)
     {
         cerr << "Error from Master.initialize(): cannot create window." << endl;
@@ -132,8 +136,9 @@ void Master::close()
 {
     /*
     NOTE:
-        - To be added later.
+        - Deleting allocated memory.
     */
+    delete this->navigation;
 }
 
 /*
@@ -161,4 +166,20 @@ void Master::update()
 
 void Master::render()
 {
+    /*
+    NOTE:
+        - Clearing everything in the renderer.
+    */
+    SDL_RenderClear(this->renderer);
+
+    /*
+    NOTE: 
+        - Rendering the current state.
+    */
+    this->navigation->render();
+    /*
+    NOTE:
+        - Finally rendering everything.
+    */
+    SDL_RenderPresent(this->renderer);
 }

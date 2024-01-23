@@ -2,8 +2,9 @@
 @ COLLABORATORS: Jerry Vu
 @ DESIGNERS: Jerry Vu
 */
-
 #include <Systems.h>
+
+#include <Master.h>
 
 int main(int argc, char* argv[]) {
 	/*
@@ -25,7 +26,7 @@ int main(int argc, char* argv[]) {
 		- Declaring the master object and within it, SDL
 		subsystems are initialized.
 	*/
-	//Master master(user_actions);
+	Master master(user_actions);
 
 	/*
 	NOTE:
@@ -34,8 +35,7 @@ int main(int argc, char* argv[]) {
 	bool quit = false;
 	SDL_Event action;
 
-	//const int TIME_PER_FRAME_MS = 1000 / master.FRAME_RATE;
-	const int TIME_PER_FRAME_MS = 1000 / 60;
+	const int TIME_PER_FRAME_MS = 1000 / master.getFrameRate();
 	while (!quit) {
 		int start_time = SDL_GetTicks();
 
@@ -78,8 +78,8 @@ int main(int argc, char* argv[]) {
 			- The master logic gets updated here and 
 			then it gets rendered afterwards.
 		*/
-		//master.update();
-		//master.render();
+		master.update();
+		master.render();
 
 		/*
 		NOTE:
@@ -93,6 +93,6 @@ int main(int argc, char* argv[]) {
 		}
 	}
 
-	//master.close();
+	master.close();
 	return 0;
 }
