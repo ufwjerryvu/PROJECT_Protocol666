@@ -17,7 +17,7 @@ class Master;
 class Instructions : public Navigation
 {
 private:
-    Button back;
+    vector<pair<string, Button>> buttons;
 
 public:
     /*

@@ -96,7 +96,6 @@ SECTION 2: OTHER METHODS
 */
 void Menu::switchState()
 {
-
     UserEvent *actions = this->getContext()->getUserActions();
 
     /*
