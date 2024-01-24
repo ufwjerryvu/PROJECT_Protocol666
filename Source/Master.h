@@ -7,7 +7,7 @@
 
 #include <Systems.h>
 
-#include <Sprite.h>
+#include <Gameplay.h>
 
 class Navigation;
 
@@ -31,7 +31,7 @@ private:
 	SECTION 0B: STATE CONTROL AND BRANCHES
 	*/
 	Navigation *navigation;
-	// Gameplay *gampelay;
+	Gameplay *gameplay;
 
 public:
 	/*
@@ -49,7 +49,7 @@ public:
 	SECTION 3: STATE CHANGES
 	*/
 	void setNavigation(Navigation *navigation);
-	// void setGameplay(Gameplay gameplay);
+	void setGameplay(Gameplay *gameplay);
 
 	/*
 	SECTION 4: GETTERS

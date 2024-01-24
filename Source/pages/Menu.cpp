@@ -17,9 +17,25 @@ Menu::Menu(Master *context) : Navigation(context)
 {
     /*
     NOTE:
-        - Using the super constructor. Also loading the buttons.
-        Loading assets have their own functions just to not clump
-        the constructor. We might need more assets in the future.
+        - The pair consists of the prefix (first) and the pointer
+        to the button (second). This is just a placeholder list
+        where the dummy button does not represent the actual but-
+        tons.
+    */
+    Button dummy = Button();
+    this->buttons = {
+        {"play", dummy},
+        {"instructions", dummy},
+        {"settings", dummy},
+        {"about", dummy},
+        {"quit", dummy}};
+
+    /*
+    NOTE:  
+        - Loading assets have their own functions just to not clump
+        the constructor. We might need more assets in the future. For
+        example, the menu could have a background and texts, so on
+        so forth.
     */
     this->loadButtons();
 }
@@ -36,25 +52,13 @@ void Menu::loadButtons()
 {
     /*
     NOTE:
-        - The pair consists of the prefix (first) and the pointer
-        to the button (second).
-    */
-    pair<string, Button *> list[] = {
-        {"play", &this->play},
-        {"instructions", &this->instructions},
-        {"settings", &this->settings},
-        {"about", &this->about},
-        {"quit", &this->quit}};
-
-    /*
-    NOTE:
         - The starting coordinate of the buttons is initialized to
         `0`. We will align it later to the center.
     */
 
     const int START_X = 0, START_Y = 130, SPACING_Y = 5;
     int greatest_y = START_Y;
-    for (int i = 0; i < sizeof(list) / sizeof(pair<string, Button *>); i++)
+    for (int i = 0; i < this->buttons.size(); i++)
     {
         /*
         NOTE:
@@ -63,14 +67,14 @@ void Menu::loadButtons()
         */
         Coordinates position = Coordinates(START_X, SPACING_Y + greatest_y);
         SDL_Renderer *rend = this->getContext()->getRenderer();
-        (*list[i].second) = Creator().createButton(rend, list[i].first, position);
+        this->buttons[i].second = Creator().createButton(rend, this->buttons[i].first, position);
 
         /*
         NOTE:
             - Updating the greatest y-coordinate to determine where
             the next button will go.
         */
-        greatest_y = list[i].second->getBottomBound() + SPACING_Y;
+        greatest_y = this->buttons[i].second.getBottomBound() + SPACING_Y;
 
         /*
         NOTE:
@@ -79,9 +83,11 @@ void Menu::loadButtons()
             information.
         */
         position = Coordinates(this->getContext()->getScreenWidth() / 2 -
-                                   list[i].second->getWidth() / 2,
+                                   this->buttons[i].second.getWidth() / 2,
                                position.getY());
-        (*list[i].second) = Creator().createButton(rend, list[i].first, position);
+
+        this->buttons[i].second = Creator().createButton(
+            rend, this->buttons[i].first, position);
     }
 }
 
@@ -90,8 +96,6 @@ SECTION 2: OTHER METHODS
 */
 void Menu::switchState()
 {
-    Button *buttons[] = {&this->play, &this->settings, &this->about,
-                         &this->instructions, &this->quit};
 
     UserEvent *actions = this->getContext()->getUserActions();
 
@@ -102,8 +106,15 @@ void Menu::switchState()
         just be copies of the original object instead of the
         actual objects themselves.
     */
-    for (Button *button : buttons)
+    for (int i = 0; i < this->buttons.size(); i++)
     {
+        Button *button = &this->buttons[i].second;
+
+        /*
+        NOTE:
+            - Now to see if the cursor is within the bounds of
+            the button.
+        */
         if (*actions->mouse_x >= button->getLeftBound() &&
             *actions->mouse_x <= button->getRightBound() &&
             *actions->mouse_y >= button->getTopBound() &&
@@ -128,45 +139,60 @@ void Menu::switchState()
     NOTE:
         - Manipulating the context from here.
     */
-    if (this->play.isPressed())
+    for (int i = 0; i < this->buttons.size(); i++)
     {
-        /*
-        TEMPORARY:
-            - Empty for now.
-        */
-    }
-    else if (this->settings.isPressed())
-    {
-        /*
-        NOTE:
-            - Switching the page to settings.
-        */
-        this->getContext()->setNavigation(new Settings(this->getContext()));
-    }
-    else if (this->instructions.isPressed())
-    {
-        /*
-        NOTE:
-            - Switching the page to instructions.
-        */
-        this->getContext()->setNavigation(new Instructions(this->getContext()));
-    }
-    else if (this->about.isPressed())
-    {
-        /*
-        NOTE:
-            - Switching the page to about.
-        */
-        this->getContext()->setNavigation(new About(this->getContext()));
-    }
-    else if (this->quit.isPressed())
-    {
-        /*
-        NOTE:
-            - Exiting the program but also freeing the memory.
-        */
-        this->getContext()->close();
-        exit(0);
+        string name = this->buttons[i].first;
+        Button *button = &this->buttons[i].second;
+
+        if (button->isPressed())
+        {
+            if (name == "play")
+            {
+                /*
+                TEMPORARY:
+                    - The creation of gameplay will be assigned to
+                    the configurer.
+                */
+                this->getContext()->setGameplay(
+                    new Gameplay(this->getContext()));
+            }
+            else if (name == "settings")
+            {
+                /*
+                NOTE:
+                    - Switching the page to settings.
+                */
+                this->getContext()->setNavigation(
+                    new Settings(this->getContext()));
+            }
+            else if (name == "instructions")
+            {
+                /*
+                NOTE:
+                    - Switching the page to instructions.
+                */
+                this->getContext()->setNavigation(
+                    new Instructions(this->getContext()));
+            }
+            else if (name == "about")
+            {
+                /*
+                NOTE:
+                    - Switching the page to about.
+                */
+                this->getContext()->setNavigation(
+                    new About(this->getContext()));
+            }
+            else if (name == "quit")
+            {
+                /*
+                NOTE:
+                    - Exiting the program but also freeing the memory.
+                */
+                this->getContext()->close();
+                exit(0);
+            }
+        }
     }
 }
 
@@ -177,11 +203,10 @@ void Menu::update()
         - Calling all the related functions (accounted for
         more number of functions in the future).
     */
-    this->play.update();
-    this->about.update();
-    this->instructions.update();
-    this->settings.update();
-    this->quit.update();
+    for (int i = 0; i < this->buttons.size(); i++)
+    {
+        this->buttons[i].second.update();
+    }
 
     /*
     NOTE:
@@ -193,13 +218,12 @@ void Menu::update()
 void Menu::render()
 {
     /*
-    TEMPORARY:
-        - Rendering all the buttons. Would be better if this was
-        done using a loop instead.
+    NOTE:
+        - Refactored the thing to use a loop.
     */
-    this->play.render(this->getContext()->getRenderer(), false);
-    this->about.render(this->getContext()->getRenderer(), false);
-    this->instructions.render(this->getContext()->getRenderer(), false);
-    this->settings.render(this->getContext()->getRenderer(), false);
-    this->quit.render(this->getContext()->getRenderer(), false);
+    for (int i = 0; i < this->buttons.size(); i++)
+    {
+        this->buttons[i].second.render(this->getContext()->getRenderer(),
+                                       false);
+    }
 }
