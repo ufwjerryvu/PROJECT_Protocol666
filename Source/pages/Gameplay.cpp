@@ -21,9 +21,6 @@ Gameplay::Gameplay(Master *context)
         scheme.
     */
     this->context = context;
-
-    this->test = Sprite(Coordinates(100, 100), 
-        FileHandler().loadTexture(this->context->getRenderer(), "Assets/Sprite/Character/Player/May/idle.png"));
 }   
 Gameplay::~Gameplay()
 {
@@ -42,5 +39,5 @@ void Gameplay::update()
 }
 void Gameplay::render()
 {
-    this->test.render(this->context->getRenderer(), false);
+    
 }

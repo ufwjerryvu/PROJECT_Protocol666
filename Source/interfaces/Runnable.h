@@ -4,27 +4,31 @@
 
 #include <Direction.h>
 
-class Moveable
+class Runnable
 {
 private:
-    Direction facing;
-
+    bool running;
+    int speed;
+    
 public:
     /*
     SECTION 1: CONSTRUCTORS AND DESTRUCTORS
     */
-    Moveable();
-    ~Moveable();
+    Runnable(int speed);
+    ~Runnable();
 
     /*
     SECTION 2: SETTERS AND GETTERS
     */
-    void setDirectionFacing(Direction direction);
-    Direction getDirectionFacing();
+    void setRunning(bool running);
+    bool isRunning();
+    
 
     /*
     SECTION 3: OTHER METHODS
     */
+    virtual void 
+
     virtual void move() = 0;
     virtual void update() = 0;
 };

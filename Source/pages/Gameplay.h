@@ -2,18 +2,12 @@
 
 #include <Systems.h>
 
-#include <Sprite.h>
-#include <Coordinates.h>
-#include <FileHandler.h>
-
 class Master;
 
 class Gameplay
 {
 private:
     Master *context;
-
-    Sprite test;
 public:
     /*
     SECTION 1: CONSTRUCTORS AND DESTRUCTORS

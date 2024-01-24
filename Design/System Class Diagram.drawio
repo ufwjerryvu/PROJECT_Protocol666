@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-01-24T15:46:27.222Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" etag="ClPwcSSPM08EV6FzaKRo" version="23.0.0" type="device">
+<mxfile host="app.diagrams.net" modified="2024-01-24T16:01:14.970Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" etag="pNyTK4IM1nemx4oQ5fVY" version="23.0.0" type="device">
   <diagram id="c8oBW-qjvavsfD2tW6SP" name="Page-1">
     <mxGraphModel dx="838" dy="-223" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -299,16 +299,16 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="dvZ8j0KGGuC1-cnlvV2g-9" value="Runnable" style="swimlane;fontStyle=3;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#FFFFCC;strokeColor=#000000;" parent="1" vertex="1">
-          <mxGeometry x="1380" y="2900" width="210" height="216" as="geometry" />
+          <mxGeometry x="1380" y="2900" width="210" height="246" as="geometry" />
         </mxCell>
-        <mxCell id="dvZ8j0KGGuC1-cnlvV2g-10" value="- running: bool" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="dvZ8j0KGGuC1-cnlvV2g-9" vertex="1">
-          <mxGeometry y="26" width="210" height="24" as="geometry" />
+        <mxCell id="dvZ8j0KGGuC1-cnlvV2g-10" value="- running: bool&#xa;- speed: int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="dvZ8j0KGGuC1-cnlvV2g-9" vertex="1">
+          <mxGeometry y="26" width="210" height="36" as="geometry" />
         </mxCell>
         <mxCell id="dvZ8j0KGGuC1-cnlvV2g-11" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="dvZ8j0KGGuC1-cnlvV2g-9" vertex="1">
-          <mxGeometry y="50" width="210" height="8" as="geometry" />
+          <mxGeometry y="62" width="210" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="dvZ8j0KGGuC1-cnlvV2g-12" value="+ «Create» Runnable()&#xa;+ ~Runnable()&#xa;&#xa;+ isRunning(): bool&#xa;&#xa;+ left() = 0: void&#xa;+ right() = 0: void&#xa;&#xa;+ move() = 0: void&#xa;+ update() = 0: void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="dvZ8j0KGGuC1-cnlvV2g-9" vertex="1">
-          <mxGeometry y="58" width="210" height="158" as="geometry" />
+        <mxCell id="dvZ8j0KGGuC1-cnlvV2g-12" value="+ «Create» Runnable()&#xa;+ ~Runnable()&#xa;&#xa;+ setRunning(running: bool): void&#xa;+ isRunning(): bool&#xa;&#xa;+ left() = 0: void&#xa;+ right() = 0: void&#xa;&#xa;+ move() = 0: void&#xa;+ update() = 0: void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="dvZ8j0KGGuC1-cnlvV2g-9" vertex="1">
+          <mxGeometry y="70" width="210" height="176" as="geometry" />
         </mxCell>
         <mxCell id="dvZ8j0KGGuC1-cnlvV2g-13" value="Collidable" style="swimlane;fontStyle=3;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#FFFFCC;strokeColor=#000000;fontColor=#000000;" parent="1" vertex="1">
           <mxGeometry x="740" y="3200" width="230" height="104" as="geometry" />
@@ -494,16 +494,16 @@
           <mxGeometry y="58" width="210" height="148" as="geometry" />
         </mxCell>
         <mxCell id="8iAsTdIbsIGWiMtJhoX2-26" value="Rollable" style="swimlane;fontStyle=3;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#FFFFCC;strokeColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="1130" y="2900" width="210" height="198" as="geometry" />
+          <mxGeometry x="1130" y="2900" width="210" height="232" as="geometry" />
         </mxCell>
-        <mxCell id="8iAsTdIbsIGWiMtJhoX2-27" value="- rolling: bool" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="8iAsTdIbsIGWiMtJhoX2-26">
-          <mxGeometry y="26" width="210" height="24" as="geometry" />
+        <mxCell id="8iAsTdIbsIGWiMtJhoX2-27" value="- rolling: bool&#xa;- speed: int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="8iAsTdIbsIGWiMtJhoX2-26">
+          <mxGeometry y="26" width="210" height="40" as="geometry" />
         </mxCell>
         <mxCell id="8iAsTdIbsIGWiMtJhoX2-28" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="8iAsTdIbsIGWiMtJhoX2-26">
-          <mxGeometry y="50" width="210" height="8" as="geometry" />
+          <mxGeometry y="66" width="210" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="8iAsTdIbsIGWiMtJhoX2-29" value="+ «Create» Rollable()&#xa;+ ~Rollable()&#xa;&#xa;+ isRolling(): bool&#xa;&#xa;+ roll() = 0: void&#xa;&#xa;+ move() = 0: void&#xa;+ update() = 0: void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" vertex="1" parent="8iAsTdIbsIGWiMtJhoX2-26">
-          <mxGeometry y="58" width="210" height="140" as="geometry" />
+        <mxCell id="8iAsTdIbsIGWiMtJhoX2-29" value="+ «Create» Rollable()&#xa;+ ~Rollable()&#xa;&#xa;+ setRolling(rolling: bool): void&#xa;+ isRolling(): bool&#xa;&#xa;+ roll() = 0: void&#xa;&#xa;+ move() = 0: void&#xa;+ update() = 0: void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" vertex="1" parent="8iAsTdIbsIGWiMtJhoX2-26">
+          <mxGeometry y="74" width="210" height="158" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
