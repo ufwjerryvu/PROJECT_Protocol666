@@ -34,7 +34,7 @@ Master::Master(UserEvent user_actions)
     */
 
     this->navigation = new Menu(this);
-    // this->gameplay = Gameplay();
+    this->gameplay = NULL;
 }
 
 /*
@@ -141,6 +141,7 @@ void Master::close()
         - Deleting allocated memory.
     */
     delete this->navigation;
+    delete this->gameplay;
 }
 
 /*
@@ -158,11 +159,30 @@ void Master::setNavigation(Navigation *page)
     /*
     NOTE:
         - Now set the member. Memory is dynamically allocated
-        upon calling the function. 
+        upon calling the function.
     */
     this->navigation = page;
 }
-// setGameplay(Gameplay gameplay){this->gameplay = gameplay;}
+
+void Master::setGameplay(Gameplay *gameplay)
+{
+    /*
+    NOTE:
+        - If the navigation current exists then we kill
+        it off.
+    */
+    delete this->navigation;
+    this->navigation = NULL;
+
+    /*
+
+    */
+    if (this->gameplay != NULL)
+    {
+        delete this->gameplay;
+    }
+    this->gameplay = gameplay;
+}
 
 /*
 SECTION 4: GETTERS
@@ -181,10 +201,27 @@ void Master::update()
 {
     /*
     NOTE:
-        - Updates from multiple objects.
+        - Updates from navigation and gameplay states.
     */
-    this->navigation->update();
-    //this->gameplay.update();
+    if (this->navigation != NULL)
+    {
+        this->navigation->update();
+    }
+
+    if (this->gameplay != NULL)
+    {
+        /*
+        NOTE:
+            -If a navigation page is activated at the same 
+            time the gameplay is activated then the page takes
+            precedence. What if the game is current pausing
+            and we are at the pausing page?
+        */
+        if (this->navigation == NULL)
+        {
+            this->gameplay->update();
+        }
+    }
 }
 
 void Master::render()
@@ -199,7 +236,23 @@ void Master::render()
     NOTE:
         - Rendering the current state.
     */
-    this->navigation->render();
+    if (this->navigation != NULL)
+    {
+        this->navigation->render();
+    }
+
+    if (this->gameplay != NULL)
+    {
+        /*
+        NOTE:
+            -Similarly, the navigation page takes precedence
+            if both of them are not null.
+        */
+        if (this->navigation == NULL)
+        {
+            this->gameplay->render();
+        }
+    }
 
     /*
     NOTE:

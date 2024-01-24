@@ -2,36 +2,33 @@
 @ COLLABORATORS: Jerry Vu
 @ DESIGNERS: Jerry Vu
 */
-
 #pragma once
 
 #include <Systems.h>
 
-#include <Button.h>
-#include <Navigation.h>
-#include <Menu.h>
-#include <Creator.h>
+#include <Sprite.h>
+#include <Coordinates.h>
+#include <FileHandler.h>
 
 class Master;
 
-class Settings : public Navigation
+class Gameplay
 {
 private:
-    Button back;
+    Master *context;
 
+    Sprite test;
 public:
     /*
     SECTION 1: CONSTRUCTORS AND DESTRUCTORS
     */
-    Settings();
-    Settings(Master *context);
-    ~Settings();
-    void loadButtons();
-    
+    Gameplay();
+    Gameplay(Master *context);
+    ~Gameplay();
+
     /*
     SECTION 2: OTHER METHODS
     */
-    void switchState();
     void update();
     void render();
 };
