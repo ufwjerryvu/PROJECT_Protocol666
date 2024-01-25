@@ -14,8 +14,14 @@ int main(int argc, char* argv[]) {
 	bool mouse_down = false, mouse_up = true;
 	int mouse_x = 0, mouse_y = 0;
 
+	bool simultaneous_horizontal_keys_pressed = false;
+	bool *shkpabbrev = &simultaneous_horizontal_keys_pressed;
+	
+	int current_horizontal_key_pressed = 0;
+	int *chkpabbrev = &current_horizontal_key_pressed;
+
 	UserEvent user_actions = { &key_down, &key_up, current_key_states,
-		&mouse_down, &mouse_up, &mouse_x, &mouse_y };
+		&mouse_down, &mouse_up, &mouse_x, &mouse_y , shkpabbrev, chkpabbrev};
 
 	/*
 	NOTE:

@@ -21,7 +21,7 @@ Gameplay::Gameplay(Master *context)
         scheme.
     */
     this->context = context;
-}   
+}
 Gameplay::~Gameplay()
 {
     /*
@@ -31,13 +31,18 @@ Gameplay::~Gameplay()
 }
 
 /*
-SECTION 2: OTHER METHODS
+SECTION 2: SETTERS AND GETTERS
+*/
+Master *Gameplay::getContext() { return this->context; }
+int Gameplay::getLevelWidth() { return this->lwidth; }
+int Gameplay::getLevelHeight() { return this->lheight; }
+
+/*
+SECTION 3: OTHER METHODS
 */
 void Gameplay::update()
 {
-    
 }
 void Gameplay::render()
 {
-    
 }

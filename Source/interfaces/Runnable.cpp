@@ -1,15 +1,15 @@
-#include "Moveable.h"
+#include "Runnable.h"
 
 /*
 SECTION 1: CONSTRUCTORS AND DESTRUCTORS
 */
-Moveable::Moveable(){
-    /*
-    NOTE:
-        - Empty, for good.
-    */
+Runnable::Runnable()
+{
+ 
 }
-Moveable::~Moveable(){
+
+Runnable::~Runnable()
+{
     /*
     TEMPORARY:
         - Empty, for now.
@@ -19,12 +19,7 @@ Moveable::~Moveable(){
 /*
 SECTION 2: SETTERS AND GETTERS
 */
-void Moveable::setDirectionFacing(Direction direction)
-{
-    this->facing = direction;
-}
-
-Direction Moveable::getDirectionFacing()
-{
-    return this->facing;
-}
+void Runnable::setRunning(bool running) { this->running = running; }
+bool Runnable::isRunning() { return this->running; }
+void Runnable::setSpeed(int speed) { this->speed = speed; }
+int Runnable::getSpeed() { return this->speed; }

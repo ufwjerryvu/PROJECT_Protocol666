@@ -6,9 +6,11 @@ SECTION 1: CONSTRUCTORS AND DESTRUCTORS
 Moveable::Moveable(){
     /*
     NOTE:
-        - Empty, for good.
+        - Facing left as a default for everything.
     */
+    this->setDirectionFacing(Direction::RIGHT);
 }
+
 Moveable::~Moveable(){
     /*
     TEMPORARY:

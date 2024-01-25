@@ -2,19 +2,19 @@
 
 #include <Systems.h>
 
-#include <Direction.h>
+#include <Moveable.h>
 
-class Runnable
+class Runnable : public Moveable
 {
 private:
     bool running;
-    int speed;
-    
+    int speed = 5;
+
 public:
     /*
     SECTION 1: CONSTRUCTORS AND DESTRUCTORS
     */
-    Runnable(int speed);
+    Runnable();
     ~Runnable();
 
     /*
@@ -22,12 +22,14 @@ public:
     */
     void setRunning(bool running);
     bool isRunning();
-    
+
+    void setSpeed(int speed);
+    int getSpeed();
 
     /*
     SECTION 3: OTHER METHODS
     */
-    virtual void 
+    virtual void run() = 0;
 
     virtual void move() = 0;
     virtual void update() = 0;

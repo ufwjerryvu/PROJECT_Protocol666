@@ -46,4 +46,7 @@ struct UserEvent
 
 	bool *mouse_down, *mouse_up;
 	int *mouse_x, *mouse_y;
+
+	bool *simultaneous_horizontal_keys_pressed;
+	int *current_horizontal_key;
 };
