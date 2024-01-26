@@ -69,8 +69,6 @@ void Sprite::setAbsolutePosition(Coordinates absolute)
 		the position of the sprite object.
 	*/
 	this->absolute = absolute;
-	this->viewport.x = absolute.getX();
-	this->viewport.y = absolute.getY();
 }
 
 void Sprite::setRelativePosition(Coordinates camera)
@@ -169,7 +167,7 @@ SECTION 2B: GETTERS
 Coordinates &Sprite::getAbsolutePosition() { return this->absolute; }
 Coordinates &Sprite::getRelativePosition() { return this->relative; }
 SDL_Texture *Sprite::getTexture() { return this->texture; }
-SDL_Rect Sprite::getViewport() { return this->viewport; }
+SDL_Rect &Sprite::getViewport() { return this->viewport; }
 int Sprite::getWidth() { return this->width; }
 int Sprite::getHeight() { return this->height; }
 int Sprite::getTopBound() { return this->absolute.getY(); }
@@ -182,6 +180,13 @@ SECTION 3: OTHER METHODS
 */
 void Sprite::render(SDL_Renderer *renderer, bool camera_follow = true)
 {
+	/*
+	NOTE:
+		- Setting the viewport's absolute position everytime we 
+		render. 
+	*/
+	this->viewport.x = this->absolute.getX();
+	this->viewport.y = this->absolute.getY();
 	/*
 	NOTE:
 		- According to the SDL documentation, SDL_RenderCopy()

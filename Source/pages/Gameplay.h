@@ -3,14 +3,17 @@
 #include <Systems.h>
 
 class Master;
+class Player;
 
 class Gameplay
 {
 private:
     Master *context;
 
-    int lwidth = 1400;
-    int lheight = 2800;
+    int lwidth = 900;
+    int lheight = 500;
+
+    Player *player;
 public:
     /*
     SECTION 1: CONSTRUCTORS AND DESTRUCTORS

@@ -1,6 +1,8 @@
 #include "Gameplay.h"
 
 #include <Master.h>
+#include <Player.h>
+#include <FileHandler.h>
 
 /*
 SECTION 1: CONSTRUCTORS AND DESTRUCTORS
@@ -21,6 +23,9 @@ Gameplay::Gameplay(Master *context)
         scheme.
     */
     this->context = context;
+    this->player = new Player(this);
+    this->player->setAbsolutePosition(Coordinates(100, 100));
+    this->player->setTexture(FileHandler().loadTexture(this->context->getRenderer(), "Assets/Sprite/Character/Player/Ragdoll/idle1.png"));
 }
 Gameplay::~Gameplay()
 {
@@ -42,7 +47,9 @@ SECTION 3: OTHER METHODS
 */
 void Gameplay::update()
 {
+    this->player->update();
 }
 void Gameplay::render()
 {
+    this->player->render();
 }

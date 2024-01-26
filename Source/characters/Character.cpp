@@ -41,10 +41,10 @@ void Character::render()
         been implemented.
     */
 
-    SDL_Rect viewport = this->getViewport();
+    SDL_Rect &viewport = this->getViewport();
 
-    viewport.x = this->getRelativePosition().getX();
-    viewport.y = this->getRelativePosition().getY();
+    viewport.x = this->getAbsolutePosition().getX();
+    viewport.y = this->getAbsolutePosition().getY();
 
     SDL_Renderer *renderer = this->getContext()->getContext()->getRenderer();
 
