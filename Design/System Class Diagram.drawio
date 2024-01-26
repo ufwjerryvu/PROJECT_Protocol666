@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2024-01-26T05:02:52.896Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" etag="IkWC2XytBdRrxGXjmpW_" version="23.0.1" type="device">
+<mxfile host="app.diagrams.net" modified="2024-01-26T06:24:25.783Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" etag="zOr0XJdoagKFMP2I5VFg" version="23.0.2" type="device">
   <diagram id="c8oBW-qjvavsfD2tW6SP" name="Page-1">
-    <mxGraphModel dx="880" dy="-403" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="378" dy="-553" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -248,7 +248,7 @@
           <mxGeometry y="76" width="210" height="158" as="geometry" />
         </mxCell>
         <mxCell id="C1WmZB4Dg7BfiNLQHetr-1" value="Animation" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#6666FF;strokeColor=#000000;fontColor=#FFFFFF;" parent="1" vertex="1">
-          <mxGeometry x="2020" y="3760" width="260" height="246" as="geometry" />
+          <mxGeometry x="2035" y="3770" width="260" height="234" as="geometry" />
         </mxCell>
         <mxCell id="C1WmZB4Dg7BfiNLQHetr-2" value="- index: int&#xa;- frames: vector&lt;SDL_Texture*&gt; " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="C1WmZB4Dg7BfiNLQHetr-1" vertex="1">
           <mxGeometry y="26" width="260" height="42" as="geometry" />
@@ -256,8 +256,8 @@
         <mxCell id="C1WmZB4Dg7BfiNLQHetr-3" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="C1WmZB4Dg7BfiNLQHetr-1" vertex="1">
           <mxGeometry y="68" width="260" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="C1WmZB4Dg7BfiNLQHetr-4" value="+ «Create» Animator()&#xa;+ «Create» Animator(frames: vector&lt;SDL_Texture*&gt;)&#xa;+ ~Animator()&#xa;&#xa;+ getSize(): int&#xa;+ getCurrentFrame(): SDL_Texture*&#xa;+ requestFrame(index: int): SDL_Texture*&#xa;+ jumpToFrame(index: int): void&#xa;&#xa;+ reset(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="C1WmZB4Dg7BfiNLQHetr-1" vertex="1">
-          <mxGeometry y="76" width="260" height="170" as="geometry" />
+        <mxCell id="C1WmZB4Dg7BfiNLQHetr-4" value="+ «Create» Animation(frames: vector&lt;SDL_Texture*&gt;)&#xa;+ ~Animaion()&#xa;&#xa;+ getSize(): int&#xa;+ getCurrentFrame(): SDL_Texture*&#xa;+ requestFrame(index: int): SDL_Texture*&#xa;&#xa;+ increment(): void&#xa;+ reset(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="C1WmZB4Dg7BfiNLQHetr-1" vertex="1">
+          <mxGeometry y="76" width="260" height="158" as="geometry" />
         </mxCell>
         <mxCell id="C1WmZB4Dg7BfiNLQHetr-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;startArrow=open;startFill=0;dashed=1;dashPattern=8 8;" parent="1" source="C1WmZB4Dg7BfiNLQHetr-10" target="lK5_xKgjRE9GB2Mp260N-20" edge="1">
           <mxGeometry relative="1" as="geometry">
@@ -296,10 +296,10 @@
           <mxGeometry y="34" width="270" height="110" as="geometry" />
         </mxCell>
         <mxCell id="dvZ8j0KGGuC1-cnlvV2g-1" value="«structure»&lt;br&gt;&lt;b&gt;UserEvent&lt;/b&gt;" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#f8cecc;strokeColor=#000000;" parent="1" vertex="1">
-          <mxGeometry x="1700" y="1760" width="260" height="190" as="geometry" />
+          <mxGeometry x="1700" y="1760" width="280" height="210" as="geometry" />
         </mxCell>
-        <mxCell id="dvZ8j0KGGuC1-cnlvV2g-2" value="+ key_down: bool*&lt;br&gt;+ key_up: bool*&lt;br&gt;+ current_key_states: const Uint8*&lt;br&gt;&lt;br&gt;+ mouse_down: bool*&lt;br&gt;+ mouse_up: bool*&lt;br&gt;+ mouse_x: int*&lt;br&gt;+ mouse_y: int*&lt;br&gt;&lt;br&gt;+ simultaneous_horizontal_keys_pressed: bool" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="dvZ8j0KGGuC1-cnlvV2g-1" vertex="1">
-          <mxGeometry y="40" width="260" height="150" as="geometry" />
+        <mxCell id="dvZ8j0KGGuC1-cnlvV2g-2" value="+ key_down: bool*&lt;br&gt;+ key_up: bool*&lt;br&gt;+ current_key_states: const Uint8*&lt;br&gt;&lt;br&gt;+ mouse_down: bool*&lt;br&gt;+ mouse_up: bool*&lt;br&gt;+ mouse_x: int*&lt;br&gt;+ mouse_y: int*&lt;br&gt;&lt;br&gt;+ simultaneous_horizontal_keys_pressed: bool*&lt;br&gt;+ current_horizontal_key: int*" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="dvZ8j0KGGuC1-cnlvV2g-1" vertex="1">
+          <mxGeometry y="40" width="280" height="170" as="geometry" />
         </mxCell>
         <mxCell id="dvZ8j0KGGuC1-cnlvV2g-3" value="&lt;b&gt;NOTE&lt;/b&gt;: in the header file &amp;lt;Systems.h&amp;gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" parent="1" vertex="1">
           <mxGeometry x="2060" y="1825" width="140" height="100" as="geometry" />
@@ -528,7 +528,7 @@
         <mxCell id="gG_1q-ZrrrkLE72A6_ez-1" value="Character" style="swimlane;fontStyle=3;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#CC0066;fontColor=#FFFFFF;" parent="1" vertex="1">
           <mxGeometry x="1395" y="3376" width="310" height="266" as="geometry" />
         </mxCell>
-        <mxCell id="gG_1q-ZrrrkLE72A6_ez-2" value="- context: Gameplay*&lt;br&gt;- animator: map&amp;lt;string, Animator&amp;gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="gG_1q-ZrrrkLE72A6_ez-1" vertex="1">
+        <mxCell id="gG_1q-ZrrrkLE72A6_ez-2" value="- context: Gameplay*&lt;br&gt;- animator: Animator" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="gG_1q-ZrrrkLE72A6_ez-1" vertex="1">
           <mxGeometry y="26" width="310" height="40" as="geometry" />
         </mxCell>
         <mxCell id="gG_1q-ZrrrkLE72A6_ez-3" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="gG_1q-ZrrrkLE72A6_ez-1" vertex="1">
@@ -546,23 +546,29 @@
         <mxCell id="gG_1q-ZrrrkLE72A6_ez-8" value="+ «Create» Player(context: Master*)&lt;br style=&quot;border-color: var(--border-color); padding: 0px; margin: 0px;&quot;&gt;+ ~Player()&lt;br&gt;&lt;br&gt;+ run(): void&lt;br&gt;+ move(): void&lt;br&gt;&lt;br&gt;+ update(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="gG_1q-ZrrrkLE72A6_ez-5" vertex="1">
           <mxGeometry y="34" width="230" height="116" as="geometry" />
         </mxCell>
-        <mxCell id="eLN7dFub2WSLynWhM6Rj-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startArrow=diamond;startFill=1;endArrow=none;endFill=0;" edge="1" parent="1" source="gG_1q-ZrrrkLE72A6_ez-17" target="C1WmZB4Dg7BfiNLQHetr-1">
+        <mxCell id="eLN7dFub2WSLynWhM6Rj-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startArrow=diamond;startFill=1;endArrow=none;endFill=0;" parent="1" source="gG_1q-ZrrrkLE72A6_ez-17" target="C1WmZB4Dg7BfiNLQHetr-1" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="eLN7dFub2WSLynWhM6Rj-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=diamond;endFill=1;startArrow=open;startFill=0;" edge="1" parent="1" source="gG_1q-ZrrrkLE72A6_ez-17" target="gG_1q-ZrrrkLE72A6_ez-4">
+        <mxCell id="eLN7dFub2WSLynWhM6Rj-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=diamond;endFill=1;startArrow=open;startFill=0;" parent="1" source="gG_1q-ZrrrkLE72A6_ez-17" target="gG_1q-ZrrrkLE72A6_ez-4" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="gG_1q-ZrrrkLE72A6_ez-17" value="Animator" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#6666FF;strokeColor=#000000;fontColor=#FFFFFF;" parent="1" vertex="1">
-          <mxGeometry x="2000" y="3439" width="300" height="214" as="geometry" />
+          <mxGeometry x="2000" y="3438" width="330" height="216" as="geometry" />
         </mxCell>
-        <mxCell id="gG_1q-ZrrrkLE72A6_ez-18" value="- animations: vector&lt;Animation&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="gG_1q-ZrrrkLE72A6_ez-17" vertex="1">
-          <mxGeometry y="26" width="300" height="28" as="geometry" />
+        <mxCell id="gG_1q-ZrrrkLE72A6_ez-18" value="- animations: map&lt;Type, Animation&gt;&#xa;- key: Type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="gG_1q-ZrrrkLE72A6_ez-17" vertex="1">
+          <mxGeometry y="26" width="330" height="40" as="geometry" />
         </mxCell>
         <mxCell id="gG_1q-ZrrrkLE72A6_ez-19" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="gG_1q-ZrrrkLE72A6_ez-17" vertex="1">
-          <mxGeometry y="54" width="300" height="8" as="geometry" />
+          <mxGeometry y="66" width="330" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="gG_1q-ZrrrkLE72A6_ez-20" value="+ «Create» Animator()&#xa;+ «Create» Animator(map&lt;string, Animation&gt;)&#xa;+ ~Animator()&#xa;&#xa;+ getSize(): int&#xa;+ getCurrentFrame(): SDL_Texture*&#xa;+ requestFrame(index: int): SDL_Texture*&#xa;+ jumpToFrame(index: int): void&#xa;&#xa;+ reset(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="gG_1q-ZrrrkLE72A6_ez-17" vertex="1">
-          <mxGeometry y="62" width="300" height="152" as="geometry" />
+        <mxCell id="gG_1q-ZrrrkLE72A6_ez-20" value="+ «Create» Animator(animations: map&lt;Type, Animation&gt;)&#xa;+ ~Animator()&#xa;&#xa;+ setKey(key: Type): void&#xa;+ getKey(): Type&#xa;+ getKeys(): vector&lt;Type&gt;&#xa;+ getCurrentFrame(): SDL_Texture*&#xa;&#xa;+ increment(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="gG_1q-ZrrrkLE72A6_ez-17" vertex="1">
+          <mxGeometry y="74" width="330" height="142" as="geometry" />
+        </mxCell>
+        <mxCell id="fe6ui02yuGbqtbJJHtdA-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;dashed=1;dashPattern=8 8;endArrow=none;endFill=0;" edge="1" parent="1" source="fe6ui02yuGbqtbJJHtdA-1" target="gG_1q-ZrrrkLE72A6_ez-20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fe6ui02yuGbqtbJJHtdA-1" value="&lt;b&gt;NOTE&lt;/b&gt;: uses the C++ generic template to map all key datatypes." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;size=17;" vertex="1" parent="1">
+          <mxGeometry x="2440" y="3515" width="140" height="136" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
