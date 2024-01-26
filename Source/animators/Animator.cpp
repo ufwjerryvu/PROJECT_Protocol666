@@ -3,28 +3,27 @@
 /*
 SECTION 1: CONSTRUCTORS AND DESTRUCTORS
 */
-template <typename Type>
-Animator<Type>::Animator(map<Type, Animation> animations)
-{
-    /*
-    NOTE:
-        - Just an initializing constructor.
-    */
-    this->animations = animations;
-}
 
-template <typename Type>
-Animator<Type>::~Animator()
-{
-    /*
-    TEMPORARY:
-        - Empty, for now.
-    */
-}
+/*
+NOTE:
+    - This section has to be defined inline because of the whole
+    template-linker ordeal. Good thing is the constructors and 
+    destructors are empty so we don't need to worry too much about
+    code bloating.
+*/
 
 /*
 SECTION 2: SETTER AND GETTER METHODS
 */
+template <typename Type>
+void Animator<Type>::setAnimations(map<Type, Animation> animations){
+    /*
+    NOTE:
+        - Sets the whole key to animation mapping. 
+    */
+    this->animations = animations;
+}
+
 template <typename Type>
 void Animator<Type>::setKey(Type key)
 {
@@ -52,6 +51,17 @@ void Animator<Type>::setKey(Type key)
 }
 
 template <typename Type>
+void Animator<Type>::put(Type key, Animation value){
+    /*
+    NOTE:
+        - Puts a key to animation mapping into the map. If it
+        already exists then the standard behavior is the current
+        value gets overwritten.
+    */
+    this->animations[key] = value;
+}
+
+template <typename Type>
 Type Animator<Type>::getKey()
 {
     /*
@@ -72,7 +82,7 @@ vector<Type> Animator<Type>::getKeys()
     */
     map<Type, Animation> mapped = this->animations;
     vector<Type> keys;
-    
+
     for (auto it = mapped.begin(); it != mapped.end(); ++it)
     {
         keys.push_back(it->first);

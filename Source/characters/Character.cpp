@@ -24,9 +24,19 @@ Character::~Character()
 /*
 SECTION 2: SETTERS AND GETTERS
 */
+void Character::setAnimator(Animator<string> animator)
+{
+    this->animator = animator;
+}
+
 Gameplay *Character::getContext()
 {
     return this->context;
+}
+
+Animator<string> &Character::getAnimator()
+{
+    return this->animator;
 }
 /*
 SECTION 3: OTHER METHODS
@@ -37,7 +47,7 @@ void Character::render()
     /*
     NOTE:
         - A scrolling level (or a camera that follows the sprite) has
-        been implemented. This function will always have the camera 
+        been implemented. This function will always have the camera
         follow the character.
     */
 
