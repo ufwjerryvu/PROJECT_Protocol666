@@ -182,13 +182,6 @@ void Sprite::render(SDL_Renderer *renderer, bool camera_follow = true)
 {
 	/*
 	NOTE:
-		- Setting the viewport's absolute position everytime we 
-		render. 
-	*/
-	this->viewport.x = this->absolute.getX();
-	this->viewport.y = this->absolute.getY();
-	/*
-	NOTE:
 		- According to the SDL documentation, SDL_RenderCopy()
 		returns a negative number if it has failed to copy the
 		texture to the renderer and a zero if it has successfully
@@ -196,22 +189,23 @@ void Sprite::render(SDL_Renderer *renderer, bool camera_follow = true)
 	*/
 	if (!camera_follow)
 	{
-		if (SDL_RenderCopy(renderer, this->texture, NULL, &this->viewport) != 0)
-		{
-			cerr << "Error: unable to render the current texture." << endl;
-			assert(false);
-		}
+		/*
+		NOTE:
+			- Setting the viewport's absolute position everytime we
+			render without the camera.
+		*/
+		this->viewport.x = this->absolute.getX();
+		this->viewport.y = this->absolute.getY();
 	}
 	else
 	{
-		SDL_Rect temp_viewport = this->viewport;
-		temp_viewport.x = relative.getX();
-		temp_viewport.y = relative.getY();
+		this->viewport.x = this->relative.getX();
+		this->viewport.y = this->relative.getY();
+	}
 
-		if (SDL_RenderCopy(renderer, this->texture, NULL, &temp_viewport) != 0)
-		{
-			cerr << "Error: unable to render the current texture." << endl;
-			assert(false);
-		}
+	if (SDL_RenderCopy(renderer, this->texture, NULL, &this->viewport) != 0)
+	{
+		cerr << "Error: unable to render the current texture." << endl;
+		assert(false);
 	}
 }

@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2024-01-26T02:42:15.057Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" etag="9Op4EpgQHZ2COHCyULyp" version="23.0.1" type="device">
+<mxfile host="app.diagrams.net" modified="2024-01-26T03:24:03.158Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" etag="0-P72sqFTG15Izyk6MMg" version="23.0.1" type="device">
   <diagram id="c8oBW-qjvavsfD2tW6SP" name="Page-1">
-    <mxGraphModel dx="712" dy="-399" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="593" dy="-527" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -318,7 +318,7 @@
         <mxCell id="dvZ8j0KGGuC1-cnlvV2g-9" value="Runnable" style="swimlane;fontStyle=3;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#FFFFCC;strokeColor=#000000;" parent="1" vertex="1">
           <mxGeometry x="1380" y="2900" width="210" height="276" as="geometry" />
         </mxCell>
-        <mxCell id="dvZ8j0KGGuC1-cnlvV2g-10" value="- running: bool&#xa;- speed: int = 5" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="dvZ8j0KGGuC1-cnlvV2g-9" vertex="1">
+        <mxCell id="dvZ8j0KGGuC1-cnlvV2g-10" value="- running: bool&#xa;- speed: int = 4" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="dvZ8j0KGGuC1-cnlvV2g-9" vertex="1">
           <mxGeometry y="26" width="210" height="36" as="geometry" />
         </mxCell>
         <mxCell id="dvZ8j0KGGuC1-cnlvV2g-11" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="dvZ8j0KGGuC1-cnlvV2g-9" vertex="1">

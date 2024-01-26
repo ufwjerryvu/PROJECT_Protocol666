@@ -9,9 +9,8 @@ SECTION 1: CONSTRUCTORS AND DESTRUCTORS
 Character::Character(Gameplay *context)
 {
     /*
-    TEMPORARY:
-        - Just stores the context, for now. Might store more
-        stuff later on.
+    NOTE:
+        - Just a good ol' regular constructor.
     */
     this->context = context;
 }
@@ -38,13 +37,14 @@ void Character::render()
     /*
     NOTE:
         - A scrolling level (or a camera that follows the sprite) has
-        been implemented.
+        been implemented. This function will always have the camera 
+        follow the character.
     */
 
     SDL_Rect &viewport = this->getViewport();
 
-    viewport.x = this->getAbsolutePosition().getX();
-    viewport.y = this->getAbsolutePosition().getY();
+    viewport.x = this->getRelativePosition().getX();
+    viewport.y = this->getRelativePosition().getY();
 
     SDL_Renderer *renderer = this->getContext()->getContext()->getRenderer();
 
