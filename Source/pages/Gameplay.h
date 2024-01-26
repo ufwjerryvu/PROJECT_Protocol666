@@ -1,6 +1,8 @@
 #pragma once
 
 #include <Systems.h>
+#include <Sprite.h>
+#include <FileHandler.h>
 
 class Master;
 class Player;
@@ -10,8 +12,10 @@ class Gameplay
 private:
     Master *context;
 
-    int lwidth = 900;
-    int lheight = 500;
+    int level_width = 1400;
+    int level_height = 2800;
+
+    SDL_Rect camera;
 
     Player *player;
 public:
@@ -32,6 +36,9 @@ public:
     /*
     SECTION 3: OTHER METHODS
     */
+    void updateCamera();
+    void updateRenderPos();
+
     void update();
     void render();
 };
