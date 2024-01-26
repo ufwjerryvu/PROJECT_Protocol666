@@ -9,13 +9,18 @@ SECTION 1: CONSTRUCTORS AND DESTRUCTORS
 Player::Player(Gameplay *context) : Character(context)
 {
     /*
-    TEMPORARY:
-        - Setting the speed arbitrarily.
-    */
+    NOTE:
+		- Calling the super constructors. Trace the inheritance
+		to figure out what values are being initialized.
+	*/
 }
 
 Player::~Player()
 {
+	/*
+	TEMPORARY:
+		- Empty, for now.
+	*/
 }
 
 /*
@@ -127,6 +132,7 @@ void Player::run()
 		this->setRunning(false);
 	}
 }
+
 void Player::move() {
     this->run();
 }

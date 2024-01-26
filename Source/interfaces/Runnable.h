@@ -8,7 +8,7 @@ class Runnable : public Moveable
 {
 private:
     bool running;
-    int speed = 4;
+    int speed;
 
 public:
     /*

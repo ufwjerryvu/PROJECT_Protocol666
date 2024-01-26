@@ -2,7 +2,6 @@
 
 #include <Master.h>
 #include <Player.h>
-#include <FileHandler.h>
 
 /*
 SECTION 1: CONSTRUCTORS AND DESTRUCTORS
@@ -23,10 +22,8 @@ Gameplay::Gameplay(Master *context)
         scheme.
     */
     this->context = context;
-    this->player = new Player(this);
-    this->player->setAbsolutePosition(Coordinates(100, 100));
-    this->player->setTexture(FileHandler().loadTexture(this->context->getRenderer(), "Assets/Sprite/Character/Player/Ragdoll/idle1.png"));
 }
+
 Gameplay::~Gameplay()
 {
     /*
@@ -64,7 +61,7 @@ void Gameplay::updateCamera()
 
     /*
     NOTE:
-        - Making sure the camera doesn't go out of the discrete_dimensions of
+        - Making sure the camera doesn't go out of the dimensions of
         the level. Again, the code was modified from lazyfoo.net.
     */
     if (this->camera.x < 0)
@@ -82,17 +79,35 @@ void Gameplay::updateCamera()
 
 void Gameplay::updateRenderPos()
 {
-    this->player->setRelativePosition(Coordinates(this->camera.x, this->camera.y));
+    /*
+    NOTE:
+        - Updating things that need the camera to follow.
+    */
+    this->player->setRelativePosition(Coordinates(
+        this->camera.x, this->camera.y));
 }
 
 void Gameplay::update()
 {
+    /*
+    NOTE:
+        - We first update the camera and the relative render
+        position of the gameplay objects.
+    */
     this->updateCamera();
     this->updateRenderPos();
-    
+
+    /*
+    NOTE:
+        - And then we update the gameplay objects themselves.
+    */
     this->player->update();
 }
 void Gameplay::render()
-{
+{   
+    /*
+    NOTE:
+        - Render all the things that need to be rendered.
+    */
     this->player->render();
 }

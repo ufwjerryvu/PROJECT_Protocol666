@@ -12,6 +12,10 @@ class Gameplay
 private:
     Master *context;
 
+    /*
+    TEMPORARY:
+        - These are temporary numbers.
+    */
     int level_width = 1400;
     int level_height = 2800;
 
