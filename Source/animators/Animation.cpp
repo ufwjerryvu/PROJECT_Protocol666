@@ -3,14 +3,12 @@
 /*
 SECTION 1: CONSTRUCTORS AND DESTRUCTORS
 */
-Animation::Animation(vector<SDL_Texture *> frames)
+Animation::Animation()
 {
     /*
     NOTE:
-        - Set the frames carefully because we have to initialize
-        a new animation object if we get the frames wrong.
+        - What do I put here?
     */
-    this->frames = frames;
 }
 
 Animation::~Animation()
@@ -23,22 +21,38 @@ Animation::~Animation()
 /*
 SECTION 2: SETTERS AND GETTERS
 */
+void Animation::setFrames(vector<SDL_Texture *> frames) { this->frames = frames; }
+void Animation::setInterval(int interval) { this->interval = interval; }
 int Animation::getSize() { return this->frames.size(); }
 SDL_Texture *Animation::getCurrentFrame() { return this->frames[this->index]; }
-SDL_Texture *Animation::requestFrame(int index) { return this->frames[index]; }
+SDL_Texture *Animation::requestFrame(int index)
+{
+    if (index < 0 || index >= this->frames.size())
+    {
+        return NULL;
+    }
+
+    return this->frames[index];
+}
 
 /*
 SECTION 3: OTHER METHODS
 */
-void Animation::increment(){
-    this->index++;
+void Animation::increment()
+{
+    this->count++;
 
+    if(this->count >= this->interval){
+        this->index++;
+        this->count = 0;
+    }
     /*
     NOTE:
         - Exceeds the the size of the list then
         we reset the index.
     */
-    if(this->index >= this->frames.size()){
+    if (this->index >= this->frames.size())
+    {
         this->reset();
     }
 }

@@ -134,9 +134,33 @@ void Player::run()
 }
 
 void Player::move() {
+	/*
+	TEMPORARY:
+		- This is slightly more complicated. But for now, just
+		run.
+	*/
     this->run();
 }
 
 void Player::update() {
+	/*
+	NOTE:
+		- We need to call the `move()` method before we query
+		what the player is doing.
+	*/
     this->move();
+
+	/*
+	TEMPORARY:
+		- This is slightly more complicated and has more
+		actions.
+	*/
+	if(this->isRunning()){
+		if(this->getAnimator().getKey() != "run"){
+			this->getAnimator().setKey("run");
+		}
+		this->getAnimator().increment();
+	}
+
+	this->setTexture(this->getAnimator().getCurrentFrame());
 }

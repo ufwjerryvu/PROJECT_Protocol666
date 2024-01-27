@@ -68,12 +68,20 @@ void Character::render()
         */
         const SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL;
 
-        SDL_RenderCopyEx(renderer, this->getTexture(), NULL, &viewport, 0.00,
-                         NULL, flip);
+        if (SDL_RenderCopyEx(renderer, this->getTexture(), NULL, &viewport, 0.00,
+                             NULL, flip))
+        {
+            cerr << "Error: unable to render the current texture." << endl;
+            assert(false);
+        }
     }
     else if (this->getDirectionFacing() == Direction::RIGHT ||
              this->getDirectionFacing() == Direction::NONE)
     {
-        SDL_RenderCopy(renderer, this->getTexture(), NULL, &viewport);
+        if (SDL_RenderCopy(renderer, this->getTexture(), NULL, &viewport))
+        {
+            cerr << "Error: unable to render the current texture." << endl;
+            assert(false);
+        }
     }
 }
