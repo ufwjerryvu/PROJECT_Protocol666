@@ -1,8 +1,3 @@
-/*
-@ COLLABORATORS: Jerry Vu
-@ DESIGNERS: Jerry Vu
-*/
-
 #pragma once
 
 #include <Systems.h>
@@ -44,7 +39,7 @@ public:
 	Coordinates &getAbsolutePosition();
 	Coordinates &getRelativePosition();
 	SDL_Texture *getTexture();
-	SDL_Rect getViewport();
+	SDL_Rect &getViewport();
 	int getWidth();
 	int getHeight();
 	int getTopBound();

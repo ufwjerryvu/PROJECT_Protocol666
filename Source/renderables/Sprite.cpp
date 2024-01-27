@@ -69,8 +69,6 @@ void Sprite::setAbsolutePosition(Coordinates absolute)
 		the position of the sprite object.
 	*/
 	this->absolute = absolute;
-	this->viewport.x = absolute.getX();
-	this->viewport.y = absolute.getY();
 }
 
 void Sprite::setRelativePosition(Coordinates camera)
@@ -169,7 +167,7 @@ SECTION 2B: GETTERS
 Coordinates &Sprite::getAbsolutePosition() { return this->absolute; }
 Coordinates &Sprite::getRelativePosition() { return this->relative; }
 SDL_Texture *Sprite::getTexture() { return this->texture; }
-SDL_Rect Sprite::getViewport() { return this->viewport; }
+SDL_Rect &Sprite::getViewport() { return this->viewport; }
 int Sprite::getWidth() { return this->width; }
 int Sprite::getHeight() { return this->height; }
 int Sprite::getTopBound() { return this->absolute.getY(); }
@@ -191,22 +189,23 @@ void Sprite::render(SDL_Renderer *renderer, bool camera_follow = true)
 	*/
 	if (!camera_follow)
 	{
-		if (SDL_RenderCopy(renderer, this->texture, NULL, &this->viewport) != 0)
-		{
-			cerr << "Error: unable to render the current texture." << endl;
-			assert(false);
-		}
+		/*
+		NOTE:
+			- Setting the viewport's absolute position everytime we
+			render without the camera.
+		*/
+		this->viewport.x = this->absolute.getX();
+		this->viewport.y = this->absolute.getY();
 	}
 	else
 	{
-		SDL_Rect temp_viewport = this->viewport;
-		temp_viewport.x = relative.getX();
-		temp_viewport.y = relative.getY();
+		this->viewport.x = this->relative.getX();
+		this->viewport.y = this->relative.getY();
+	}
 
-		if (SDL_RenderCopy(renderer, this->texture, NULL, &temp_viewport) != 0)
-		{
-			cerr << "Error: unable to render the current texture." << endl;
-			assert(false);
-		}
+	if (SDL_RenderCopy(renderer, this->texture, NULL, &this->viewport))
+	{
+		cerr << "Error: unable to render the current texture." << endl;
+		assert(false);
 	}
 }

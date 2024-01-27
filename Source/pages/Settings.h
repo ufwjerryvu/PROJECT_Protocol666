@@ -1,24 +1,18 @@
-/*
-@ COLLABORATORS: Jerry Vu
-@ DESIGNERS: Jerry Vu
-*/
-
 #pragma once
 
 #include <Systems.h>
 
 #include <Button.h>
-#include <FileHandler.h>
 #include <Navigation.h>
-
 #include <Menu.h>
+#include <Creator.h>
 
 class Master;
 
 class Settings : public Navigation
 {
 private:
-    Button back;
+    vector<pair<string, Button>> buttons;
 
 public:
     /*
