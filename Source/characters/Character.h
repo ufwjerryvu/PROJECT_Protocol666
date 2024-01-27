@@ -5,6 +5,8 @@
 #include <Coordinates.h>
 #include <Sprite.h>
 #include <Runnable.h>
+#include <Animation.h>
+#include <Animator.h>
 
 class Gameplay;
 
@@ -12,6 +14,7 @@ class Character : public Sprite, public Runnable
 {
 private:
     Gameplay *context;
+    Animator<string> animator;
 
 public:
     /*
@@ -23,7 +26,9 @@ public:
     /*
     SECTION 2: SETTERS AND GETTERS
     */
+    void setAnimator(Animator<string> animator);
     Gameplay *getContext();
+    Animator<string>& getAnimator();
     
     /*
     SECTION 3: OTHER METHODS

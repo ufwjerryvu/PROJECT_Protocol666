@@ -1,6 +1,8 @@
 #include "Gameplay.h"
 
 #include <Master.h>
+
+#include <Creator.h>
 #include <Player.h>
 
 /*
@@ -22,6 +24,7 @@ Gameplay::Gameplay(Master *context)
         scheme.
     */
     this->context = context;
+    this->player = Creator().createPlayer(this);
 }
 
 Gameplay::~Gameplay()

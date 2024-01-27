@@ -203,7 +203,7 @@ void Sprite::render(SDL_Renderer *renderer, bool camera_follow = true)
 		this->viewport.y = this->relative.getY();
 	}
 
-	if (SDL_RenderCopy(renderer, this->texture, NULL, &this->viewport) != 0)
+	if (SDL_RenderCopy(renderer, this->texture, NULL, &this->viewport))
 	{
 		cerr << "Error: unable to render the current texture." << endl;
 		assert(false);

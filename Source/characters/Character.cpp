@@ -24,9 +24,19 @@ Character::~Character()
 /*
 SECTION 2: SETTERS AND GETTERS
 */
+void Character::setAnimator(Animator<string> animator)
+{
+    this->animator = animator;
+}
+
 Gameplay *Character::getContext()
 {
     return this->context;
+}
+
+Animator<string> &Character::getAnimator()
+{
+    return this->animator;
 }
 /*
 SECTION 3: OTHER METHODS
@@ -37,7 +47,7 @@ void Character::render()
     /*
     NOTE:
         - A scrolling level (or a camera that follows the sprite) has
-        been implemented. This function will always have the camera 
+        been implemented. This function will always have the camera
         follow the character.
     */
 
@@ -58,12 +68,20 @@ void Character::render()
         */
         const SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL;
 
-        SDL_RenderCopyEx(renderer, this->getTexture(), NULL, &viewport, 0.00,
-                         NULL, flip);
+        if (SDL_RenderCopyEx(renderer, this->getTexture(), NULL, &viewport, 0.00,
+                             NULL, flip))
+        {
+            cerr << "Error: unable to render the current texture." << endl;
+            assert(false);
+        }
     }
     else if (this->getDirectionFacing() == Direction::RIGHT ||
              this->getDirectionFacing() == Direction::NONE)
     {
-        SDL_RenderCopy(renderer, this->getTexture(), NULL, &viewport);
+        if (SDL_RenderCopy(renderer, this->getTexture(), NULL, &viewport))
+        {
+            cerr << "Error: unable to render the current texture." << endl;
+            assert(false);
+        }
     }
 }
