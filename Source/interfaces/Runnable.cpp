@@ -10,7 +10,6 @@ Runnable::Runnable()
         - The running state is set to `false`. However, the speed
         must be specified by the builder or creator class.
     */
-    this->running = false;
 }
 
 Runnable::~Runnable()

@@ -38,13 +38,19 @@ SDL_Texture *Animation::requestFrame(int index)
 /*
 SECTION 3: OTHER METHODS
 */
-void Animation::increment()
+bool Animation::increment()
 {
-    this->count++;
+    /*
+    NOTE:
+        - This function returns `true` if the whole sequence
+        has been completed and `false` if otherwise.
+    */
+    this->counter++;
 
-    if(this->count >= this->interval){
+    if (this->counter >= this->interval)
+    {
         this->index++;
-        this->count = 0;
+        this->counter = 0;
     }
     /*
     NOTE:
@@ -54,7 +60,19 @@ void Animation::increment()
     if (this->index >= this->frames.size())
     {
         this->reset();
+        return true;
     }
+
+    return false;
 }
 
-void Animation::reset() { this->index = 0; }
+void Animation::reset()
+{
+    /*
+    NOTE:
+        - Resets all the counterers to zero except the 
+        interval.
+    */
+    this->index = 0;
+    this->counter = 0;
+}

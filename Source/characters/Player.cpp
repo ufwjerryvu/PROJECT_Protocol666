@@ -8,8 +8,8 @@ SECTION 1: CONSTRUCTORS AND DESTRUCTORS
 */
 Player::Player(Gameplay *context) : Character(context)
 {
-    /*
-    NOTE:
+	/*
+	NOTE:
 		- Calling the super constructors. Trace the inheritance
 		to figure out what values are being initialized.
 	*/
@@ -28,18 +28,20 @@ SECTION 2: OTHER METHODS
 */
 void Player::run()
 {
-    UserEvent *actions = this->getContext()->getContext()->getUserActions();
-    Coordinates &position = this->getAbsolutePosition();
+	UserEvent *actions = this->getContext()->getContext()->getUserActions();
+	Coordinates &position = this->getAbsolutePosition();
 	/*
 	NOTE:
-		- Checking if either of the horizontal running keys has been pressed 
-		(i.e., 'A' and/or 'D') to set the running state of the player to true 
+		- Checking if either of the horizontal running keys has been pressed
+		(i.e., 'A' and/or 'D') to set the running state of the player to true
 		for animation purposes.
 	*/
-	if (actions->current_key_states[SDL_SCANCODE_A] || actions->current_key_states[SDL_SCANCODE_D]) {
+	if (actions->current_key_states[SDL_SCANCODE_A] || actions->current_key_states[SDL_SCANCODE_D])
+	{
 		this->setRunning(true);
 
-		if (actions->current_key_states[SDL_SCANCODE_A] && !actions->current_key_states[SDL_SCANCODE_D]) {
+		if (actions->current_key_states[SDL_SCANCODE_A] && !actions->current_key_states[SDL_SCANCODE_D])
+		{
 			/*
 			NOTE:
 				- This is what happens when only one key ('A') is pressed.
@@ -47,7 +49,8 @@ void Player::run()
 			*actions->simultaneous_horizontal_keys_pressed = false;
 			*actions->current_horizontal_key = SDL_SCANCODE_A;
 		}
-		else if (!actions->current_key_states[SDL_SCANCODE_A] && actions->current_key_states[SDL_SCANCODE_D]) {
+		else if (!actions->current_key_states[SDL_SCANCODE_A] && actions->current_key_states[SDL_SCANCODE_D])
+		{
 			/*
 			NOTE:
 				- This is what happens when only one key ('D') is pressed.
@@ -56,25 +59,28 @@ void Player::run()
 			*actions->current_horizontal_key = SDL_SCANCODE_D;
 		}
 
-		if (actions->current_key_states[SDL_SCANCODE_A] && actions->current_key_states[SDL_SCANCODE_D]) {
+		if (actions->current_key_states[SDL_SCANCODE_A] && actions->current_key_states[SDL_SCANCODE_D])
+		{
 			/*
 			NOTE:
-				- If two keys are being pressed down then the subsequent key 
+				- If two keys are being pressed down then the subsequent key
 				is the final input.
 
 				- For example, if 'D' was pressed first and 'A' is pressed
 				after then 'A' becomes the final processed input and the
 				player's character runs left.
 
-				- We only change the value of `current_horizontal_key` if the 
-				flag that notes the concurrence of the two horizontal keys 
+				- We only change the value of `current_horizontal_key` if the
+				flag that notes the concurrence of the two horizontal keys
 				is not set.
 			*/
 
-			if (*actions->current_horizontal_key == SDL_SCANCODE_D && !*actions->simultaneous_horizontal_keys_pressed) {
+			if (*actions->current_horizontal_key == SDL_SCANCODE_D && !*actions->simultaneous_horizontal_keys_pressed)
+			{
 				*actions->current_horizontal_key = SDL_SCANCODE_A;
 			}
-			else if (*actions->current_horizontal_key == SDL_SCANCODE_A && !*actions->simultaneous_horizontal_keys_pressed) {
+			else if (*actions->current_horizontal_key == SDL_SCANCODE_A && !*actions->simultaneous_horizontal_keys_pressed)
+			{
 				*actions->current_horizontal_key = SDL_SCANCODE_D;
 			}
 
@@ -84,17 +90,19 @@ void Player::run()
 		/*
 		NOTE:
 			- The variable `current_horizontal_key` ultimately decides
-			the direction of the player's running motion and not 
+			the direction of the player's running motion and not
 			`current_key_states`.
 		*/
-		if (*actions->current_horizontal_key == SDL_SCANCODE_A) {
+		if (*actions->current_horizontal_key == SDL_SCANCODE_A)
+		{
 			this->setDirectionFacing(Direction::LEFT);
 			/*
 			NOTE:
 				- Checking if the player is going out of the left bound. If they
 				are then stop them.
 			*/
-			if (position.getX() - this->Runnable::getSpeed() <= 0) {
+			if (position.getX() - this->Runnable::getSpeed() <= 0)
+			{
 				this->setRunning(false);
 				/*
 				NOTE:
@@ -110,14 +118,17 @@ void Player::run()
 				- The player is running left.
 			*/
 			this->getAbsolutePosition().setX(this->getAbsolutePosition().getX() - this->Runnable::getSpeed());
-		} else if (*actions->current_horizontal_key == SDL_SCANCODE_D) {
+		}
+		else if (*actions->current_horizontal_key == SDL_SCANCODE_D)
+		{
 			this->setDirectionFacing(Direction::RIGHT);
 			/*
 			NOTE:
 				- Checking if the player is going out of the right bound. If they
-				are then stop them. 
+				are then stop them.
 			*/
-			if (position.getX() + this->Runnable::getSpeed() + this->getWidth() >= this->getContext()->getLevelWidth()) {
+			if (position.getX() + this->Runnable::getSpeed() + this->getWidth() >= this->getContext()->getLevelWidth())
+			{
 				this->setRunning(false);
 				return;
 			}
@@ -128,39 +139,119 @@ void Player::run()
 			position.setX(position.getX() + this->Runnable::getSpeed());
 		}
 	}
-	else {
+	else
+	{
 		this->setRunning(false);
 	}
 }
 
-void Player::move() {
+void Player::roll()
+{
+	/*
+	NOTE:
+		- Defines the logic for the action of rolling. Press 'LEFT SHIFT' to roll.
+		The player can roll before they jump.
+	*/
+	UserEvent *actions = this->getContext()->getContext()->getUserActions();
+	Coordinates &position = this->getAbsolutePosition();
+
 	/*
 	TEMPORARY:
-		- This is slightly more complicated. But for now, just
-		run.
+		- This section will be added in later.
 	*/
-    this->run();
+	if (actions->current_key_states[SDL_SCANCODE_LSHIFT]) //&& !(this->isAttacking() || this->isFalling() || this->isJumping()))
+	{
+		this->setRolling(true);
+		this->setRunning(false);
+	}
+
+	if (this->isRolling())
+	{
+		if (this->getDirectionFacing() == Direction::LEFT)
+		{
+			/*
+			NOTE:
+				- Checking if the player is going out of the left bound. If they
+				are then stop them.
+			*/
+			if (position.getX() - this->Rollable::getSpeed() <= 0)
+			{
+				this->setRolling(false);
+				/*
+				NOTE:
+					- The following code that sets the x-coordinate is basically saying
+					that we don't want to leave a gap between the player and the edge
+					of the screen.
+				*/
+				position.setX(0);
+				return;
+			}
+			/*
+			NOTE:
+				- The player is rolling left.
+			*/
+			position.setX(position.getX() - this->Rollable::getSpeed());
+		}
+
+		if (this->getDirectionFacing() == Direction::RIGHT)
+		{
+			/*
+			NOTE:
+				- Checking if the player is going out of the right bound. If they
+				are then stop them.
+			*/
+			if (position.getX() + this->Rollable::getSpeed() + this->getWidth() >= this->getContext()->getLevelWidth())
+			{
+				this->setRolling(false);
+				return;
+			}
+			/*
+			NOTE:
+				- The player is rolling right.
+			*/
+			position.setX(position.getX() + this->Rollable::getSpeed());
+		}
+	}
 }
 
-void Player::update() {
+void Player::move()
+{
+	/*
+	TEMPORARY: 
+		- The structure includes rolling and running, for now.
+	*/
+	this->run();
+	this->roll();
+}
+
+void Player::update()
+{
 	/*
 	NOTE:
 		- We need to call the `move()` method before we query
 		what the player is doing.
 	*/
-    this->move();
+	this->move();
 
 	/*
 	TEMPORARY:
 		- This is slightly more complicated and has more
 		actions.
 	*/
-	if(this->isRunning()){
-		if(this->getAnimator().getKey() != "run"){
-			this->getAnimator().setKey("run");
-		}
-		this->getAnimator().increment();
-	}
+	if (!this->isRunning() && !this->isRolling())
+		this->getAnimator().setKey("idle");
+
+	if (this->isRunning())
+		this->getAnimator().setKey("run");
+
+	if (this->isRolling())
+		this->getAnimator().setKey("roll");
 
 	this->setTexture(this->getAnimator().getCurrentFrame());
+
+	if(this->getAnimator().increment()){
+		if(this->getAnimator().getKey() == "roll"){
+			this->setRolling(false);
+		}
+	}
 }

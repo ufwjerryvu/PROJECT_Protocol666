@@ -4,10 +4,10 @@
 
 #include <Moveable.h>
 
-class Runnable : public Moveable
+class Runnable : virtual public Moveable
 {
 private:
-    bool running;
+    bool running = false;
     int speed;
 
 public:

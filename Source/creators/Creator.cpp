@@ -43,7 +43,11 @@ Player *Creator::createPlayer(Gameplay *context)
 {
     Player *player = new Player(context);
 
+    Animator<string> animator;
     vector<SDL_Texture *> seq;
+    map<string, Animation> animations;
+
+    // RUN ANIMATION ----------------------------------------------
     SDL_Renderer *renderer = context->getContext()->getRenderer();
     for (char i = '1'; i < '9'; i++)
     {
@@ -52,20 +56,46 @@ Player *Creator::createPlayer(Gameplay *context)
         seq.push_back(FileHandler().loadTexture(renderer, dir));
     }
 
-    map<string, Animation> animations;
     animations["run"] = Animation();
     animations["run"].setFrames(seq);
     animations["run"].setInterval(5);
 
-    Animator<string> animator = Animator<string>();
+    // ROLL ANIMATION ----------------------------------------------
+    seq = {};
+    for (char i = '1'; i < '9'; i++)
+    {
+        string dir = "Assets/Sprite/Character/Player/Ragdoll/roll" + string(1, i);
+        dir += ".png";
+        seq.push_back(FileHandler().loadTexture(renderer, dir));
+    }
+
+    animations["roll"] = Animation();
+    animations["roll"].setFrames(seq);
+    animations["roll"].setInterval(4);
+
+    // IDLE ANIMATION ----------------------------------------------
+    seq = {};
+    for (char i = '1'; i < '5'; i++)
+    {
+        string dir = "Assets/Sprite/Character/Player/Ragdoll/idle" + string(1, i);
+        dir += ".png";
+        seq.push_back(FileHandler().loadTexture(renderer, dir));
+    }
+
+    animations["idle"] = Animation();
+    animations["idle"].setFrames(seq);
+    animations["idle"].setInterval(9);
+
+    // OTHER SETTERS ------------------------------------------------
 
     animator.setAnimations(animations);
-    animator.setKey("run");
+    animator.setKey("idle");
 
     player->setAnimator(animator);
     player->setAbsolutePosition(Coordinates(100, 100));
     player->setDirectionFacing(Direction::LEFT);
-    player->Runnable::setSpeed(5);
+    player->Runnable::setSpeed(4);
+    player->Rollable::setSpeed(6);
     player->setTexture(animator.getCurrentFrame());
 
     return player;

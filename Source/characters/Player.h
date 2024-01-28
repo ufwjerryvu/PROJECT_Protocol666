@@ -21,6 +21,7 @@ public:
     SECTION 2: OTHER METHODS
     */
     void run();
+    void roll();
     void move();
 
     void update();

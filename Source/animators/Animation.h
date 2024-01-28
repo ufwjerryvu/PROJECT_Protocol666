@@ -6,7 +6,7 @@ class Animation
 {
 private:
     int index = 0;
-    int count = 0;
+    int counter = 0;
     int interval;
 
     vector<SDL_Texture *> frames;
@@ -29,6 +29,6 @@ public:
     /*
     SECTION 3: OTHER METHODS
     */
-    void increment();
+    bool increment();
     void reset();
 };

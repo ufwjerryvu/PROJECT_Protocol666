@@ -5,12 +5,13 @@
 #include <Coordinates.h>
 #include <Sprite.h>
 #include <Runnable.h>
+#include <Rollable.h>
 #include <Animation.h>
 #include <Animator.h>
 
 class Gameplay;
 
-class Character : public Sprite, public Runnable
+class Character : public Sprite, public Runnable, public Rollable
 {
 private:
     Gameplay *context;
@@ -34,6 +35,7 @@ public:
     SECTION 3: OTHER METHODS
     */
     virtual void run() = 0;
+    virtual void roll() = 0;
     virtual void move() = 0;
 
     virtual void update() = 0;
