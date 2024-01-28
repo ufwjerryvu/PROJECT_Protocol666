@@ -1,0 +1,8 @@
+# Ignore DS_Store files
+.DS_Store
+
+# Ignore Agent file
+Agent
+
+# Ignore the VSCode build folder
+.vscode
