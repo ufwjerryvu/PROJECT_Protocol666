@@ -2,33 +2,34 @@
 
 #include <Systems.h>
 
-#include <Direction.h>
+#include <Moveable.h>
 
-class Rollable
+class Rollable : virtual public Moveable
 {
 private:
-    bool rolling;
+    bool rolling = false;
     int speed;
-    
+
 public:
     /*
     SECTION 1: CONSTRUCTORS AND DESTRUCTORS
     */
-    Rollable(int speed);
+    Rollable();
     ~Rollable();
 
     /*
     SECTION 2: SETTERS AND GETTERS
     */
-    void setRunning(bool running);
-    bool isRunning();
-    
+    void setRolling(bool rolling);
+    bool isRolling();
+
+    void setSpeed(int speed);
+    int getSpeed();
 
     /*
     SECTION 3: OTHER METHODS
     */
-    virtual void left();
-    virtual void right();
+    virtual void run() = 0;
 
     virtual void move() = 0;
     virtual void update() = 0;

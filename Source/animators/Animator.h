@@ -31,7 +31,8 @@ public:
     /*
     SECTION 3: OTHER METHODS
     */
-    void increment();
+    bool increment();
+    void reset();
 };
 
 /*
@@ -80,6 +81,15 @@ void Animator<Type>::setKey(Type key)
             animation index of the current animation sequence
             before assigning the new key.
         */
+        if (this->key == key)
+        {
+            /*
+            NOTE:
+                - Early return due to conciding key values. We
+                do not want to reset the animation structure.
+            */
+            return;
+        }
         this->animations[this->key].reset();
         this->key = key;
     }
@@ -146,12 +156,24 @@ SDL_Texture *Animator<Type>::getCurrentFrame()
 SECTION 3: OTHER METHODS
 */
 template <typename Type>
-void Animator<Type>::increment()
+bool Animator<Type>::increment()
 {
     /*
     NOTE:
         - Increments the index of the current frame in the
-        current animation sequence.
+        current animation sequence. Returns `true` if a cycle
+        has been completed and `false` if otherwise.
     */
-    this->animations[this->key].increment();
+    return this->animations[this->key].increment();
+}
+
+template <typename Type>
+void Animator<Type>::reset()
+{
+    /*
+    NOTE:
+        - Just resets the current animation to begin from index
+        zero.
+    */
+    this->animations[this->key].reset();
 }
