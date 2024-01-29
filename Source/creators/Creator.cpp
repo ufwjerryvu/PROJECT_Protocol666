@@ -32,7 +32,7 @@ Button Creator::createButton(SDL_Renderer *renderer, string name, Coordinates po
 
     for (string type : types)
     {
-        string path = "Assets/Sprite/Button/" + name + "_" + type + ".png";
+        string path = "../Assets/Sprite/Button/" + name + "_" + type + ".png";
         animation[type] = file.loadTexture(renderer, path);
     }
 
@@ -51,7 +51,7 @@ Player *Creator::createPlayer(Gameplay *context)
     SDL_Renderer *renderer = context->getContext()->getRenderer();
     for (char i = '1'; i < '9'; i++)
     {
-        string dir = "Assets/Sprite/Character/Player/Ragdoll/run" + string(1, i);
+        string dir = "../Assets/Sprite/Character/Player/Ragdoll/run" + string(1, i);
         dir += ".png";
         seq.push_back(FileHandler().loadTexture(renderer, dir));
     }
@@ -64,7 +64,7 @@ Player *Creator::createPlayer(Gameplay *context)
     seq = {};
     for (char i = '1'; i < '9'; i++)
     {
-        string dir = "Assets/Sprite/Character/Player/Ragdoll/roll" + string(1, i);
+        string dir = "../Assets/Sprite/Character/Player/Ragdoll/roll" + string(1, i);
         dir += ".png";
         seq.push_back(FileHandler().loadTexture(renderer, dir));
     }
@@ -77,7 +77,7 @@ Player *Creator::createPlayer(Gameplay *context)
     seq = {};
     for (char i = '1'; i < '5'; i++)
     {
-        string dir = "Assets/Sprite/Character/Player/Ragdoll/idle" + string(1, i);
+        string dir = "../Assets/Sprite/Character/Player/Ragdoll/idle" + string(1, i);
         dir += ".png";
         seq.push_back(FileHandler().loadTexture(renderer, dir));
     }
