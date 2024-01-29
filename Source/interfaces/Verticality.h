@@ -2,29 +2,33 @@
 
 #include <Systems.h>
 
-#include <Direction.h>
-
-class Moveable
+class Verticality
 {
 private:
-    Direction facing;
+    int velocity;
+    int counter = 0;
+    int interval;
 
 public:
     /*
     SECTION 1: CONSTRUCTORS AND DESTRUCTORS
     */
-    Moveable();
-    ~Moveable();
-
+    Verticality();
+    ~Verticality();
     /*
     SECTION 2: SETTERS AND GETTERS
     */
-    void setDirectionFacing(Direction direction);
-    Direction getDirectionFacing();
+    void setVelocity(int velocity);
+    int getVelocity();
+
+    void setInterval(int interval);
+    int getInterval();
 
     /*
     SECTION 3: OTHER METHODS
     */
+    bool increment();
+
     virtual void move() = 0;
     virtual void update() = 0;
 };
