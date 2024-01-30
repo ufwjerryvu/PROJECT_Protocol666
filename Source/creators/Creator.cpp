@@ -86,6 +86,17 @@ Player *Creator::createPlayer(Gameplay *context)
     animations["idle"].setFrames(seq);
     animations["idle"].setInterval(9);
 
+    // FALL ANIMATION ----------------------------------------------
+    seq = {};
+
+    string dir = "../Assets/Sprite/Character/Player/Ragdoll/fall.png";
+
+    seq.push_back(FileHandler().loadTexture(renderer, dir));
+
+    animations["fall"] = Animation();
+    animations["fall"].setFrames(seq);
+    animations["fall"].setInterval(0);
+
     // OTHER SETTERS ------------------------------------------------
 
     animator.setAnimations(animations);
@@ -94,6 +105,9 @@ Player *Creator::createPlayer(Gameplay *context)
     player->setAnimator(animator);
     player->setAbsolutePosition(Coordinates(100, 100));
     player->setDirectionFacing(Direction::LEFT);
+    player->Fallable::setGravitationalAcceleration(1);
+    player->Fallable::setTerminalVelocity(8);
+    player->Verticality::setInterval(3);
     player->Runnable::setSpeed(4);
     player->Rollable::setSpeed(6);
     player->setTexture(animator.getCurrentFrame());

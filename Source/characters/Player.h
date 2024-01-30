@@ -22,6 +22,7 @@ public:
     */
     void run();
     void roll();
+    void jump();
     void move();
 
     void update();

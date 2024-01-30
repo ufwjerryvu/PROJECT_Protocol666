@@ -5,7 +5,7 @@
 class Verticality
 {
 private:
-    int velocity;
+    int velocity = 0;
     int counter = 0;
     int interval;
 
@@ -19,15 +19,18 @@ public:
     SECTION 2: SETTERS AND GETTERS
     */
     void setVelocity(int velocity);
-    int getVelocity();
-
+    void setCounter(int counter);
     void setInterval(int interval);
+    
+    int getVelocity();
+    int getCounter();
     int getInterval();
 
     /*
     SECTION 3: OTHER METHODS
     */
     bool increment();
+    void reset();
 
     virtual void move() = 0;
     virtual void update() = 0;

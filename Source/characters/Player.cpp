@@ -214,13 +214,47 @@ void Player::roll()
 	}
 }
 
+void Player::jump()
+{
+	/*
+	TEMPORARY:
+		- Empty, for now.
+	*/
+}
+
 void Player::move()
 {
 	/*
-	TEMPORARY: 
-		- The structure includes rolling and running, for now.
+	NOTE:
+		- `fall()` can only be called if the character is mid air,
+		while not in jumping motion.
+
+		- `jump()` can only be called if the character is currently on
+		a platform, and is not falling mid air.
+
 	*/
-	this->run();
+	if (!this->isJumping() && this->getAbsolutePosition().getY() <=
+								  this->getContext()->getLevelHeight())
+	{
+		this->fall();
+	}
+
+	if (!this->isFalling())
+	{
+		/*
+		NOTE:
+			- This doesn't mean that we're going to make
+			the player's character jump. The function still
+			depends on the user's input.
+		*/
+		this->jump();
+	}
+
+	if (!this->isRolling() || this->isFalling() || this->isJumping())
+	{
+		this->run();
+	}
+
 	this->roll();
 }
 
@@ -247,10 +281,15 @@ void Player::update()
 	if (this->isRolling())
 		this->getAnimator().setKey("roll");
 
+	if (this->isFalling())
+		this->getAnimator().setKey("fall");
+
 	this->setTexture(this->getAnimator().getCurrentFrame());
 
-	if(this->getAnimator().increment()){
-		if(this->getAnimator().getKey() == "roll"){
+	if (this->getAnimator().increment())
+	{
+		if (this->getAnimator().getKey() == "roll")
+		{
 			this->setRolling(false);
 		}
 	}

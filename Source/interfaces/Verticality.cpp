@@ -22,15 +22,18 @@ Verticality::~Verticality()
 SECTION 2: SETTERS AND GETTERS
 */
 void Verticality::setVelocity(int velocity) { this->velocity = velocity; }
-int Verticality::getVelocity() { return this->velocity; }
-
+void Verticality::setCounter(int counter) { this->counter = counter; }
 void Verticality::setInterval(int interval) { this->interval = interval; }
+
+int Verticality::getVelocity() { return this->velocity; }
+int Verticality::getCounter() { return this->counter; }
 int Verticality::getInterval() { return this->interval; }
 
 /*
 SECTION 3: OTHER METHODS
 */
-bool Verticality::increment(){
+bool Verticality::increment()
+{
     /*
     NOTE:
         - Function increments the counter and if the counter
@@ -40,9 +43,18 @@ bool Verticality::increment(){
     */
     this->counter++;
 
-    if(this->counter >= this->interval){
-        this->counter = 0;
+    if (this->counter > this->interval)
+    {
         return true;
     }
     return false;
+}
+
+void Verticality::reset()
+{
+    /*
+    NOTE:
+        - Resets the counter.
+    */
+    this->counter = 0;
 }
