@@ -105,9 +105,9 @@ Player *Creator::createPlayer(Gameplay *context)
     player->setAnimator(animator);
     player->setAbsolutePosition(Coordinates(100, 100));
     player->setDirectionFacing(Direction::LEFT);
-    player->Fallable::setGravitationalAcceleration(1);
-    player->Fallable::setTerminalVelocity(8);
-    player->Verticality::setInterval(3);
+    player->Fallable::setGravitationalAcceleration(2);
+    player->Fallable::setTerminalVelocity(12);
+    player->Verticality::setInterval(6);
     player->Runnable::setSpeed(4);
     player->Rollable::setSpeed(6);
     player->setTexture(animator.getCurrentFrame());

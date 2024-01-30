@@ -10,7 +10,7 @@ Character::Character(Gameplay *context)
 {
     /*
     NOTE:
-        - Just a good ol' regular constructor.
+        - Just a good old regular constructor.
     */
     this->context = context;
 }
@@ -29,28 +29,17 @@ void Character::setAnimator(Animator<string> animator)
     this->animator = animator;
 }
 
-Gameplay *Character::getContext()
-{
-    return this->context;
-}
+Gameplay *Character::getContext() { return this->context; }
+Animator<string> &Character::getAnimator() { return this->animator; }
 
-Animator<string> &Character::getAnimator()
-{
-    return this->animator;
-}
 /*
 SECTION 3: OTHER METHODS
 */
-
 void Character::fall()
 {
     /*
     NOTE:
-        - An attempt at disabling `jump()` after reaching the max height:
-        first, we set the jump state to false and we then set the falling
-        state to true right after.
-
-        - As the Character falls, fall velocity is 0, which increments by
+        - As the Character falls, fall velocity is `0`, which increments by
         the gravitational acceleration per game update interval.
     */
     Coordinates &position = this->getAbsolutePosition();
@@ -58,10 +47,10 @@ void Character::fall()
     /*
 
     NOTE:
-        - If a character is detecting collision beneath
-        it then set the falling state to false and vertical
-        velocity to 0.
+        - If a character is detecting collision beneath t then set the falling
+        state to false and vertical velocity to `0`.
     */
+
     // if (this->getCollisionDirections().bottom)
     // {
     //     this->setFallingState(false);
@@ -71,12 +60,13 @@ void Character::fall()
     // {
     //     this->setFallingState(true);
     // }
+
     this->setFalling(true);
 
     /*
     NOTE:
-        - Incorporated the horizontal bounds to make sure characters
-        don't fall through the bottom of the screen.
+        - Incorporated the horizontal bounds to make sure characters don't fall 
+        through the bottom of the screen.
     */
     const int PIXEL_ERROR_MARGIN = 3;
 
@@ -88,8 +78,8 @@ void Character::fall()
 
     /*
     NOTE:
-        - This is to make sure that none of the characters
-        fall through the bottom of the screen.
+        - This is to make sure that none of the characters fall through the bottom
+        of the screen.
     */
     if (position.getY() + this->getHeight() >= context->getLevelHeight())
     {
@@ -104,7 +94,7 @@ void Character::fall()
         /*
         NOTE:
             - Fixed the condition up a little bit. The vertical update interval
-            must be larger.
+            must be greater than the interval.
         */
 
         if (this->Verticality::getVelocity() < this->Fallable::getTerminalVelocity() &&
@@ -118,14 +108,22 @@ void Character::fall()
                 - This change is done by adding the gravitational acceleration
                 each time an update interval is met.
             */
-            this->Verticality::setVelocity(this->Verticality::getVelocity() +
-                                           this->Fallable::getGravitationalAcceleration());
+            if (this->Verticality::getVelocity() + this->Fallable::getGravitationalAcceleration() >
+                this->Fallable::getTerminalVelocity())
+            {
+                this->Verticality::setVelocity(this->Fallable::getTerminalVelocity());
+            }
+            else
+            {
+                this->Verticality::setVelocity(this->Verticality::getVelocity() +
+                                               this->Fallable::getGravitationalAcceleration());
+            }
+
             this->Verticality::reset();
         }
 
         else
         {
-            
             this->Verticality::increment();
             position.setY(position.getY() + this->Verticality::getVelocity());
         }

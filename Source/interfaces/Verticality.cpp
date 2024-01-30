@@ -43,11 +43,7 @@ bool Verticality::increment()
     */
     this->counter++;
 
-    if (this->counter > this->interval)
-    {
-        return true;
-    }
-    return false;
+    return this->counter > this->interval;
 }
 
 void Verticality::reset()

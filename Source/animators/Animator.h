@@ -41,10 +41,9 @@ SECTION 1: CONSTRUCTORS AND DESTRUCTORS
 
 /*
 NOTE:
-    - This section has to be defined inline because of the whole
-    template-linker ordeal. Good thing is the constructors and
-    destructors are empty so we don't need to worry too much about
-    code bloating.
+    - This section has to be defined inline because of the whole template-linker
+    ordeal. Good thing is the constructors and destructors are empty so we don't
+    need to worry too much about code bloating.
 */
 
 /*
@@ -65,8 +64,8 @@ void Animator<Type>::setKey(Type key)
 {
     /*
     NOTE:
-        - Checking for `NULL` and throwing an exception and
-        halting the entire program.
+        - Checking for `NULL` and throwing an exception and halting the entire
+        program.
     */
     if (!this->animations.count(key))
     {
@@ -77,16 +76,15 @@ void Animator<Type>::setKey(Type key)
     {
         /*
         NOTE:
-            - If we've switched keys, we've gotta reset the
-            animation index of the current animation sequence
-            before assigning the new key.
+            - If we've switched keys, we've gotta reset the animation index of 
+            the current animation sequence before assigning the new key.
         */
         if (this->key == key)
         {
             /*
             NOTE:
-                - Early return due to conciding key values. We
-                do not want to reset the animation structure.
+                - Early return due to conciding key values. We do not want to 
+                reset the animation structure.
             */
             return;
         }
@@ -100,9 +98,8 @@ void Animator<Type>::put(Type key, Animation value)
 {
     /*
     NOTE:
-        - Puts a key to animation mapping into the map. If it
-        already exists then the standard behavior is the current
-        value gets overwritten.
+        - Puts a key to animation mapping into the map. If it already exists then
+        the standard behavior is the current value gets overwritten.
     */
     this->animations[key] = value;
 }
@@ -112,8 +109,7 @@ Type Animator<Type>::getKey()
 {
     /*
     NOTE:
-        - Gets the current key that maps to the animation
-        sequence.
+        - Gets the current key that maps to the animation sequence.
     */
     return this->key;
 }
@@ -123,8 +119,8 @@ vector<Type> Animator<Type>::getKeys()
 {
     /*
     NOTE:
-        - Retrieves the key of a map and stores it into a
-        generic vector. Code modified from StackOverflow.
+        - Retrieves the key of a map and stores it into a generic vector. Code 
+        modified from Stack Overflow.
     */
     map<Type, Animation> mapped = this->animations;
     vector<Type> keys;
@@ -142,8 +138,8 @@ SDL_Texture *Animator<Type>::getCurrentFrame()
 {
     /*
     NOTE:
-        - Gets the current frame of the current animation
-        sequence mapped by the key.
+        - Gets the current frame of the current animation sequence mapped by the 
+        key.
     */
     if (!this->animations.count(this->key))
     {
@@ -160,9 +156,9 @@ bool Animator<Type>::increment()
 {
     /*
     NOTE:
-        - Increments the index of the current frame in the
-        current animation sequence. Returns `true` if a cycle
-        has been completed and `false` if otherwise.
+        - Increments the index of the current frame in the current animation 
+        sequence. Returns `true` if a cycle has been completed and `false` if
+        otherwise.
     */
     return this->animations[this->key].increment();
 }
@@ -172,8 +168,7 @@ void Animator<Type>::reset()
 {
     /*
     NOTE:
-        - Just resets the current animation to begin from index
-        zero.
+        - Just resets the current animation to begin from index zero.
     */
     this->animations[this->key].reset();
 }
