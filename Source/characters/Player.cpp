@@ -10,8 +10,8 @@ Player::Player(Gameplay *context) : Character(context)
 {
 	/*
 	NOTE:
-		- Calling the super constructors. Trace the inheritance
-		to figure out what values are being initialized.
+		- Calling the super constructors. Trace the inheritance to figure out
+		what values and variables are being initialized.
 	*/
 }
 
@@ -36,11 +36,13 @@ void Player::run()
 		(i.e., 'A' and/or 'D') to set the running state of the player to true
 		for animation purposes.
 	*/
-	if (actions->current_key_states[SDL_SCANCODE_A] || actions->current_key_states[SDL_SCANCODE_D])
+	if (actions->current_key_states[SDL_SCANCODE_A] ||
+		actions->current_key_states[SDL_SCANCODE_D])
 	{
 		this->setRunning(true);
 
-		if (actions->current_key_states[SDL_SCANCODE_A] && !actions->current_key_states[SDL_SCANCODE_D])
+		if (actions->current_key_states[SDL_SCANCODE_A] &&
+			!actions->current_key_states[SDL_SCANCODE_D])
 		{
 			/*
 			NOTE:
@@ -49,7 +51,8 @@ void Player::run()
 			*actions->simultaneous_horizontal_keys_pressed = false;
 			*actions->current_horizontal_key = SDL_SCANCODE_A;
 		}
-		else if (!actions->current_key_states[SDL_SCANCODE_A] && actions->current_key_states[SDL_SCANCODE_D])
+		else if (!actions->current_key_states[SDL_SCANCODE_A] &&
+				 actions->current_key_states[SDL_SCANCODE_D])
 		{
 			/*
 			NOTE:
@@ -59,7 +62,8 @@ void Player::run()
 			*actions->current_horizontal_key = SDL_SCANCODE_D;
 		}
 
-		if (actions->current_key_states[SDL_SCANCODE_A] && actions->current_key_states[SDL_SCANCODE_D])
+		if (actions->current_key_states[SDL_SCANCODE_A] &&
+			actions->current_key_states[SDL_SCANCODE_D])
 		{
 			/*
 			NOTE:
@@ -75,11 +79,13 @@ void Player::run()
 				is not set.
 			*/
 
-			if (*actions->current_horizontal_key == SDL_SCANCODE_D && !*actions->simultaneous_horizontal_keys_pressed)
+			if (*actions->current_horizontal_key == SDL_SCANCODE_D &&
+				!*actions->simultaneous_horizontal_keys_pressed)
 			{
 				*actions->current_horizontal_key = SDL_SCANCODE_A;
 			}
-			else if (*actions->current_horizontal_key == SDL_SCANCODE_A && !*actions->simultaneous_horizontal_keys_pressed)
+			else if (*actions->current_horizontal_key == SDL_SCANCODE_A &&
+					 !*actions->simultaneous_horizontal_keys_pressed)
 			{
 				*actions->current_horizontal_key = SDL_SCANCODE_D;
 			}
@@ -117,7 +123,8 @@ void Player::run()
 			NOTE:
 				- The player is running left.
 			*/
-			this->getAbsolutePosition().setX(this->getAbsolutePosition().getX() - this->Runnable::getSpeed());
+			this->getAbsolutePosition().setX(this->getAbsolutePosition().getX() -
+											 this->Runnable::getSpeed());
 		}
 		else if (*actions->current_horizontal_key == SDL_SCANCODE_D)
 		{
@@ -127,7 +134,8 @@ void Player::run()
 				- Checking if the player is going out of the right bound. If they
 				are then stop them.
 			*/
-			if (position.getX() + this->Runnable::getSpeed() + this->getWidth() >= this->getContext()->getLevelWidth())
+			if (position.getX() + this->Runnable::getSpeed() + this->getWidth() >=
+				this->getContext()->getLevelWidth())
 			{
 				this->setRunning(false);
 				return;
@@ -214,29 +222,130 @@ void Player::roll()
 	}
 }
 
+void Player::jump()
+{
+	UserEvent *actions = this->getContext()->getContext()->getUserActions();
+
+	if (this->isJumping())
+	{
+		/*
+		NOTE:
+			- If the character is jumping mid air, `jump()` continues to increase the y
+			coordinate of this player.
+		*/
+
+		if (this->Verticality::getVelocity() == 0)
+		{
+			/*
+			NOTE:
+				- Jump is at its highest point, calls off the jump() function
+			*/
+			this->setJumping(false);
+			this->setFalling(true);
+			this->Verticality::reset();
+			this->Verticality::setVelocity(0);
+		}
+
+		else if (this->Verticality::getVelocity() > 0)
+		{
+			/*
+			NOTE:
+				- In a static jump, if 'W' key is pressed, the jump continues until
+				max jump height is reached
+
+				- During this jump, gravitational acceleration is in effect, slowing
+				the player's jump/vertical velocity nearing the max jump height.
+
+				- A frame update interval is added to demonstrate the deceleration of
+				the vertical velocity as vertical velocity can only be change once
+				a frame update interval is met.
+
+			*/
+
+			if (this->Verticality::getCounter() >= this->Verticality::getInterval())
+			{
+				this->Verticality::setVelocity(this->Verticality::getVelocity() -
+											   this->Fallable::getGravitationalAcceleration());
+				this->Verticality::reset();
+			}
+
+			else
+			{
+				this->Verticality::increment();
+				Coordinates &position = this->getAbsolutePosition();
+				position.setY(position.getY() - this->Verticality::getVelocity());
+			}
+		}
+	}
+
+	/*
+	NOTE:
+		- Condition checks for 'W' key being pressed to trigger jump()
+
+	*/
+	else if (!this->isJumping() && actions->current_key_states[SDL_SCANCODE_W])
+	{
+		this->setJumping(true);
+		this->Verticality::setVelocity(this->Jumpable::getInitialVelocity());
+		this->Verticality::reset();
+		this->setRolling(false);
+	}
+}
+
 void Player::move()
 {
 	/*
-	TEMPORARY: 
-		- The structure includes rolling and running, for now.
+	NOTE:
+		- The method `fall()` can only be called if the character is mid air,
+		while not in jumping motion.
+
+		- The method `jump()` can only be called if the character is currently on
+		a platform, and is not falling mid air.
+
 	*/
-	this->run();
-	this->roll();
+	if (!this->isJumping() && this->getAbsolutePosition().getY() <=
+								  this->getContext()->getLevelHeight())
+	{
+		this->fall();
+	}
+
+	if (!this->isFalling())
+	{
+		/*
+		NOTE:
+			- This doesn't mean that we're going to make the player's character
+			jump. The function still depends on the user's input. 
+		*/
+		this->jump();
+	}
+
+	if(!this->isFalling() && !this->isJumping()){
+		/*
+		NOTE:
+			- We can't have the player rolling mid-air whilst he or she is jumping
+			or falling.
+		*/
+		this->roll();
+	}
+
+	if (!this->isRolling() || (this->isFalling() || this->isJumping()))
+	{
+		this->run();
+	}
 }
 
 void Player::update()
 {
 	/*
 	NOTE:
-		- We need to call the `move()` method before we query
-		what the player is doing.
+		- We need to call the `move()` method before we query what the player
+		is doing.
 	*/
 	this->move();
 
 	/*
 	TEMPORARY:
-		- This is slightly more complicated and has more
-		actions.
+		- This is slightly more complicated and has more actions.
 	*/
 	if (!this->isRunning() && !this->isRolling())
 		this->getAnimator().setKey("idle");
@@ -247,10 +356,18 @@ void Player::update()
 	if (this->isRolling())
 		this->getAnimator().setKey("roll");
 
+	if (this->isFalling())
+		this->getAnimator().setKey("fall");
+	
+	if(this->isJumping())
+		this->getAnimator().setKey("jump");
+
 	this->setTexture(this->getAnimator().getCurrentFrame());
 
-	if(this->getAnimator().increment()){
-		if(this->getAnimator().getKey() == "roll"){
+	if (this->getAnimator().increment())
+	{
+		if (this->getAnimator().getKey() == "roll")
+		{
 			this->setRolling(false);
 		}
 	}

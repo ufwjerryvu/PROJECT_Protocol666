@@ -34,8 +34,9 @@ SourceCompile:
 	del Main.o
 
 # Linking all the objects. Sneaked the "Assets" folder in here so the file handler can load assets from this folder.
+# $(CC) $(CFLAGS) $(LDFLAGS) -IAssets -o $(EXE_DIR)/Play.exe $(SRC_DIR)/Main.cpp *.o $(EXE_DIR)/SQLite3.dll $(LIBS)
 ObjectLinking:
-	$(CC) $(CFLAGS) $(LDFLAGS) -IAssets -o $(EXE_DIR)/Play.exe $(SRC_DIR)/Main.cpp *.o $(EXE_DIR)/SQLite3.dll $(LIBS) 
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $(EXE_DIR)/Play.exe $(SRC_DIR)/Main.cpp *.o $(EXE_DIR)/SQLite3.dll $(LIBS) 
 
 # Delete all object files
 Clean:	
