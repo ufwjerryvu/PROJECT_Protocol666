@@ -1,0 +1,1 @@
+-- NOTE: this file is used to define the tables.
