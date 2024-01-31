@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2024-01-31T14:23:46.872Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" etag="I5S6nL_jRks_B21NQxK0" version="23.0.2" type="device">
+<mxfile host="app.diagrams.net" modified="2024-01-31T14:32:12.941Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" etag="b2s5WyQtqAcABTySa49r" version="23.0.2" type="device">
   <diagram id="c8oBW-qjvavsfD2tW6SP" name="Page-1">
-    <mxGraphModel dx="678" dy="-436" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2232" dy="-140" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -735,7 +735,7 @@
         <mxCell id="Bx8qn1mws1oEYHMqym3Y-30" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="Bx8qn1mws1oEYHMqym3Y-28">
           <mxGeometry y="26" width="310" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="Bx8qn1mws1oEYHMqym3Y-31" value="+ «Create» Ground()&#xa;+ ~Ground()&#xa;&#xa;+ assemble(): void&#xa;&#xa;&#xa;&#xa;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" vertex="1" parent="Bx8qn1mws1oEYHMqym3Y-28">
+        <mxCell id="Bx8qn1mws1oEYHMqym3Y-31" value="+ «Create» Ground(context: Gameplay*)&#xa;+ ~Ground()&#xa;&#xa;+ assemble(): void&#xa;&#xa;&#xa;&#xa;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" vertex="1" parent="Bx8qn1mws1oEYHMqym3Y-28">
           <mxGeometry y="34" width="310" height="74" as="geometry" />
         </mxCell>
         <mxCell id="Bx8qn1mws1oEYHMqym3Y-32" value="Obstacle" style="swimlane;fontStyle=3;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#A680B8;strokeColor=#000000;fontColor=#FFFFFF;" vertex="1" parent="1">
@@ -744,20 +744,20 @@
         <mxCell id="Bx8qn1mws1oEYHMqym3Y-34" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="Bx8qn1mws1oEYHMqym3Y-32">
           <mxGeometry y="26" width="310" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="Bx8qn1mws1oEYHMqym3Y-35" value="+ «Create» Obstacle()&#xa;+ ~Obstacle()&#xa;&#xa;+ getAssembled(): vector&lt;vector&lt;Sprite&gt;&gt;&#xa;+ assemble() = 0: void&#xa;&#xa;&#xa;&#xa;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" vertex="1" parent="Bx8qn1mws1oEYHMqym3Y-32">
+        <mxCell id="Bx8qn1mws1oEYHMqym3Y-35" value="+ «Create» Obstacle(context: Gameplay*)&#xa;+ ~Obstacle()&#xa;&#xa;+ getAssembled(): vector&lt;vector&lt;Sprite&gt;&gt;&#xa;+ assemble() = 0: void&#xa;&#xa;&#xa;&#xa;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" vertex="1" parent="Bx8qn1mws1oEYHMqym3Y-32">
           <mxGeometry y="34" width="310" height="90" as="geometry" />
         </mxCell>
         <mxCell id="Bx8qn1mws1oEYHMqym3Y-53" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=block;endFill=0;startArrow=none;startFill=0;" edge="1" parent="1" source="Bx8qn1mws1oEYHMqym3Y-38" target="Bx8qn1mws1oEYHMqym3Y-19">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="Bx8qn1mws1oEYHMqym3Y-38" value="ArrayPlatform" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#A680B8;strokeColor=#000000;fontColor=#FFFFFF;" vertex="1" parent="1">
-          <mxGeometry x="335" y="2267" width="240" height="124" as="geometry" />
+          <mxGeometry x="335" y="2267" width="240" height="138" as="geometry" />
         </mxCell>
         <mxCell id="Bx8qn1mws1oEYHMqym3Y-40" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="Bx8qn1mws1oEYHMqym3Y-38">
           <mxGeometry y="26" width="240" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="Bx8qn1mws1oEYHMqym3Y-41" value="+ «Create» ArrayPlatform()&#xa;+ ~ArrayPlatform()&#xa;&#xa;+ getAssembled(): vector&lt;vector&lt;Sprite&gt;&gt;&#xa;+ assemble(): void&#xa;&#xa;&#xa;&#xa;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" vertex="1" parent="Bx8qn1mws1oEYHMqym3Y-38">
-          <mxGeometry y="34" width="240" height="90" as="geometry" />
+        <mxCell id="Bx8qn1mws1oEYHMqym3Y-41" value="+ «Create» ArrayPlatform(context: Gameplay*)&#xa;+ ~ArrayPlatform()&#xa;&#xa;+ getAssembled(): vector&lt;vector&lt;Sprite&gt;&gt;&#xa;+ assemble(): void&#xa;&#xa;&#xa;&#xa;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" vertex="1" parent="Bx8qn1mws1oEYHMqym3Y-38">
+          <mxGeometry y="34" width="240" height="104" as="geometry" />
         </mxCell>
         <mxCell id="Bx8qn1mws1oEYHMqym3Y-54" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=block;endFill=0;startArrow=none;startFill=0;" edge="1" parent="1" source="Bx8qn1mws1oEYHMqym3Y-46" target="Bx8qn1mws1oEYHMqym3Y-9">
           <mxGeometry relative="1" as="geometry">
@@ -768,13 +768,13 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="Bx8qn1mws1oEYHMqym3Y-46" value="MatrixPlatform" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#A680B8;strokeColor=#000000;fontColor=#FFFFFF;" vertex="1" parent="1">
-          <mxGeometry x="635" y="2267" width="240" height="124" as="geometry" />
+          <mxGeometry x="635" y="2267" width="240" height="138" as="geometry" />
         </mxCell>
         <mxCell id="Bx8qn1mws1oEYHMqym3Y-48" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="Bx8qn1mws1oEYHMqym3Y-46">
           <mxGeometry y="26" width="240" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="Bx8qn1mws1oEYHMqym3Y-49" value="+ «Create» MatrixPlatform()&#xa;+ ~MatrixPlatform()&#xa;&#xa;+ getAssembled(): vector&lt;vector&lt;Sprite&gt;&gt;&#xa;+ assemble(): void&#xa;&#xa;&#xa;&#xa;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" vertex="1" parent="Bx8qn1mws1oEYHMqym3Y-46">
-          <mxGeometry y="34" width="240" height="90" as="geometry" />
+        <mxCell id="Bx8qn1mws1oEYHMqym3Y-49" value="+ «Create» MatrixPlatform(context: Gameplay*)&#xa;+ ~MatrixPlatform()&#xa;&#xa;+ getAssembled(): vector&lt;vector&lt;Sprite&gt;&gt;&#xa;+ assemble(): void&#xa;&#xa;&#xa;&#xa;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" vertex="1" parent="Bx8qn1mws1oEYHMqym3Y-46">
+          <mxGeometry y="34" width="240" height="104" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
