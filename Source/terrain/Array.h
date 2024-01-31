@@ -2,7 +2,6 @@
 
 #include <Systems.h>
 
-
 class Array{
 private:
     int size;

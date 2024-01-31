@@ -2,8 +2,6 @@
 
 #include <Systems.h>
 
-#include <Sprite.h>
-
 class Matrix
 {
 private:
