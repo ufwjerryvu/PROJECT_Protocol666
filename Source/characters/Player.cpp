@@ -314,14 +314,21 @@ void Player::move()
 		/*
 		NOTE:
 			- This doesn't mean that we're going to make the player's character
-			jump. The function still depends on the user's input. Same for any
-			other action defined in this loop.
+			jump. The function still depends on the user's input. 
 		*/
 		this->jump();
+	}
+
+	if(!this->isFalling() && !this->isJumping()){
+		/*
+		NOTE:
+			- We can't have the player rolling mid-air whilst he or she is jumping
+			or falling.
+		*/
 		this->roll();
 	}
 
-	if (!this->isRolling() || this->isFalling() || this->isJumping())
+	if (!this->isRolling() || (this->isFalling() || this->isJumping()))
 	{
 		this->run();
 	}
