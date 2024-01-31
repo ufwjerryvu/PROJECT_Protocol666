@@ -224,10 +224,72 @@ void Player::roll()
 
 void Player::jump()
 {
+	UserEvent *actions = this->getContext()->getContext()->getUserActions();
+
+	if (this->isJumping())
+	{
+		/*
+		NOTE:
+			- If the character is jumping mid air, `jump()` continues to increase the y
+			coordinate of this player.
+		*/
+
+		if (this->Verticality::getVelocity() == 0)
+		{
+			/*
+			NOTE:
+				- Jump is at its highest point, calls off the jump() function
+			*/
+			this->setJumping(false);
+			this->setFalling(true);
+			this->Verticality::reset();
+			this->Verticality::setVelocity(0);
+		}
+
+		else if (this->Verticality::getVelocity() > 0)
+		{
+			/*
+			NOTE:
+				- In a static jump, if 'W' key is pressed, the jump continues until
+				max jump height is reached
+
+				- During this jump, gravitational acceleration is in effect, slowing
+				the player's jump/vertical velocity nearing the max jump height.
+
+				- A frame update interval is added to demonstrate the deceleration of
+				the vertical velocity as vertical velocity can only be change once
+				a frame update interval is met.
+
+			*/
+
+			if (this->Verticality::getCounter() >= this->Verticality::getInterval())
+			{
+				this->Verticality::setVelocity(this->Verticality::getVelocity() -
+											   this->Fallable::getGravitationalAcceleration());
+				this->Verticality::reset();
+			}
+
+			else
+			{
+				this->Verticality::increment();
+				Coordinates &position = this->getAbsolutePosition();
+				position.setY(position.getY() - this->Verticality::getVelocity());
+			}
+		}
+	}
+
 	/*
-	TEMPORARY:
-		- Empty, for now.
+	NOTE:
+		- Condition checks for 'W' key being pressed to trigger jump()
+
 	*/
+	else if (!this->isJumping() && actions->current_key_states[SDL_SCANCODE_W])
+	{
+		this->setJumping(true);
+		this->Verticality::setVelocity(this->Jumpable::getInitialVelocity());
+		this->Verticality::reset();
+		this->setRolling(false);
+	}
 }
 
 void Player::move()
@@ -252,17 +314,17 @@ void Player::move()
 		/*
 		NOTE:
 			- This doesn't mean that we're going to make the player's character
-			jump. The function still depends on the user's input.
+			jump. The function still depends on the user's input. Same for any
+			other action defined in this loop.
 		*/
 		this->jump();
+		this->roll();
 	}
 
 	if (!this->isRolling() || this->isFalling() || this->isJumping())
 	{
 		this->run();
 	}
-
-	this->roll();
 }
 
 void Player::update()
@@ -289,6 +351,9 @@ void Player::update()
 
 	if (this->isFalling())
 		this->getAnimator().setKey("fall");
+	
+	if(this->isJumping())
+		this->getAnimator().setKey("jump");
 
 	this->setTexture(this->getAnimator().getCurrentFrame());
 
