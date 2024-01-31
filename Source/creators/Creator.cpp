@@ -86,6 +86,28 @@ Player *Creator::createPlayer(Gameplay *context)
     animations["idle"].setFrames(seq);
     animations["idle"].setInterval(9);
 
+    // FALL ANIMATION ----------------------------------------------
+    seq = {};
+
+    string dir = "../Assets/Sprite/Character/Player/Ragdoll/fall.png";
+
+    seq.push_back(FileHandler().loadTexture(renderer, dir));
+
+    animations["fall"] = Animation();
+    animations["fall"].setFrames(seq);
+    animations["fall"].setInterval(0);
+
+    // JUMP ANIMATION ----------------------------------------------
+    seq = {};
+
+    dir = "../Assets/Sprite/Character/Player/Ragdoll/jump.png";
+
+    seq.push_back(FileHandler().loadTexture(renderer, dir));
+
+    animations["jump"] = Animation();
+    animations["jump"].setFrames(seq);
+    animations["jump"].setInterval(0);
+
     // OTHER SETTERS ------------------------------------------------
 
     animator.setAnimations(animations);
@@ -94,6 +116,10 @@ Player *Creator::createPlayer(Gameplay *context)
     player->setAnimator(animator);
     player->setAbsolutePosition(Coordinates(100, 100));
     player->setDirectionFacing(Direction::LEFT);
+    player->Fallable::setGravitationalAcceleration(2);
+    player->Fallable::setTerminalVelocity(12);
+    player->Jumpable::setInitialVelocity(8);
+    player->Verticality::setInterval(6);
     player->Runnable::setSpeed(4);
     player->Rollable::setSpeed(6);
     player->setTexture(animator.getCurrentFrame());

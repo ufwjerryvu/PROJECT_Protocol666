@@ -23,12 +23,10 @@ public:
     SECTION 2: SETTERS AND GETTERS
     */
     void setFalling(bool falling);
-    void setInitialVelocity(int velocity);
     void setGravitationalAcceleration(int accel);
     void setTerminalVelocity(int terminal);
 
     bool isFalling();
-    int getInitialVelocity();
     int getGravitationalAcceleration();
     int getTerminalVelocity();
 
