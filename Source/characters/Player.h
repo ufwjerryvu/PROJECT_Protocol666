@@ -7,7 +7,7 @@
 
 class Gameplay;
 
-class Player : public Character
+class Player : public Character, public Rollable
 {
 private:
 public:

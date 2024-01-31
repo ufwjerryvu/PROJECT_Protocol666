@@ -13,8 +13,8 @@
 
 class Gameplay;
 
-class Character : public Sprite, virtual public Runnable, virtual public Rollable,
-    virtual public Jumpable, virtual public Fallable
+class Character : public Sprite, public Runnable, 
+        public Jumpable, public Fallable
 {
 private:
     Gameplay *context;
@@ -32,13 +32,12 @@ public:
     */
     void setAnimator(Animator<string> animator);
     Gameplay *getContext();
-    Animator<string>& getAnimator();
-    
+    Animator<string> &getAnimator();
+
     /*
     SECTION 3: OTHER METHODS
     */
     virtual void run() = 0;
-    virtual void roll() = 0;
     virtual void jump() = 0;
     void fall();
     virtual void move() = 0;
