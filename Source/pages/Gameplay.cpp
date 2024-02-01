@@ -1,9 +1,9 @@
 #include "Gameplay.h"
 
 #include <Master.h>
-
 #include <Creator.h>
 #include <Player.h>
+#include <Ground.h>
 
 /*
 SECTION 1: CONSTRUCTORS AND DESTRUCTORS
@@ -25,6 +25,7 @@ Gameplay::Gameplay(Master *context)
     */
     this->context = context;
     this->player = Creator().createPlayer(this);
+    this->ground = Creator().createGround(this);
 }
 
 Gameplay::~Gameplay()
@@ -35,6 +36,7 @@ Gameplay::~Gameplay()
         for game objects.
     */
     delete player;
+    delete ground;
 }
 
 /*
@@ -88,6 +90,8 @@ void Gameplay::updateRenderPos()
     */
     this->player->setRelativePosition(Coordinates(
         this->camera.x, this->camera.y));
+    this->ground->setRelativePosition(Coordinates(
+        this->camera.x, this->camera.y));
 }
 
 void Gameplay::update()
@@ -113,4 +117,5 @@ void Gameplay::render()
         - Render all the things that need to be rendered.
     */
     this->player->render();
+    this->ground->render();
 }

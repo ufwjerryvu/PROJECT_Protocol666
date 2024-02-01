@@ -11,6 +11,13 @@ Matrix::Matrix()
     */
 }
 
+Matrix::~Matrix(){
+    /*
+    TEMPORARY:
+        - Empty, for now.
+    */
+}
+
 /*
 SECTION 2: SETTERS AND GETTERS
 */

@@ -7,6 +7,7 @@
 class Master;
 class Creator;
 class Player;
+class Ground;
 
 class Gameplay
 {
@@ -23,6 +24,7 @@ private:
     SDL_Rect camera;
 
     Player *player;
+    Ground *ground;
 public:
     /*
     SECTION 1: CONSTRUCTORS AND DESTRUCTORS

@@ -14,7 +14,7 @@ public:
     SECTION 1: CONSTRUCTORS AND DESTRUCTORS
     */
     Matrix();
-    virtual ~Matrix() = 0;
+    ~Matrix();
 
     /*
     SECTION 2: SETTERS AND GETTERS

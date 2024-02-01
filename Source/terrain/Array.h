@@ -13,7 +13,7 @@ public:
     SECTION 1: CONSTRUCTORS AND DESTRUCTORS
     */
     Array();
-    virtual ~Array() = 0;
+    ~Array();
     
     /*
     SECTION 2: SETTERS AND GETTERS
