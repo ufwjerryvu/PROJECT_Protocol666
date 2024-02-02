@@ -15,7 +15,7 @@ Master::Master(UserEvent user_actions)
 
     if (!this->initialize())
     {
-        cerr << "Error from Master(): cannot initialize SDL subsystems." << endl;
+        cerr << "Error: cannot initialize SDL subsystems." << endl;
     }
 
     /*
@@ -51,7 +51,7 @@ bool Master::initialize()
     */
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
-        cerr << "Error from Master.initialize(): cannot initialize the SDL video subsystems." << endl;
+        cerr << "Error: cannot initialize the SDL video subsystems." << endl;
         success = false;
         return success;
     }
@@ -66,7 +66,7 @@ bool Master::initialize()
                                     SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (this->window == NULL)
     {
-        cerr << "Error from Master.initialize(): cannot create window." << endl;
+        cerr << "Error: cannot create window." << endl;
         success = false;
         return success;
     }
@@ -80,7 +80,7 @@ bool Master::initialize()
     this->renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (this->renderer == NULL)
     {
-        cerr << "Error from Master.initialize(): cannot create renderer." << endl;
+        cerr << "Error: cannot create renderer." << endl;
         success = false;
         return success;
     }
@@ -110,7 +110,7 @@ bool Master::initialize()
     */
     if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
     {
-        cerr << "Error from Master.initialize(): cannot initialize IMG subsystems." << endl;
+        cerr << "Error: cannot initialize IMG subsystems." << endl;
         success = false;
         return success;
     }
@@ -126,7 +126,7 @@ bool Master::initialize()
     */
     if (TTF_Init() == -1)
     {
-        cerr << "Error from Master.initialize(): could not initialize TTF subsystems." << endl;
+        cerr << "Error: could not initialize TTF subsystems." << endl;
         success = false;
         return success;
     }

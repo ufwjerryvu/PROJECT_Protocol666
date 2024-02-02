@@ -13,6 +13,8 @@
 #include <Animator.h>
 #include <Animation.h>
 #include <Master.h>
+#include <Ground.h>
+#include <Moveable.h>
 
 class Gameplay;
 
@@ -30,4 +32,5 @@ public:
     */
     Button createButton(SDL_Renderer* renderer, string name, Coordinates position);
     Player *createPlayer(Gameplay* context);
+    Ground *createGround(Gameplay* context);
 };
