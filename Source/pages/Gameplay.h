@@ -7,6 +7,7 @@
 class Master;
 class Creator;
 class Player;
+class Ground;
 
 class Gameplay
 {
@@ -23,6 +24,8 @@ private:
     SDL_Rect camera;
 
     Player *player;
+    vector<Ground *> grounds;
+
 public:
     /*
     SECTION 1: CONSTRUCTORS AND DESTRUCTORS
@@ -34,7 +37,7 @@ public:
     /*
     SECTION 2: GETTER AND SETTER METHODS
     */
-    Master* getContext();
+    Master *getContext();
     int getLevelWidth();
     int getLevelHeight();
 
@@ -43,6 +46,7 @@ public:
     */
     void updateCamera();
     void updateRenderPos();
+    void updateCollisions();
 
     void update();
     void render();

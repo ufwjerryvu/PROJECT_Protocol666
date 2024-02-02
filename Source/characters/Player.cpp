@@ -26,6 +26,76 @@ Player::~Player()
 /*
 SECTION 2: OTHER METHODS
 */
+bool Player::collide(vector<Ground *>& args)
+{
+	/*
+	NOTE:
+		- Code now much less redundant. Also, reseting the collision status of
+		the player to `false` in all directions.
+	*/
+	this->Collidable::reset();
+
+	/*
+	NOTE:
+		- Looping through the `Ground` blocks and setting the collision flags to
+		whichever direction that collision is detected in.
+	*/
+	for (int i = 0; i < args.size(); i++)
+	{
+		if (this->Collidable::checkCollision(*args[i]))
+		{
+			/*
+			NOTE:
+				- Detecting collision on the left.
+			*/
+			if (this->getLeftBound() <= (*args[i]).getRightBound() &&
+				this->getLeftBound() >= (*args[i]).getLeftBound())
+			{
+				this->Collidable::setCollisionDirection(Direction::LEFT, true);
+			}
+
+			/*
+			NOTE:
+				- Detecting collision on the right.
+			*/
+			if (this->getRightBound() >= (*args[i]).getLeftBound() &&
+				this->getRightBound() <= (*args[i]).getRightBound())
+			{
+				this->Collidable::setCollisionDirection(Direction::RIGHT, true);
+			}
+
+			/*
+			NOTE:
+				- Detecting collision at the bottom.
+			*/
+			if (this->getBottomBound() >= (*args[i]).getTopBound() &&
+				this->getBottomBound() <= (*args[i]).getBottomBound())
+			{
+				this->Collidable::setCollisionDirection(Direction::DOWN, true);
+
+				/*
+				NOTE:
+					- This is to make sure that the player stays on top of the
+					`Ground` object(s).
+				*/
+
+				const int PIXEL_ERROR_MARGIN = 3;
+				Coordinates &position = this->getAbsolutePosition();
+
+				position.setY((*args[i]).getAbsolutePosition().getY() -
+							  this->getHeight() + PIXEL_ERROR_MARGIN);
+			}
+		}
+	}
+}
+
+bool Player::collide(vector<Platform *>& args){
+	/*
+	TEMPORARY:
+		- Empty, for now.
+	*/
+}
+
 void Player::run()
 {
 	UserEvent *actions = this->getContext()->getContext()->getUserActions();
@@ -167,7 +237,7 @@ void Player::roll()
 	TEMPORARY:
 		- This section will be added in later.
 	*/
-	if (actions->current_key_states[SDL_SCANCODE_LSHIFT]) //&& !(this->isAttacking() || this->isFalling() || this->isJumping()))
+	if (actions->current_key_states[SDL_SCANCODE_LSHIFT])
 	{
 		this->setRolling(true);
 		this->setRunning(false);
@@ -314,12 +384,13 @@ void Player::move()
 		/*
 		NOTE:
 			- This doesn't mean that we're going to make the player's character
-			jump. The function still depends on the user's input. 
+			jump. The function still depends on the user's input.
 		*/
 		this->jump();
 	}
 
-	if(!this->isFalling() && !this->isJumping()){
+	if (!this->isFalling() && !this->isJumping())
+	{
 		/*
 		NOTE:
 			- We can't have the player rolling mid-air whilst he or she is jumping
@@ -358,8 +429,8 @@ void Player::update()
 
 	if (this->isFalling())
 		this->getAnimator().setKey("fall");
-	
-	if(this->isJumping())
+
+	if (this->isJumping())
 		this->getAnimator().setKey("jump");
 
 	this->setTexture(this->getAnimator().getCurrentFrame());

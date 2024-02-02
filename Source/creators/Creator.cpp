@@ -113,16 +113,45 @@ Player *Creator::createPlayer(Gameplay *context)
     animator.setAnimations(animations);
     animator.setKey("idle");
 
-    player->setAnimator(animator);
-    player->setAbsolutePosition(Coordinates(100, 100));
-    player->setDirectionFacing(Direction::LEFT);
+    player->Character::setAnimator(animator);
+    player->Sprite::setAbsolutePosition(Coordinates(100, 100));
+    player->Moveable::setDirectionFacing(Direction::LEFT);
     player->Fallable::setGravitationalAcceleration(2);
     player->Fallable::setTerminalVelocity(12);
     player->Jumpable::setInitialVelocity(8);
     player->Verticality::setInterval(6);
     player->Runnable::setSpeed(4);
     player->Rollable::setSpeed(6);
-    player->setTexture(animator.getCurrentFrame());
+    player->Sprite::setTexture(animator.getCurrentFrame());
 
     return player;
+}
+
+Ground *Creator::createGround(Gameplay *context)
+{
+    Ground *ground = new Ground(context);
+
+    vector<vector<SDL_Texture *>> setup;
+
+    SDL_Renderer *renderer = context->getContext()->getRenderer();
+
+    for (char i = '0'; i < '3'; i++)
+    {
+        vector<SDL_Texture *> row;
+        for (int j = '0'; j < '3'; j++)
+        {
+            string dir = "../Assets/Sprite/Terrain/Ground/";
+            dir += string(1, i) + "_" + string(1, j) + ".png";
+            row.push_back(FileHandler().loadTexture(renderer, dir));
+        }
+        setup.push_back(row);
+    }
+
+    ground->Sprite::setAbsolutePosition(Coordinates(0, context->getLevelHeight() - 80));
+    ground->Matrix::setSetupBlocks(setup);
+    ground->Matrix::setDiscreteWidth(30);
+    ground->Matrix::setDiscreteHeight(3);
+    ground->assemble();
+
+    return ground;
 }

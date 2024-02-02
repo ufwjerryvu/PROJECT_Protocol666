@@ -51,17 +51,15 @@ void Character::fall()
         state to false and vertical velocity to `0`.
     */
 
-    // if (this->getCollisionDirections().bottom)
-    // {
-    //     this->setFallingState(false);
-    //     this->setVerticalVelocity(0);
-    // }
-    // else
-    // {
-    //     this->setFallingState(true);
-    // }
-
-    this->setFalling(true);
+    if (this->checkCollisionDirection(Direction::DOWN))
+    {
+        this->setFalling(false);
+        this->Verticality::setVelocity(0);
+    }
+    else
+    {
+        this->setFalling(true);
+    }
 
     /*
     NOTE:
