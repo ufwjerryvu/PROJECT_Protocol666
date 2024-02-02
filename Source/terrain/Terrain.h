@@ -4,10 +4,11 @@
 
 #include <Master.h>
 #include <Sprite.h>
+#include <Collidable.h>
 
 class Gameplay;
 
-class Terrain : virtual public Sprite
+class Terrain : virtual public Sprite, virtual public Collidable
 {
 private:
     Gameplay *context;

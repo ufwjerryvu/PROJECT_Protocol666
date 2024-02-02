@@ -25,7 +25,7 @@ Gameplay::Gameplay(Master *context)
     */
     this->context = context;
     this->player = Creator().createPlayer(this);
-    this->ground = Creator().createGround(this);
+    this->grounds = {Creator().createGround(this)};
 }
 
 Gameplay::~Gameplay()
@@ -36,7 +36,11 @@ Gameplay::~Gameplay()
         for game objects.
     */
     delete player;
-    delete ground;
+
+    for (Ground *ground : this->grounds)
+    {
+        delete ground;
+    }
 }
 
 /*
@@ -90,19 +94,38 @@ void Gameplay::updateRenderPos()
     */
     this->player->setRelativePosition(Coordinates(
         this->camera.x, this->camera.y));
-    this->ground->setRelativePosition(Coordinates(
-        this->camera.x, this->camera.y));
+
+    for (Ground *ground : this->grounds)
+    {
+        ground->setRelativePosition(Coordinates(
+            this->camera.x, this->camera.y));
+    }
+}
+
+void Gameplay::updateCollisions(){
+    /*
+    NOTE:
+        - This is specific to collisions. Calls all the collision updates poss-
+        ible.
+    */
+    this->player->collide(this->grounds);
 }
 
 void Gameplay::update()
 {
     /*
     NOTE:
-        - We first update the camera and the relative render
-        position of the gameplay objects.
+        - We first update the camera and the relative render position of the game-
+        play objects.
     */
     this->updateCamera();
     this->updateRenderPos();
+
+    /*
+    NOTE:
+        - Then, we udpate collisions.
+    */
+    this->updateCollisions();
 
     /*
     NOTE:
@@ -111,11 +134,14 @@ void Gameplay::update()
     this->player->update();
 }
 void Gameplay::render()
-{   
+{
     /*
     NOTE:
         - Render all the things that need to be rendered.
     */
     this->player->render();
-    this->ground->render();
+    
+    for(Ground * ground : this->grounds){
+        ground->render();
+    }
 }

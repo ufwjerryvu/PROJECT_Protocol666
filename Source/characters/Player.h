@@ -4,6 +4,8 @@
 
 #include <Character.h>
 #include <Runnable.h>
+#include <Ground.h>
+#include <Platform.h>
 
 class Gameplay;
 
@@ -20,6 +22,9 @@ public:
     /*
     SECTION 2: OTHER METHODS
     */
+    bool collide(vector<Ground *> &args);
+    bool collide(vector<Platform *> &args);
+
     void run();
     void roll();
     void jump();

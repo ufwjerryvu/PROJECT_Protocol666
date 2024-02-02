@@ -14,7 +14,7 @@ public:
     SECTION 1: CONSTRUCTORS AND DESTRUCTORS
     */
     Collidable();
-    virtual ~Collidable() = 0;
+    ~Collidable();
 
     /*
     SECTION 2: SETTERS AND GETTERS
@@ -23,4 +23,9 @@ public:
     
     void setCollisionDirection(Direction direction, bool collided);
     bool checkCollisionDirection(Direction direction);
+
+    /*
+    SECTION 3: OTHER METHODS
+    */
+    void reset();
 };
