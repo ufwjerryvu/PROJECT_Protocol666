@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS CharacterSpawns (
 );
 
 CREATE TABLE IF NOT EXISTS PlayerSpawns (
-    level_id INTEGER NOT NULL,
+    level_id INTEGER AUTOINCREMENT,
     x INTEGER NOT NULL,
     y INTEGER NOT NULL,
     facing TEXT NOT NULL,
