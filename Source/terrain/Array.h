@@ -5,7 +5,7 @@
 class Array{
 private:
     int size;
-    bool horizontal;
+    bool horizontal = true;
     vector<SDL_Texture*> blocks;
 
 public:

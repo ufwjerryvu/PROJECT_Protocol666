@@ -31,7 +31,9 @@ bool Player::collide(vector<Ground *>& args)
 	/*
 	NOTE:
 		- Code now much less redundant. Also, reseting the collision status of
-		the player to `false` in all directions.
+		the player to `false` in all directions. Additionally, do not remove the 
+		`Sprite` namespace although it is technically wrong. The terrain bounds
+		should follow the `Terrain` definition instead.
 	*/
 	this->Collidable::reset();
 
@@ -48,8 +50,8 @@ bool Player::collide(vector<Ground *>& args)
 			NOTE:
 				- Detecting collision on the left.
 			*/
-			if (this->getLeftBound() <= (*args[i]).getRightBound() &&
-				this->getLeftBound() >= (*args[i]).getLeftBound())
+			if (this->getLeftBound() <= (*args[i]).Sprite::getRightBound() &&
+				this->getLeftBound() >= (*args[i]).Sprite::getLeftBound())
 			{
 				this->Collidable::setCollisionDirection(Direction::LEFT, true);
 			}
@@ -58,8 +60,8 @@ bool Player::collide(vector<Ground *>& args)
 			NOTE:
 				- Detecting collision on the right.
 			*/
-			if (this->getRightBound() >= (*args[i]).getLeftBound() &&
-				this->getRightBound() <= (*args[i]).getRightBound())
+			if (this->getRightBound() >= (*args[i]).Sprite::getLeftBound() &&
+				this->getRightBound() <= (*args[i]).Sprite::getRightBound())
 			{
 				this->Collidable::setCollisionDirection(Direction::RIGHT, true);
 			}
@@ -68,8 +70,8 @@ bool Player::collide(vector<Ground *>& args)
 			NOTE:
 				- Detecting collision at the bottom.
 			*/
-			if (this->getBottomBound() >= (*args[i]).getTopBound() &&
-				this->getBottomBound() <= (*args[i]).getBottomBound())
+			if (this->getBottomBound() >= (*args[i]).Sprite::getTopBound() &&
+				this->getBottomBound() <= (*args[i]).Sprite::getBottomBound())
 			{
 				this->Collidable::setCollisionDirection(Direction::DOWN, true);
 

@@ -149,9 +149,65 @@ Ground *Creator::createGround(Gameplay *context)
 
     ground->Sprite::setAbsolutePosition(Coordinates(0, context->getLevelHeight() - 80));
     ground->Matrix::setSetupBlocks(setup);
-    ground->Matrix::setDiscreteWidth(30);
+    ground->Matrix::setDiscreteWidth(32);
     ground->Matrix::setDiscreteHeight(3);
     ground->assemble();
 
     return ground;
+}
+
+ArrayPlatform *Creator::createThinPlatform(Gameplay *context, Coordinates position)
+{
+    ArrayPlatform *platform = new ArrayPlatform(context);
+
+    vector<SDL_Texture *> setup;
+
+    SDL_Renderer *renderer = context->getContext()->getRenderer();
+
+    vector<SDL_Texture *> row;
+    for (char i = '0'; i < '3'; i++)
+    {
+        string dir = "../Assets/Sprite/Terrain/Platform/ThinPlatform/";
+        dir += "0_" + string(1, i) + ".png";
+        row.push_back(FileHandler().loadTexture(renderer, dir));
+    }
+
+    platform->Sprite::setAbsolutePosition(position);
+    platform->Array::setSetupBlocks(row);
+    platform->Array::setSize(4);
+    platform->assemble();
+
+    return platform;
+}
+
+ArrayPlatform *Creator::createThickPlatform(Gameplay *context, Coordinates position)
+{
+    ArrayPlatform *platform = new ArrayPlatform(context);
+
+    vector<SDL_Texture *> setup;
+
+    SDL_Renderer *renderer = context->getContext()->getRenderer();
+
+    vector<SDL_Texture *> row;
+    for (char i = '0'; i < '3'; i++)
+    {
+        string dir = "../Assets/Sprite/Terrain/Platform/ThickPlatform/";
+        dir += "0_" + string(1, i) + ".png";
+        row.push_back(FileHandler().loadTexture(renderer, dir));
+    }
+
+    platform->Sprite::setAbsolutePosition(position);
+    platform->Array::setSetupBlocks(row);
+    platform->Array::setSize(5);
+    platform->assemble();
+
+    return platform;
+}
+
+vector<Platform *> Creator::createArrayPlatforms(Gameplay *context){
+    vector<Platform *> rlist;
+    rlist.push_back(createThinPlatform(context, Coordinates(100, 200)));
+    rlist.push_back(createThinPlatform(context, Coordinates(320, 480)));
+    rlist.push_back(createThickPlatform(context, Coordinates(1200, 600)));
+    return rlist;
 }

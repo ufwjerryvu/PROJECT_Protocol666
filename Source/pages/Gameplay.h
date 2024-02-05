@@ -8,6 +8,7 @@ class Master;
 class Creator;
 class Player;
 class Ground;
+class Platform;
 
 class Gameplay
 {
@@ -18,13 +19,14 @@ private:
     TEMPORARY:
         - These are temporary numbers.
     */
-    int level_width = 1400;
-    int level_height = 2800;
+    int level_width = 1500;
+    int level_height = 800;
 
     SDL_Rect camera;
 
     Player *player;
     vector<Ground *> grounds;
+    vector<Platform *> platforms;
 
 public:
     /*

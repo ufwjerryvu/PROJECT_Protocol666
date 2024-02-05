@@ -27,6 +27,10 @@ public:
     void setAssembled(vector<vector<Sprite>> assembled);
     void setRelativePosition(Coordinates camera);
     Gameplay *getContext();
+    int getTopBound();
+    int getBottomBound();
+    int getLeftBound();
+    int getRightBound();
 
     /*
     SECTION 3: OTHER METHODS
