@@ -26,17 +26,21 @@ SUBSRC_CPP := -ISource/pages Source/*.cpp Source/renderables/*.cpp Source/physic
 	Source/interfaces/*.cpp Source/characters/*.cpp Source/animators/*.cpp Source/terrain/*.cpp
 
 # Targets
-all: SourceCompile ObjectLinking Clean
+all: SourceCompile IconCompile ObjectLinking Clean
 
 # Compiling everything in source to object file
 SourceCompile: 
 	$(CC) -c $(SUBSRC_CPP) $(CFLAGS) $(LDFLAGS) $(LIBS)
 	del Main.o
 
+# Compiling the icon? 
+IconCompile:
+	windres $(SRC_DIR)/Info.rc -O coff -o $(SRC_DIR)/Info.res
+
 # Linking all the objects. Sneaked the "Assets" folder in here so the file handler can load assets from this folder.
 # $(CC) $(CFLAGS) $(LDFLAGS) -IAssets -o $(EXE_DIR)/Play.exe $(SRC_DIR)/Main.cpp *.o $(EXE_DIR)/SQLite3.dll $(LIBS)
 ObjectLinking:
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $(EXE_DIR)/Play.exe $(SRC_DIR)/Main.cpp *.o $(EXE_DIR)/SQLite3.dll $(LIBS) 
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $(EXE_DIR)/Play.exe $(SRC_DIR)/Main.cpp *.o $(SRC_DIR)/Info.res $(EXE_DIR)/SQLite3.dll $(LIBS) -mwindows
 
 # Delete all object files
 Clean:	

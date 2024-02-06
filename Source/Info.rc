@@ -1,0 +1,25 @@
+id ICON "Assets/Icon/Play.ico"
+
+1 VERSIONINFO
+FILEVERSION     0,0,0,1
+PRODUCTVERSION  0,0,0,1
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "080904E4"
+    BEGIN
+      VALUE "CompanyName", "Summer Game Gang"
+      VALUE "FileDescription", "A two-dimensional platformer game."
+      VALUE "FileVersion", "0.1"
+      VALUE "InternalName", "Protocol 666"
+      VALUE "LegalCopyright", "\251 Jerry Vu, An B. Luu, and Kenny Nguyen."
+      VALUE "OriginalFilename", "Play.exe"
+      VALUE "ProductName", "Protocol 666"
+      VALUE "ProductVersion", "0.1"
+    END
+  END
+  BLOCK "VarFileInfo"
+  BEGIN
+    VALUE "Translation", 0x809, 1252
+  END
+END
