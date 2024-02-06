@@ -118,7 +118,7 @@ Player *Creator::createPlayer(Gameplay *context)
     player->Moveable::setDirectionFacing(Direction::LEFT);
     player->Fallable::setGravitationalAcceleration(2);
     player->Fallable::setTerminalVelocity(12);
-    player->Jumpable::setInitialVelocity(8);
+    player->Jumpable::setInitialVelocity(12);
     player->Verticality::setInterval(6);
     player->Runnable::setSpeed(4);
     player->Rollable::setSpeed(6);
@@ -147,7 +147,7 @@ Ground *Creator::createGround(Gameplay *context)
         setup.push_back(row);
     }
 
-    ground->Sprite::setAbsolutePosition(Coordinates(0, context->getLevelHeight() - 80));
+    ground->Sprite::setAbsolutePosition(Coordinates(0, context->getLevelHeight() - 120));
     ground->Matrix::setSetupBlocks(setup);
     ground->Matrix::setDiscreteWidth(32);
     ground->Matrix::setDiscreteHeight(3);
@@ -156,7 +156,7 @@ Ground *Creator::createGround(Gameplay *context)
     return ground;
 }
 
-ArrayPlatform *Creator::createThinPlatform(Gameplay *context, Coordinates position)
+ArrayPlatform *Creator::createThinPlatform(Gameplay *context, Coordinates position, int size)
 {
     ArrayPlatform *platform = new ArrayPlatform(context);
 
@@ -174,13 +174,13 @@ ArrayPlatform *Creator::createThinPlatform(Gameplay *context, Coordinates positi
 
     platform->Sprite::setAbsolutePosition(position);
     platform->Array::setSetupBlocks(row);
-    platform->Array::setSize(4);
+    platform->Array::setSize(size);
     platform->assemble();
 
     return platform;
 }
 
-ArrayPlatform *Creator::createThickPlatform(Gameplay *context, Coordinates position)
+ArrayPlatform *Creator::createThickPlatform(Gameplay *context, Coordinates position, int size)
 {
     ArrayPlatform *platform = new ArrayPlatform(context);
 
@@ -198,7 +198,7 @@ ArrayPlatform *Creator::createThickPlatform(Gameplay *context, Coordinates posit
 
     platform->Sprite::setAbsolutePosition(position);
     platform->Array::setSetupBlocks(row);
-    platform->Array::setSize(5);
+    platform->Array::setSize(size);
     platform->assemble();
 
     return platform;
@@ -206,8 +206,9 @@ ArrayPlatform *Creator::createThickPlatform(Gameplay *context, Coordinates posit
 
 vector<Platform *> Creator::createArrayPlatforms(Gameplay *context){
     vector<Platform *> rlist;
-    rlist.push_back(createThinPlatform(context, Coordinates(100, 200)));
-    rlist.push_back(createThinPlatform(context, Coordinates(320, 480)));
-    rlist.push_back(createThickPlatform(context, Coordinates(1200, 600)));
+    rlist.push_back(createThinPlatform(context, Coordinates(220,470), 6));
+    rlist.push_back(createThinPlatform(context, Coordinates(620,316), 6));
+    rlist.push_back(createThinPlatform(context, Coordinates(1020,450), 6));
+    rlist.push_back(createThickPlatform(context, Coordinates(620,124), 6));
     return rlist;
 }

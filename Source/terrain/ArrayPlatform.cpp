@@ -86,8 +86,28 @@ void ArrayPlatform::assemble()
 
     /*
     NOTE:
-        - The Terrain namespace has to be invoked because the class somehow 
+        - The Terrain namespace has to be invoked because the class somehow
         doesn't recognize that the function was being overridden.
     */
     Terrain::setAssembled(assembled);
+
+    /*
+    NOTE:
+        - Based on the initialization information, we are parsing the width
+        and the height and storing it in the base class.
+    */
+    int width = 0;
+    for (int i = 0; i < assembled[0].size(); i++)
+    {
+        width += assembled[0][i].getWidth();
+    }
+
+    int height = 0;
+    for (int i = 0; i < assembled.size(); i++)
+    {
+        height += assembled[i][0].getHeight();
+    }
+
+    this->setWidth(width);
+    this->setHeight(height);
 }

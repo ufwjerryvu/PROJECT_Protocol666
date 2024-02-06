@@ -175,4 +175,24 @@ void Ground::assemble()
         - Finally using the setter from the base class.
     */
     this->setAssembled(assembled);
+
+    /*
+        NOTE:
+        - Based on the initialization information, we are parsing the width
+        and the height and storing it in the base class.
+    */
+    int width = 0;
+    for (int i = 0; i < assembled[0].size(); i++)
+    {
+        width += assembled[0][i].getWidth();
+    }
+
+    int height = 0;
+    for (int i = 0; i < assembled.size(); i++)
+    {
+        height += assembled[i][0].getHeight();
+    }
+
+    this->setWidth(width);
+    this->setHeight(height);
 }

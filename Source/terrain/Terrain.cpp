@@ -49,63 +49,6 @@ void Terrain::setRelativePosition(Coordinates camera)
 
 Gameplay *Terrain::getContext() { return this->context; }
 
-int Terrain::getTopBound()
-{
-    /*
-    NOTE:
-        - Since terrain types inherit from `Sprite` but gives no singular texture,
-        it needs to give it's own implementation of these methods. Here, we're us-
-        ing the top left block.
-    */
-    if (this->assembled.size())
-    {
-        return this->assembled[0][0].getTopBound();
-    }
-    return 0;
-}
-
-int Terrain::getBottomBound()
-{
-    /*
-    NOTE:
-        - Gets the bottom right block and gets the bottom bound from there.
-    */
-    if (this->assembled.size())
-    {
-        return this->assembled[this->assembled.size() - 1]
-                              [this->assembled.size() - 1]
-                                  .getBottomBound();
-    }
-    return 0;
-}
-
-int Terrain::getLeftBound(){
-    /*
-    NOTE:
-        - Gets the left bound using the top left block.
-    */
-    if (this->assembled.size())
-    {
-        return this->assembled[0][0].getTopBound();
-    }
-    return 0;    
-}
-
-int Terrain::getRightBound(){
-    /*
-    NOTE:
-        - Gets the right bound using the bottom right block.
-    */
-    if (this->assembled.size())
-    {
-        return this->assembled[this->assembled.size() - 1]
-                              [this->assembled.size() - 1]
-                                  .getBottomBound();
-    }
-    return 0;  
-}
-
-
 /*
 SECTION 3: OTHER METHODS
 */

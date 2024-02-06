@@ -1,10 +1,10 @@
-<mxfile host="app.diagrams.net" modified="2024-02-05T12:40:23.561Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36" etag="oT0JS7-doCWSjQ1K24cD" version="23.1.1" type="device">
+<mxfile host="app.diagrams.net" modified="2024-02-06T04:29:42.201Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36" etag="a-Jd2ce_ZeFo5Zeh3FbL" version="23.1.1" type="device">
   <diagram id="c8oBW-qjvavsfD2tW6SP" name="Page-1">
-    <mxGraphModel dx="610" dy="-685" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="650" dy="-380" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="xrFbDY1ulE0IEn7EpgWR-56" value="&lt;h1 style=&quot;text-align: center; border-color: var(--border-color);&quot;&gt;Comprehensive System Class Diagram&lt;/h1&gt;&lt;div style=&quot;text-align: center;&quot;&gt;Author: Jerry Vu &amp;amp; Kenny Nguyen&lt;/div&gt;&lt;div style=&quot;text-align: center;&quot;&gt;Date: 04-02-2024&lt;/div&gt;&lt;h1&gt;&lt;div style=&quot;border-color: var(--border-color); font-size: 12px; font-weight: 400;&quot;&gt;&lt;b style=&quot;border-color: var(--border-color); background-color: initial;&quot;&gt;IMPLEMENTATION NOTES:&lt;/b&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color); font-size: 12px; font-weight: 400;&quot;&gt;&lt;ul style=&quot;border-color: var(--border-color);&quot;&gt;&lt;li style=&quot;border-color: var(--border-color);&quot;&gt;Deallocators and destructors for all the classes so far must be accounted for. I don&#39;t know if not having them would cause memory leaks - but it would definitely cause memory occupation to skyrocket.&lt;/li&gt;&lt;li style=&quot;border-color: var(--border-color);&quot;&gt;All the setter functions might need some extra security.&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/h1&gt;&lt;div&gt;&lt;b&gt;&lt;/b&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
+        <mxCell id="xrFbDY1ulE0IEn7EpgWR-56" value="&lt;h1 style=&quot;text-align: center; border-color: var(--border-color);&quot;&gt;Comprehensive System Class Diagram&lt;/h1&gt;&lt;div style=&quot;text-align: center;&quot;&gt;Author: Jerry Vu &amp;amp; Kenny Nguyen&lt;/div&gt;&lt;div style=&quot;text-align: center;&quot;&gt;Date: 06-02-2024&lt;/div&gt;&lt;h1&gt;&lt;div style=&quot;border-color: var(--border-color); font-size: 12px; font-weight: 400;&quot;&gt;&lt;b style=&quot;border-color: var(--border-color); background-color: initial;&quot;&gt;IMPLEMENTATION NOTES:&lt;/b&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color); font-size: 12px; font-weight: 400;&quot;&gt;&lt;ul style=&quot;border-color: var(--border-color);&quot;&gt;&lt;li style=&quot;border-color: var(--border-color);&quot;&gt;Deallocators and destructors for all the classes so far must be accounted for. I don&#39;t know if not having them would cause memory leaks - but it would definitely cause memory occupation to skyrocket.&lt;/li&gt;&lt;li style=&quot;border-color: var(--border-color);&quot;&gt;All the setter functions might need some extra security.&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/h1&gt;&lt;div&gt;&lt;b&gt;&lt;/b&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="2645" y="1350" width="500" height="240" as="geometry" />
         </mxCell>
         <mxCell id="LEnjLOv2VGJ0EA_hLY6k-12" value="&lt;b style=&quot;&quot;&gt;&lt;font style=&quot;&quot;&gt;&lt;font style=&quot;font-size: 100px;&quot;&gt;Protocol 666&lt;/font&gt;&lt;br&gt;&lt;/font&gt;&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=100;" parent="1" vertex="1">
@@ -672,7 +672,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="Bx8qn1mws1oEYHMqym3Y-15" value="Terrain" style="swimlane;fontStyle=3;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#A680B8;strokeColor=#000000;fontColor=#FFFFFF;" parent="1" vertex="1">
-          <mxGeometry x="1320" y="1780" width="340" height="298" as="geometry" />
+          <mxGeometry x="1320" y="1810" width="340" height="230" as="geometry" />
         </mxCell>
         <mxCell id="Bx8qn1mws1oEYHMqym3Y-16" value="- context: Gameplay*&#xa;- assembled: vector&lt;vector&lt;Sprite&gt;&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="Bx8qn1mws1oEYHMqym3Y-15" vertex="1">
           <mxGeometry y="26" width="340" height="42" as="geometry" />
@@ -680,8 +680,8 @@
         <mxCell id="Bx8qn1mws1oEYHMqym3Y-17" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="Bx8qn1mws1oEYHMqym3Y-15" vertex="1">
           <mxGeometry y="68" width="340" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="Bx8qn1mws1oEYHMqym3Y-18" value="+ «Create» Terrain(context: Gameplay*)&#xa;+ ~Terrain()&#xa;&#xa;+ setAssembled(assembled: vector&lt;vector&lt;Sprite&gt;&gt;): void&#xa;+ setRelativePosition(camera: Coordinates): void&#xa;&#xa;+ getContext(): Gameplay*&#xa;+ getTopBound(): int&#xa;+ getBottomBound(): int&#xa;+ getLeftBound(): int&#xa;+ getRightBound(): int&#xa;&#xa;+ assemble() = 0: void&#xa;+ render(): void&#xa;&#xa;&#xa;&#xa;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="Bx8qn1mws1oEYHMqym3Y-15" vertex="1">
-          <mxGeometry y="76" width="340" height="222" as="geometry" />
+        <mxCell id="Bx8qn1mws1oEYHMqym3Y-18" value="+ «Create» Terrain(context: Gameplay*)&#xa;+ ~Terrain()&#xa;&#xa;+ setAssembled(assembled: vector&lt;vector&lt;Sprite&gt;&gt;): void&#xa;+ setRelativePosition(camera: Coordinates): void&#xa;&#xa;+ getContext(): Gameplay*&#xa;&#xa;+ assemble() = 0: void&#xa;+ render(): void&#xa;&#xa;&#xa;&#xa;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="Bx8qn1mws1oEYHMqym3Y-15" vertex="1">
+          <mxGeometry y="76" width="340" height="154" as="geometry" />
         </mxCell>
         <mxCell id="Bx8qn1mws1oEYHMqym3Y-19" value="Array" style="swimlane;fontStyle=3;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#A680B8;strokeColor=#000000;fontColor=#FFFFFF;" parent="1" vertex="1">
           <mxGeometry x="300" y="2563" width="310" height="278" as="geometry" />
@@ -698,8 +698,8 @@
         <mxCell id="Bx8qn1mws1oEYHMqym3Y-37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=none;startFill=0;endArrow=block;endFill=0;" parent="1" source="Bx8qn1mws1oEYHMqym3Y-24" target="Bx8qn1mws1oEYHMqym3Y-18" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="1170" y="1967" />
-              <mxPoint x="1170" y="1967" />
+              <mxPoint x="1280" y="1963" />
+              <mxPoint x="1280" y="1963" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -721,7 +721,7 @@
         <mxCell id="Bx8qn1mws1oEYHMqym3Y-36" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=none;startFill=0;endArrow=block;endFill=0;" parent="1" source="Bx8qn1mws1oEYHMqym3Y-28" target="Bx8qn1mws1oEYHMqym3Y-18" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="1050" y="1967" />
+              <mxPoint x="1050" y="1963" />
             </Array>
           </mxGeometry>
         </mxCell>

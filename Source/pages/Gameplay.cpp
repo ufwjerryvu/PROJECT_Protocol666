@@ -94,15 +94,15 @@ void Gameplay::updateRenderPos()
     Coordinates camera = Coordinates(this->camera.x, this->camera.y);
 
     this->player->setRelativePosition(camera);
+    
+    for (Platform *platform : this->platforms)
+    {
+        platform->setRelativePosition(camera);
+    }
 
     for (Ground *ground : this->grounds)
     {
         ground->setRelativePosition(camera);
-    }
-
-    for (Platform *platform : this->platforms)
-    {
-        platform->setRelativePosition(camera);
     }
 }
 
@@ -113,7 +113,9 @@ void Gameplay::updateCollisions()
         - This is specific to collisions. Calls all the collision updates poss-
         ible.
     */
+    this->player->Collidable::reset();
     this->player->collide(this->grounds);
+    this->player->collide(this->platforms);
 }
 
 void Gameplay::update()

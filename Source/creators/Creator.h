@@ -35,7 +35,7 @@ public:
     Button createButton(SDL_Renderer* renderer, string name, Coordinates position);
     Player *createPlayer(Gameplay* context);
     Ground *createGround(Gameplay* context);
-    ArrayPlatform *createThinPlatform(Gameplay *context, Coordinates position);
-    ArrayPlatform *createThickPlatform(Gameplay *context, Coordinates position);
+    ArrayPlatform *createThinPlatform(Gameplay *context, Coordinates position, int size);
+    ArrayPlatform *createThickPlatform(Gameplay *context, Coordinates position, int size);
     vector<Platform *> createArrayPlatforms(Gameplay *context);
 };
