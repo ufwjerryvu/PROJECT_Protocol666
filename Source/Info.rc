@@ -9,11 +9,11 @@ BEGIN
     BLOCK "080904E4"
     BEGIN
       VALUE "CompanyName", "Summer Game Gang"
-      VALUE "FileDescription", "A two-dimensional platformer game."
+      VALUE "FileDescription", "A platformer game by the Summer Game Gang."
       VALUE "FileVersion", "0.1"
       VALUE "InternalName", "Protocol 666"
       VALUE "LegalCopyright", "\251 Jerry Vu, An B. Luu, and Kenny Nguyen."
-      VALUE "OriginalFilename", "Play.exe"
+      VALUE "OriginalFilename", "Protocol 666.exe"
       VALUE "ProductName", "Protocol 666"
       VALUE "ProductVersion", "0.1"
     END
