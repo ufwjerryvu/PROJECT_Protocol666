@@ -17,6 +17,7 @@
 #include <Moveable.h>
 #include <Platform.h>
 #include <ArrayPlatform.h>
+#include <MatrixPlatform.h>
 
 class Gameplay;
 
@@ -37,5 +38,6 @@ public:
     Ground *createGround(Gameplay* context);
     ArrayPlatform *createThinPlatform(Gameplay *context, Coordinates position, int size);
     ArrayPlatform *createThickPlatform(Gameplay *context, Coordinates position, int size);
-    vector<Platform *> createArrayPlatforms(Gameplay *context);
+    MatrixPlatform *createMatrixPlatform(Gameplay *context, Coordinates position, int width, int height);
+    vector<Platform *> createPlatforms(Gameplay *context);
 };

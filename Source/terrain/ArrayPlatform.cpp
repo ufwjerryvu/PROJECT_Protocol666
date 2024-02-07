@@ -41,6 +41,16 @@ void ArrayPlatform::assemble()
 
     /*
     NOTE:
+        - Checking if the setup blocks vector has anything.
+    */
+    if (!this->Array::getSetupBlocks().size())
+    {
+        cerr << "Error: the two-dimensional vector for setup textures is empty." << endl;
+        assert(false);
+    }
+
+    /*
+    NOTE:
         - The platform is one block tall so we only need to think one-dimensionally.
     */
     vector<Sprite> row;

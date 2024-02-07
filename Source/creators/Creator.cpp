@@ -204,11 +204,42 @@ ArrayPlatform *Creator::createThickPlatform(Gameplay *context, Coordinates posit
     return platform;
 }
 
-vector<Platform *> Creator::createArrayPlatforms(Gameplay *context){
+MatrixPlatform *Creator::createMatrixPlatform(Gameplay *context, Coordinates position, int width, int height)
+{
+    MatrixPlatform *platform = new MatrixPlatform(context);
+
+    vector<vector<SDL_Texture *>> setup;
+
+    SDL_Renderer *renderer = context->getContext()->getRenderer();
+
+    for (char i = '0'; i < '3'; i++)
+    {
+        vector<SDL_Texture *> row;
+        for (char j = '0'; j < '3'; j++)
+        {
+            string dir = "../Assets/Sprite/Terrain/Platform/MatrixPlatform/";
+            dir += string(1, i) + "_" + string(1, j) + ".png";
+            row.push_back(FileHandler().loadTexture(renderer, dir));
+        }
+        setup.push_back(row);
+    }
+
+    platform->Sprite::setAbsolutePosition(position);
+    platform->Matrix::setSetupBlocks(setup);
+    platform->Matrix::setDiscreteWidth(width);
+    platform->Matrix::setDiscreteHeight(height);
+    platform->assemble();
+
+    return platform;
+}
+
+vector<Platform *> Creator::createPlatforms(Gameplay *context)
+{
     vector<Platform *> rlist;
-    rlist.push_back(createThinPlatform(context, Coordinates(220,470), 6));
-    rlist.push_back(createThinPlatform(context, Coordinates(620,316), 6));
-    rlist.push_back(createThinPlatform(context, Coordinates(1020,450), 6));
-    rlist.push_back(createThickPlatform(context, Coordinates(620,124), 6));
+    rlist.push_back(createThinPlatform(context, Coordinates(220, 470), 6));
+    rlist.push_back(createThinPlatform(context, Coordinates(620, 316), 6));
+    rlist.push_back(createThinPlatform(context, Coordinates(1020, 450), 6));
+    rlist.push_back(createThickPlatform(context, Coordinates(620, 124), 6));
+    rlist.push_back(createMatrixPlatform(context, Coordinates(320, 200), 2, 4));
     return rlist;
 }

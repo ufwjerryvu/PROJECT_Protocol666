@@ -24,7 +24,7 @@ Gameplay::Gameplay(Master *context)
     this->context = context;
     this->player = Creator().createPlayer(this);
     this->grounds = {Creator().createGround(this)};
-    this->platforms = Creator().createArrayPlatforms(this);
+    this->platforms = Creator().createPlatforms(this);
 }
 
 Gameplay::~Gameplay()
@@ -146,7 +146,6 @@ void Gameplay::render()
     NOTE:
         - Render all the things that need to be rendered.
     */
-    this->player->render();
 
     for (Ground *ground : this->grounds)
     {
@@ -157,4 +156,6 @@ void Gameplay::render()
     {
         platform->render();
     }
+
+    this->player->render();
 }
