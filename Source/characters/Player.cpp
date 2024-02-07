@@ -26,14 +26,15 @@ Player::~Player()
 /*
 SECTION 2: OTHER METHODS
 */
-bool Player::collide(vector<Ground *>& args)
+bool Player::collide(vector<Ground *> &args)
 {
 	/*
 	NOTE:
 		- Code now much less redundant. Also, reseting the collision status of
-		the player to `false` in all directions.
+		the player to `false` in all directions. Additionally, do not remove the
+		`Sprite` namespace although it is technically wrong. The terrain bounds
+		should follow the `Terrain` definition instead.
 	*/
-	this->Collidable::reset();
 
 	/*
 	NOTE:
@@ -89,11 +90,50 @@ bool Player::collide(vector<Ground *>& args)
 	}
 }
 
-bool Player::collide(vector<Platform *>& args){
+bool Player::collide(vector<Platform *> &args)
+{
 	/*
-	TEMPORARY:
-		- Empty, for now.
+	NOTE:
+		- Looping through the blocks of `Platform` and setting only the collision
+		flag for the bottom bound of the player because the player can basically
+		jump up through a platform but once they jump over the platform they can
+		rest on the platform.
 	*/
+	for (int index = 0; index < args.size(); index++)
+	{
+		if ((*args[index]).checkCollision((*this)))
+		{
+			if (this->getBottomBound() >= (*args[index]).getTopBound() &&
+				this->getBottomBound() <= (*args[index]).getBottomBound())
+			{
+
+				/*
+				NOTE:
+					- Adding the extra collision detection margin is sort of a
+					band- aid solution but this code is to prevent the player
+					from catapulting upwards jumping halfway through the platform.
+				*/
+				const int PIXEL_ERROR_MARGIN = 3;
+				const int EXTRA_DETECTION_MARGIN = 12;
+				if (this->getBottomBound() <= (*args[index]).getTopBound() +
+												  PIXEL_ERROR_MARGIN + EXTRA_DETECTION_MARGIN)
+				{
+					this->setCollisionDirection(Direction::DOWN, true);
+				}
+				/*
+				NOTE:
+					- This is to make sure that the player stays on top of the
+					platform.
+				*/
+				if (!this->isJumping() && this->checkCollisionDirection(Direction::DOWN))
+				{
+					Coordinates &position = this->getAbsolutePosition();
+					position.setY((*args[index]).getAbsolutePosition().getY() -
+								  this->getHeight() + PIXEL_ERROR_MARGIN);
+				}
+			}
+		}
+	}
 }
 
 void Player::run()

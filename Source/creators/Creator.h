@@ -15,6 +15,9 @@
 #include <Master.h>
 #include <Ground.h>
 #include <Moveable.h>
+#include <Platform.h>
+#include <ArrayPlatform.h>
+#include <MatrixPlatform.h>
 
 class Gameplay;
 
@@ -33,4 +36,8 @@ public:
     Button createButton(SDL_Renderer* renderer, string name, Coordinates position);
     Player *createPlayer(Gameplay* context);
     Ground *createGround(Gameplay* context);
+    ArrayPlatform *createThinPlatform(Gameplay *context, Coordinates position, int size);
+    ArrayPlatform *createThickPlatform(Gameplay *context, Coordinates position, int size);
+    MatrixPlatform *createMatrixPlatform(Gameplay *context, Coordinates position, int width, int height);
+    vector<Platform *> createPlatforms(Gameplay *context);
 };

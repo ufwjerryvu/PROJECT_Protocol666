@@ -2,8 +2,6 @@
 
 #include <Master.h>
 #include <Creator.h>
-#include <Player.h>
-#include <Ground.h>
 
 /*
 SECTION 1: CONSTRUCTORS AND DESTRUCTORS
@@ -26,6 +24,7 @@ Gameplay::Gameplay(Master *context)
     this->context = context;
     this->player = Creator().createPlayer(this);
     this->grounds = {Creator().createGround(this)};
+    this->platforms = Creator().createPlatforms(this);
 }
 
 Gameplay::~Gameplay()
@@ -92,23 +91,31 @@ void Gameplay::updateRenderPos()
     NOTE:
         - Updating things that need the camera to follow.
     */
-    this->player->setRelativePosition(Coordinates(
-        this->camera.x, this->camera.y));
+    Coordinates camera = Coordinates(this->camera.x, this->camera.y);
+
+    this->player->setRelativePosition(camera);
+    
+    for (Platform *platform : this->platforms)
+    {
+        platform->setRelativePosition(camera);
+    }
 
     for (Ground *ground : this->grounds)
     {
-        ground->setRelativePosition(Coordinates(
-            this->camera.x, this->camera.y));
+        ground->setRelativePosition(camera);
     }
 }
 
-void Gameplay::updateCollisions(){
+void Gameplay::updateCollisions()
+{
     /*
     NOTE:
         - This is specific to collisions. Calls all the collision updates poss-
         ible.
     */
+    this->player->Collidable::reset();
     this->player->collide(this->grounds);
+    this->player->collide(this->platforms);
 }
 
 void Gameplay::update()
@@ -139,9 +146,16 @@ void Gameplay::render()
     NOTE:
         - Render all the things that need to be rendered.
     */
-    this->player->render();
-    
-    for(Ground * ground : this->grounds){
+
+    for (Ground *ground : this->grounds)
+    {
         ground->render();
     }
+
+    for (Platform *platform : this->platforms)
+    {
+        platform->render();
+    }
+
+    this->player->render();
 }

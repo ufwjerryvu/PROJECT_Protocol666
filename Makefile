@@ -26,17 +26,22 @@ SUBSRC_CPP := -ISource/pages Source/*.cpp Source/renderables/*.cpp Source/physic
 	Source/interfaces/*.cpp Source/characters/*.cpp Source/animators/*.cpp Source/terrain/*.cpp
 
 # Targets
-all: SourceCompile ObjectLinking Clean
+all: SourceCompile IconCompile ObjectLinking Clean
 
 # Compiling everything in source to object file
 SourceCompile: 
 	$(CC) -c $(SUBSRC_CPP) $(CFLAGS) $(LDFLAGS) $(LIBS)
 	del Main.o
 
+# Compiling the icon? The resource folder stores all the information about the executable.
+IconCompile:
+	windres $(SRC_DIR)/Info.rc -O coff -o $(SRC_DIR)/Info.res
+
 # Linking all the objects. Sneaked the "Assets" folder in here so the file handler can load assets from this folder.
-# $(CC) $(CFLAGS) $(LDFLAGS) -IAssets -o $(EXE_DIR)/Play.exe $(SRC_DIR)/Main.cpp *.o $(EXE_DIR)/SQLite3.dll $(LIBS)
-ObjectLinking:
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $(EXE_DIR)/Play.exe $(SRC_DIR)/Main.cpp *.o $(EXE_DIR)/SQLite3.dll $(LIBS) 
+# If we want the terminal to show then we can just get rid of the "-mwindows" flag below.
+ObjectLinking:	
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $(EXE_DIR)"/Protocol 666.exe" $(SRC_DIR)/Main.cpp *.o $(SRC_DIR)/Info.res $(EXE_DIR)/SQLite3.dll $(LIBS) -mwindows
+# $(CC) $(CFLAGS) $(LDFLAGS) -IAssets -o $(EXE_DIR)"/Protocol 666.exe" $(SRC_DIR)/Main.cpp *.o $(EXE_DIR)/SQLite3.dll $(LIBS)
 
 # Delete all object files
 Clean:	
