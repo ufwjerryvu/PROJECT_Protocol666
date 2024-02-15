@@ -1,10 +1,10 @@
-<mxfile host="app.diagrams.net" modified="2024-02-14T06:34:16.463Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36" etag="_CJfUNvm4b8ryDqk5WkV" version="23.1.2" type="device">
+<mxfile host="app.diagrams.net" modified="2024-02-15T10:36:59.217Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36" etag="7NlCxoBp0GcXgVoDeI3U" version="23.1.4" type="device">
   <diagram id="c8oBW-qjvavsfD2tW6SP" name="Page-1">
-    <mxGraphModel dx="1172" dy="-254" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="40" dy="-702" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="xrFbDY1ulE0IEn7EpgWR-56" value="&lt;h1 style=&quot;text-align: center; border-color: var(--border-color);&quot;&gt;Comprehensive System Class Diagram&lt;/h1&gt;&lt;div style=&quot;text-align: center;&quot;&gt;Author: Jerry Vu &amp;amp; Kenny Nguyen&lt;/div&gt;&lt;div style=&quot;text-align: center;&quot;&gt;Date: 14-02-2024&lt;/div&gt;&lt;h1&gt;&lt;div style=&quot;border-color: var(--border-color); font-size: 12px; font-weight: 400;&quot;&gt;&lt;b style=&quot;border-color: var(--border-color); background-color: initial;&quot;&gt;IMPLEMENTATION NOTES:&lt;/b&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color); font-size: 12px; font-weight: 400;&quot;&gt;&lt;ul style=&quot;border-color: var(--border-color);&quot;&gt;&lt;li style=&quot;border-color: var(--border-color);&quot;&gt;Deallocators and destructors for all the classes so far must be accounted for. I don&#39;t know if not having them would cause memory leaks - but it would definitely cause memory occupation to skyrocket.&lt;/li&gt;&lt;li style=&quot;border-color: var(--border-color);&quot;&gt;All the setter functions might need some extra security.&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/h1&gt;&lt;div&gt;&lt;b&gt;&lt;/b&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
+        <mxCell id="xrFbDY1ulE0IEn7EpgWR-56" value="&lt;h1 style=&quot;text-align: center; border-color: var(--border-color);&quot;&gt;Comprehensive System Class Diagram&lt;/h1&gt;&lt;div style=&quot;text-align: center;&quot;&gt;Author: Jerry Vu &amp;amp; Kenny Nguyen&lt;/div&gt;&lt;div style=&quot;text-align: center;&quot;&gt;Date: 15-02-2024&lt;/div&gt;&lt;h1&gt;&lt;div style=&quot;border-color: var(--border-color); font-size: 12px; font-weight: 400;&quot;&gt;&lt;b style=&quot;border-color: var(--border-color); background-color: initial;&quot;&gt;IMPLEMENTATION NOTES:&lt;/b&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color); font-size: 12px; font-weight: 400;&quot;&gt;&lt;ul style=&quot;border-color: var(--border-color);&quot;&gt;&lt;li style=&quot;border-color: var(--border-color);&quot;&gt;Deallocators and destructors for all the classes so far must be accounted for. I don&#39;t know if not having them would cause memory leaks - but it would definitely cause memory occupation to skyrocket.&lt;/li&gt;&lt;li style=&quot;border-color: var(--border-color);&quot;&gt;All the setter functions might need some extra security.&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/h1&gt;&lt;div&gt;&lt;b&gt;&lt;/b&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="2645" y="1350" width="500" height="240" as="geometry" />
         </mxCell>
         <mxCell id="LEnjLOv2VGJ0EA_hLY6k-12" value="&lt;b style=&quot;&quot;&gt;&lt;font style=&quot;&quot;&gt;&lt;font style=&quot;font-size: 100px;&quot;&gt;Protocol 666&lt;/font&gt;&lt;br&gt;&lt;/font&gt;&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=100;" parent="1" vertex="1">
@@ -517,14 +517,14 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="0gmvnTAWenN6jTnUsAnp-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;startArrow=block;startFill=0;" edge="1" parent="1" source="8iAsTdIbsIGWiMtJhoX2-14" target="vsJ7BuIfBoe0Nbv3LrtF-5">
+        <mxCell id="0gmvnTAWenN6jTnUsAnp-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;startArrow=block;startFill=0;" parent="1" source="8iAsTdIbsIGWiMtJhoX2-14" target="vsJ7BuIfBoe0Nbv3LrtF-5" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="1460" y="4460" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="0gmvnTAWenN6jTnUsAnp-2" value="private inheritance" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="0gmvnTAWenN6jTnUsAnp-1">
+        <mxCell id="0gmvnTAWenN6jTnUsAnp-2" value="private inheritance" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="0gmvnTAWenN6jTnUsAnp-1" vertex="1" connectable="0">
           <mxGeometry x="-0.2155" y="-2" relative="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
@@ -850,22 +850,32 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="vsJ7BuIfBoe0Nbv3LrtF-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;startArrow=block;startFill=0;" parent="1" source="vsJ7BuIfBoe0Nbv3LrtF-5" target="vsJ7BuIfBoe0Nbv3LrtF-19" edge="1">
-          <mxGeometry relative="1" as="geometry" />
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1460" y="5470" />
+              <mxPoint x="1326" y="5470" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="vsJ7BuIfBoe0Nbv3LrtF-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;startArrow=block;startFill=0;" parent="1" source="vsJ7BuIfBoe0Nbv3LrtF-5" target="vsJ7BuIfBoe0Nbv3LrtF-23" edge="1">
-          <mxGeometry relative="1" as="geometry" />
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1460" y="5470" />
+              <mxPoint x="1619" y="5470" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="vsJ7BuIfBoe0Nbv3LrtF-5" value="Projectile" style="swimlane;fontStyle=3;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#006600;strokeColor=#000000;fontColor=#FFFFFF;" parent="1" vertex="1">
-          <mxGeometry x="1330" y="5060" width="260" height="316" as="geometry" />
+          <mxGeometry x="1330" y="5060" width="260" height="346" as="geometry" />
         </mxCell>
-        <mxCell id="vsJ7BuIfBoe0Nbv3LrtF-6" value="- context: Gameplay*&#xa;- damage: int&#xa;- velocity: int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="vsJ7BuIfBoe0Nbv3LrtF-5" vertex="1">
-          <mxGeometry y="26" width="260" height="48" as="geometry" />
+        <mxCell id="vsJ7BuIfBoe0Nbv3LrtF-6" value="- context: Gameplay*&#xa;- damage: int&#xa;- velocity: int&#xa;- marked: bool" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="vsJ7BuIfBoe0Nbv3LrtF-5" vertex="1">
+          <mxGeometry y="26" width="260" height="64" as="geometry" />
         </mxCell>
         <mxCell id="vsJ7BuIfBoe0Nbv3LrtF-7" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="vsJ7BuIfBoe0Nbv3LrtF-5" vertex="1">
-          <mxGeometry y="74" width="260" height="8" as="geometry" />
+          <mxGeometry y="90" width="260" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="vsJ7BuIfBoe0Nbv3LrtF-8" value="+ «Create» Projectile()&#xa;+ ~Projectile()&#xa;&#xa;+ setContext(context: Gameplay*): void&#xa;+ setDamage(damage: int): void&#xa;+ setVelocity(velocity: int): void&#xa;+ setTravelDirection(direction: Direction): void&#xa;&#xa;+ getContext(): Gameplay*&#xa;+ getDamage(): int&#xa;+ getVelocity(): int&#xa;+ getTravelDirection(): Direction&#xa;&#xa;+ move() = 0: void&#xa;+ update() = 0: void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="vsJ7BuIfBoe0Nbv3LrtF-5" vertex="1">
-          <mxGeometry y="82" width="260" height="234" as="geometry" />
+        <mxCell id="vsJ7BuIfBoe0Nbv3LrtF-8" value="+ «Create» Projectile(context: Gameplay*)&#xa;+ ~Projectile()&#xa;&#xa;+ setDamage(damage: int): void&#xa;+ setVelocity(velocity: int): void&#xa;+ setTravelDirection(direction: Direction): void&#xa;+ markDelete(marked: bool): void&#xa;&#xa;+ getContext(): Gameplay*&#xa;+ getDamage(): int&#xa;+ getVelocity(): int&#xa;+ getTravelDirection(): Direction&#xa;+ isMarkedForDeletion(): bool&#xa;&#xa;+ move() = 0: void&#xa;+ update() = 0: void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="vsJ7BuIfBoe0Nbv3LrtF-5" vertex="1">
+          <mxGeometry y="98" width="260" height="248" as="geometry" />
         </mxCell>
         <mxCell id="vsJ7BuIfBoe0Nbv3LrtF-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;endArrow=open;endFill=0;startArrow=diamond;startFill=0;" parent="1" source="EAqQDJlYXAN4RfiJSoGO-7" target="vsJ7BuIfBoe0Nbv3LrtF-6" edge="1">
           <mxGeometry relative="1" as="geometry" />
@@ -892,6 +902,12 @@
         </mxCell>
         <mxCell id="vsJ7BuIfBoe0Nbv3LrtF-25" value="+ «Create» FiftyCalibre(context: Gameplay*)&#xa;+ ~FiftyCalibre()&#xa;&#xa;+ move(): void&#xa;+ update(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="vsJ7BuIfBoe0Nbv3LrtF-23" vertex="1">
           <mxGeometry y="34" width="178" height="114" as="geometry" />
+        </mxCell>
+        <mxCell id="qSV41vn5gnYhlzB6Cqme-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;dashed=1;dashPattern=8 8;" edge="1" parent="1" source="qSV41vn5gnYhlzB6Cqme-1" target="dvZ8j0KGGuC1-cnlvV2g-24">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="qSV41vn5gnYhlzB6Cqme-1" value="&lt;b&gt;RESPONSIBILITY&lt;/b&gt;: this class is responsible for object interaction and camera updates. Probably violating single responsibility." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;size=15;" vertex="1" parent="1">
+          <mxGeometry x="1400" y="1973" width="190" height="100" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

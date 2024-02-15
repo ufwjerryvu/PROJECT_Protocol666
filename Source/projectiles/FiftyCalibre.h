@@ -1,0 +1,26 @@
+#pragma once
+
+#include <Systems.h>
+
+#include <Projectile.h>
+
+class Gameplay;
+
+class FiftyCalibre : public Projectile
+{
+private:
+public:
+    /*
+    SECTION 1: CONSTRUCTORS AND DESTRUCTORS
+    */
+    FiftyCalibre(Gameplay *context);
+    ~FiftyCalibre();
+    /*
+    SECTION 2: SETTERS AND GETTERS
+    */
+    /*
+    SECTION 3: OTHER METHODS
+    */
+    void move();
+    void update();
+};

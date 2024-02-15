@@ -14,12 +14,13 @@ private:
     Gameplay *context;
     int damage;
     int velocity;
+    bool marked;
 
 public:
     /*
     SECTION 1: CONSTRUCTORS AND DESTRUCTORS
     */
-    Projectile();
+    Projectile(Gameplay *context);
     ~Projectile();
     /*
     SECTION 2: SETTERS AND GETTERS
@@ -28,11 +29,13 @@ public:
     void setDamage(int damage);
     void setVelocity(int velocity);
     void setTravelDirection(Direction direction);
+    void markDelete(bool mark);
 
     Gameplay* getContext();
     int getDamage();
     int getVelocity();
     Direction getTravelDirection();
+    bool isMarkedForDeletion();
     /*
     SECTION 3: OTHER METHODS
     */
