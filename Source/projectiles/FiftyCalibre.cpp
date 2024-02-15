@@ -54,6 +54,10 @@ void FiftyCalibre::move()
 }
 
 void FiftyCalibre::update(){
+    /*
+    NOTE:
+        - Moving is included in update.
+    */
     this->move();
 
     /*

@@ -54,6 +54,10 @@ void LaserBeam::move()
 }
 
 void LaserBeam::update(){
+    /*
+    NOTE:
+        - Moving is included in update.
+    */
     this->move();
 
     /*
