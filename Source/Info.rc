@@ -14,7 +14,7 @@ BEGIN
       VALUE "InternalName", "Protocol 666"
       VALUE "LegalCopyright", "\251 Jerry Vu, An B. Luu, and Kenny Nguyen."
       VALUE "OriginalFilename", "Protocol 666.exe"
-      VALUE "ProductName", "Protocol 666"
+      VALUE "ProductName", "\251 Protocol 666"
       VALUE "ProductVersion", "0.1"
     END
   END
