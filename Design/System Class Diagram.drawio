@@ -1,11 +1,11 @@
-<mxfile host="app.diagrams.net" modified="2024-02-15T11:37:16.280Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36" etag="v0IG6KOfhR60SotNWllv" version="23.1.4" type="device">
+<mxfile host="app.diagrams.net" modified="2024-02-21T18:39:38.957Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" etag="qPkYNO5KMGRcBDIYbhR7" version="23.1.5" type="device">
   <diagram id="c8oBW-qjvavsfD2tW6SP" name="Page-1">
-    <mxGraphModel dx="0" dy="-724" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1222" dy="-115" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="xrFbDY1ulE0IEn7EpgWR-56" value="&lt;h1 style=&quot;text-align: center; border-color: var(--border-color);&quot;&gt;Comprehensive System Class Diagram&lt;/h1&gt;&lt;div style=&quot;text-align: center;&quot;&gt;Author: Jerry Vu &amp;amp; Kenny Nguyen&lt;/div&gt;&lt;div style=&quot;text-align: center;&quot;&gt;Date: 15-02-2024&lt;/div&gt;&lt;h1&gt;&lt;div style=&quot;border-color: var(--border-color); font-size: 12px; font-weight: 400;&quot;&gt;&lt;b style=&quot;border-color: var(--border-color); background-color: initial;&quot;&gt;IMPLEMENTATION NOTES:&lt;/b&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color); font-size: 12px; font-weight: 400;&quot;&gt;&lt;ul style=&quot;border-color: var(--border-color);&quot;&gt;&lt;li style=&quot;border-color: var(--border-color);&quot;&gt;Deallocators and destructors for all the classes so far must be accounted for. I don&#39;t know if not having them would cause memory leaks - but it would definitely cause memory occupation to skyrocket.&lt;/li&gt;&lt;li style=&quot;border-color: var(--border-color);&quot;&gt;All the setter functions might need some extra security.&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/h1&gt;&lt;div&gt;&lt;b&gt;&lt;/b&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="2645" y="1350" width="500" height="240" as="geometry" />
+        <mxCell id="xrFbDY1ulE0IEn7EpgWR-56" value="&lt;h1 style=&quot;text-align: center; border-color: var(--border-color);&quot;&gt;Comprehensive System Class Diagram&lt;/h1&gt;&lt;div style=&quot;text-align: center;&quot;&gt;Author: Jerry Vu &amp;amp; Kenny Nguyen&lt;/div&gt;&lt;div style=&quot;text-align: center;&quot;&gt;Date: 21-02-2024&lt;/div&gt;&lt;h1&gt;&lt;div style=&quot;border-color: var(--border-color); font-size: 12px; font-weight: 400;&quot;&gt;&lt;b style=&quot;border-color: var(--border-color); background-color: initial;&quot;&gt;&lt;u&gt;Update 21/02/2024:&lt;/u&gt;&lt;/b&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color); font-size: 12px;&quot;&gt;&lt;ul style=&quot;&quot;&gt;&lt;li style=&quot;&quot;&gt;&lt;span style=&quot;border-color: var(--border-color); background-color: initial; font-weight: normal;&quot;&gt;Added Enemy class and its subclasses (MeleeGoon, MeleeBoss, RangeGoon, RangeBoss)&lt;/span&gt;&lt;/li&gt;&lt;ul&gt;&lt;li style=&quot;&quot;&gt;&lt;span style=&quot;border-color: var(--border-color); background-color: initial; font-weight: normal;&quot;&gt;With default methods, taken from Player class.&lt;/span&gt;&lt;/li&gt;&lt;li style=&quot;&quot;&gt;&lt;span style=&quot;border-color: var(--border-color); background-color: initial; font-weight: normal;&quot;&gt;To be updated as implementation continues.&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/ul&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color); font-size: 12px; font-weight: 400;&quot;&gt;&lt;b style=&quot;border-color: var(--border-color); background-color: initial;&quot;&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color); font-size: 12px; font-weight: 400;&quot;&gt;&lt;b style=&quot;border-color: var(--border-color); background-color: initial;&quot;&gt;IMPLEMENTATION NOTES:&lt;/b&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color); font-size: 12px; font-weight: 400;&quot;&gt;&lt;ul style=&quot;border-color: var(--border-color);&quot;&gt;&lt;li style=&quot;border-color: var(--border-color);&quot;&gt;Deallocators and destructors for all the classes so far must be accounted for. I don&#39;t know if not having them would cause memory leaks - but it would definitely cause memory occupation to skyrocket.&lt;/li&gt;&lt;li style=&quot;border-color: var(--border-color);&quot;&gt;All the setter functions might need some extra security.&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/h1&gt;&lt;div&gt;&lt;b&gt;&lt;/b&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="2627" y="1350" width="535" height="290" as="geometry" />
         </mxCell>
         <mxCell id="LEnjLOv2VGJ0EA_hLY6k-12" value="&lt;b style=&quot;&quot;&gt;&lt;font style=&quot;&quot;&gt;&lt;font style=&quot;font-size: 100px;&quot;&gt;Protocol 666&lt;/font&gt;&lt;br&gt;&lt;/font&gt;&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=100;" parent="1" vertex="1">
           <mxGeometry x="1570" y="1210" width="2650" height="150" as="geometry" />
@@ -810,7 +810,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="EAqQDJlYXAN4RfiJSoGO-2" value="Attackable" style="swimlane;fontStyle=3;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#FFFFCC;strokeColor=#000000;" parent="1" vertex="1">
-          <mxGeometry x="2032" y="4757" width="250" height="240" as="geometry" />
+          <mxGeometry x="2101" y="5100" width="250" height="240" as="geometry" />
         </mxCell>
         <mxCell id="EAqQDJlYXAN4RfiJSoGO-5" value="- attacking: bool = false" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="EAqQDJlYXAN4RfiJSoGO-2" vertex="1">
           <mxGeometry y="26" width="250" height="24" as="geometry" />
@@ -825,7 +825,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="EAqQDJlYXAN4RfiJSoGO-6" value="Shootable" style="swimlane;fontStyle=3;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#FFFFCC;strokeColor=#000000;" parent="1" vertex="1">
-          <mxGeometry x="1892" y="5129" width="260" height="216" as="geometry" />
+          <mxGeometry x="1961" y="5472" width="260" height="216" as="geometry" />
         </mxCell>
         <mxCell id="EAqQDJlYXAN4RfiJSoGO-7" value="- shooting: bool" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="EAqQDJlYXAN4RfiJSoGO-6" vertex="1">
           <mxGeometry y="26" width="260" height="26" as="geometry" />
@@ -837,7 +837,7 @@
           <mxGeometry y="60" width="260" height="156" as="geometry" />
         </mxCell>
         <mxCell id="EAqQDJlYXAN4RfiJSoGO-10" value="Slashable" style="swimlane;fontStyle=3;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#FFFFCC;strokeColor=#000000;" parent="1" vertex="1">
-          <mxGeometry x="2202" y="5129" width="210" height="154" as="geometry" />
+          <mxGeometry x="2271" y="5472" width="210" height="154" as="geometry" />
         </mxCell>
         <mxCell id="EAqQDJlYXAN4RfiJSoGO-12" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="EAqQDJlYXAN4RfiJSoGO-10" vertex="1">
           <mxGeometry y="26" width="210" height="8" as="geometry" />
@@ -900,11 +900,149 @@
         <mxCell id="vsJ7BuIfBoe0Nbv3LrtF-25" value="+ «Create» FiftyCalibre(context: Gameplay*)&#xa;+ ~FiftyCalibre()&#xa;&#xa;+ move(): void&#xa;+ update(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="vsJ7BuIfBoe0Nbv3LrtF-23" vertex="1">
           <mxGeometry y="34" width="178" height="114" as="geometry" />
         </mxCell>
-        <mxCell id="qSV41vn5gnYhlzB6Cqme-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;dashed=1;dashPattern=8 8;" edge="1" parent="1" source="qSV41vn5gnYhlzB6Cqme-1" target="dvZ8j0KGGuC1-cnlvV2g-24">
+        <mxCell id="qSV41vn5gnYhlzB6Cqme-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;dashed=1;dashPattern=8 8;" parent="1" source="qSV41vn5gnYhlzB6Cqme-1" target="dvZ8j0KGGuC1-cnlvV2g-24" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="qSV41vn5gnYhlzB6Cqme-1" value="&lt;b&gt;RESPONSIBILITY&lt;/b&gt;: this class is responsible for object interaction and camera updates. Probably violating single responsibility." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;size=15;" vertex="1" parent="1">
+        <mxCell id="qSV41vn5gnYhlzB6Cqme-1" value="&lt;b&gt;RESPONSIBILITY&lt;/b&gt;: this class is responsible for object interaction and camera updates. Probably violating single responsibility." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;size=15;" parent="1" vertex="1">
           <mxGeometry x="1400" y="1973" width="190" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="Z4AsB4cc5w7zuo5-Gnha-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;startArrow=block;startFill=0;exitX=0.501;exitY=1.007;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="gG_1q-ZrrrkLE72A6_ez-4">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2988" y="5540" />
+              <mxPoint x="3186" y="5540" />
+            </Array>
+            <mxPoint x="3085.5" y="5420" as="sourcePoint" />
+            <mxPoint x="3186.0000000000005" y="5680" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Z4AsB4cc5w7zuo5-Gnha-11" value="Enemy" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#cc0066;strokeColor=#000000;fontColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="3039.67" y="5680" width="280" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="Z4AsB4cc5w7zuo5-Gnha-12" value="- name: String&#xa;- movement_logic: Movement&#xa;- damage_dealt: Damage&#xa;- update_interval: int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="Z4AsB4cc5w7zuo5-Gnha-11">
+          <mxGeometry y="26" width="280" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="Z4AsB4cc5w7zuo5-Gnha-13" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="Z4AsB4cc5w7zuo5-Gnha-11">
+          <mxGeometry y="90" width="280" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="Z4AsB4cc5w7zuo5-Gnha-14" value="+ «Create» Enemy(context: Master*)&#xa;+ ~Enemy()&#xa;&#xa;+ attack(): void&#xa;&#xa;+ run(): void&#xa;+ jump(): void&#xa;+ move(): void&#xa;&#xa;+ update(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" vertex="1" parent="Z4AsB4cc5w7zuo5-Gnha-11">
+          <mxGeometry y="98" width="280" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="Z4AsB4cc5w7zuo5-Gnha-15" value="&lt;span style=&quot;font-style: normal;&quot;&gt;MeleeGoon&lt;/span&gt;" style="swimlane;fontStyle=3;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#CC0066;fontColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="2597" y="6020" width="230" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="Z4AsB4cc5w7zuo5-Gnha-16" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="Z4AsB4cc5w7zuo5-Gnha-15">
+          <mxGeometry y="26" width="230" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="Z4AsB4cc5w7zuo5-Gnha-17" value="+ «Create» MeleeGoon(context: Master*)&lt;br style=&quot;border-color: var(--border-color); padding: 0px; margin: 0px;&quot;&gt;+ ~MeleeGoon()&lt;br&gt;&lt;br&gt;+ attack(): void&lt;br&gt;&lt;br&gt;+ run(): void&lt;br&gt;+ jump(): void&lt;br&gt;+ move(): void&lt;br&gt;&lt;br&gt;+ update(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="Z4AsB4cc5w7zuo5-Gnha-15">
+          <mxGeometry y="34" width="230" height="156" as="geometry" />
+        </mxCell>
+        <mxCell id="Z4AsB4cc5w7zuo5-Gnha-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;startArrow=block;startFill=0;" edge="1" parent="1" source="EAqQDJlYXAN4RfiJSoGO-13" target="Z4AsB4cc5w7zuo5-Gnha-17">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2369.996923076923" y="5626" as="sourcePoint" />
+            <mxPoint x="2576.92" y="6120" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="2370" y="6240" />
+              <mxPoint x="2712" y="6240" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Z4AsB4cc5w7zuo5-Gnha-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;startArrow=block;startFill=0;" edge="1" parent="1" source="Z4AsB4cc5w7zuo5-Gnha-14" target="Z4AsB4cc5w7zuo5-Gnha-15">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2317" y="5293" as="sourcePoint" />
+            <mxPoint x="2607" y="6130" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="3180" y="5980" />
+              <mxPoint x="2712" y="5980" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Z4AsB4cc5w7zuo5-Gnha-21" value="&lt;span style=&quot;font-style: normal;&quot;&gt;MeleeBoss&lt;/span&gt;" style="swimlane;fontStyle=3;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#CC0066;fontColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="2880" y="6020" width="240" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="Z4AsB4cc5w7zuo5-Gnha-22" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="Z4AsB4cc5w7zuo5-Gnha-21">
+          <mxGeometry y="26" width="240" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="Z4AsB4cc5w7zuo5-Gnha-23" value="+ «Create» MeleeBoss(context: Master*)&lt;br style=&quot;border-color: var(--border-color); padding: 0px; margin: 0px;&quot;&gt;+ ~MeleeBoss()&lt;br&gt;&lt;br&gt;+ attack(): void&lt;br&gt;&lt;br&gt;+ run(): void&lt;br&gt;+ jump(): void&lt;br&gt;+ move(): void&lt;br&gt;&lt;br&gt;+ update(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="Z4AsB4cc5w7zuo5-Gnha-21">
+          <mxGeometry y="34" width="240" height="156" as="geometry" />
+        </mxCell>
+        <mxCell id="Z4AsB4cc5w7zuo5-Gnha-24" value="&lt;span style=&quot;font-style: normal;&quot;&gt;RangeGoon&lt;/span&gt;" style="swimlane;fontStyle=3;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#CC0066;fontColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="3153" y="6020" width="240" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="Z4AsB4cc5w7zuo5-Gnha-25" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="Z4AsB4cc5w7zuo5-Gnha-24">
+          <mxGeometry y="26" width="240" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="Z4AsB4cc5w7zuo5-Gnha-26" value="+ «Create» RangeGoon(context: Master*)&lt;br style=&quot;border-color: var(--border-color); padding: 0px; margin: 0px;&quot;&gt;+ ~RangeGoon()&lt;br&gt;&lt;br&gt;+ attack(): void&lt;br&gt;&lt;br&gt;+ run(): void&lt;br&gt;+ jump(): void&lt;br&gt;+ move(): void&lt;br&gt;&lt;br&gt;+ update(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="Z4AsB4cc5w7zuo5-Gnha-24">
+          <mxGeometry y="34" width="240" height="156" as="geometry" />
+        </mxCell>
+        <mxCell id="Z4AsB4cc5w7zuo5-Gnha-27" value="&lt;span style=&quot;font-style: normal;&quot;&gt;RangeBoss&lt;/span&gt;" style="swimlane;fontStyle=3;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#CC0066;fontColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="3427" y="6020" width="230" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="Z4AsB4cc5w7zuo5-Gnha-28" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="Z4AsB4cc5w7zuo5-Gnha-27">
+          <mxGeometry y="26" width="230" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="Z4AsB4cc5w7zuo5-Gnha-29" value="+ «Create» RangeBoss(context: Master*)&lt;br style=&quot;border-color: var(--border-color); padding: 0px; margin: 0px;&quot;&gt;+ ~RangeBoss()&lt;br&gt;&lt;br&gt;+ attack(): void&lt;br&gt;&lt;br&gt;+ run(): void&lt;br&gt;+ jump(): void&lt;br&gt;+ move(): void&lt;br&gt;&lt;br&gt;+ update(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="Z4AsB4cc5w7zuo5-Gnha-27">
+          <mxGeometry y="34" width="230" height="156" as="geometry" />
+        </mxCell>
+        <mxCell id="Z4AsB4cc5w7zuo5-Gnha-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;startArrow=block;startFill=0;" edge="1" parent="1" source="Z4AsB4cc5w7zuo5-Gnha-14" target="Z4AsB4cc5w7zuo5-Gnha-21">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="3199.93" y="5970" as="sourcePoint" />
+            <mxPoint x="2721.93" y="6050" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="3180" y="5980" />
+              <mxPoint x="3010" y="5980" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Z4AsB4cc5w7zuo5-Gnha-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;startArrow=block;startFill=0;" edge="1" parent="1" source="Z4AsB4cc5w7zuo5-Gnha-14" target="Z4AsB4cc5w7zuo5-Gnha-24">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="3200" y="5950" as="sourcePoint" />
+            <mxPoint x="3020" y="6030" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="3180" y="5980" />
+              <mxPoint x="3280" y="5980" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Z4AsB4cc5w7zuo5-Gnha-32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;startArrow=block;startFill=0;" edge="1" parent="1" source="Z4AsB4cc5w7zuo5-Gnha-14" target="Z4AsB4cc5w7zuo5-Gnha-27">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="3190" y="5940" as="sourcePoint" />
+            <mxPoint x="3290" y="6030" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="3180" y="5980" />
+              <mxPoint x="3550" y="5980" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Z4AsB4cc5w7zuo5-Gnha-36" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;startArrow=block;startFill=0;" edge="1" parent="1" source="EAqQDJlYXAN4RfiJSoGO-9" target="Z4AsB4cc5w7zuo5-Gnha-29">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2101" y="5698" as="sourcePoint" />
+            <mxPoint x="3010" y="6220" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="2091" y="6270" />
+              <mxPoint x="3542" y="6270" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Z4AsB4cc5w7zuo5-Gnha-37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;startArrow=block;startFill=0;" edge="1" parent="1" source="EAqQDJlYXAN4RfiJSoGO-13" target="Z4AsB4cc5w7zuo5-Gnha-23">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2380" y="5636" as="sourcePoint" />
+            <mxPoint x="2607" y="6130" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="2370" y="6240" />
+              <mxPoint x="3000" y="6240" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Z4AsB4cc5w7zuo5-Gnha-38" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;startArrow=block;startFill=0;" edge="1" parent="1" source="EAqQDJlYXAN4RfiJSoGO-9" target="Z4AsB4cc5w7zuo5-Gnha-26">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2101" y="5698" as="sourcePoint" />
+            <mxPoint x="3552" y="6220" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="2090" y="6270" />
+              <mxPoint x="3280" y="6270" />
+            </Array>
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
