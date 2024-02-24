@@ -15,6 +15,36 @@
 
 class Gameplay;
 
+struct Damage {
+	/*
+	NOTE:
+		- Damage structure is used to store the damage dealt by the Enemy
+		to the Player.
+
+		- 'attack' is the damage dealt by the Enemy's attack.
+
+		- 'collision' is the damage dealt by the Enemy's collision with the Player.
+	*/
+
+	int attack;
+	int collision;
+};
+
+struct Knockback {
+    /*
+    NOTE:
+        - Knockback structure is used to store the knockback dealt by the Enemy
+        to the Player.
+
+        - 'attack' is the knockback dealt by the Enemy's attack.
+
+        - 'collision' is the knockback dealt by the Enemy's collision with the Player.
+    */
+
+    int attack;
+    int collision;
+};
+
 class Character : virtual public Sprite, virtual public Runnable,
         virtual public Jumpable, virtual public Fallable, 
         virtual public Collidable
