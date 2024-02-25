@@ -34,10 +34,10 @@ public:
 	/*
 	SECTION 2A: SETTERS
 	*/
-	bool setDamageDealt(Damage damage_dealt);
-	bool setAttackDamage(int attack_damage);
-	bool setUpdateInterval(int update_interval);
-	bool setAttackRange(int attack_range);
+	void setDamageDealt(Damage damage_dealt);
+	void setAttackDamage(int attack_damage);
+	void setUpdateInterval(int update_interval);
+	void setAttackRange(int attack_range);
 
 	/*
 	SECTION 2B: GETTERS
