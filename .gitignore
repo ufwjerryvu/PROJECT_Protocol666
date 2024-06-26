@@ -1,11 +1,15 @@
-# Ignore DS_Store files
+# Ignoring the DS_Store files
 .DS_Store
 
-# Ignore Agent file
+# Ignoring the Agent file
 Agent
 
-# Ignore the VSCode build folder
+# Ignoring the VSCode build folder
 .vscode
 
 # Ignoring this folder that keeps popping on An's Macbook
 Design/$Relational Schema Diagram.drawio.bkp
+
+# Ignoring all the binary executable files. 
+*.exe
+*.dll
