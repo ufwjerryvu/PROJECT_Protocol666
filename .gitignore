@@ -13,3 +13,4 @@ Design/$Relational Schema Diagram.drawio.bkp
 # Ignoring all the binary executable files. 
 *.exe
 *.dll
+*.o
