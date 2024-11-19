@@ -1,3 +1,5 @@
+# Windows GNU/GCC build
+
 # Library directories
 SDL_DIR := Libraries/SDL2
 SDL_IMG_DIR := Libraries/SDL2_image
