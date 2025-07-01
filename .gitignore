@@ -17,3 +17,5 @@ Build/
 *.exe
 *.dll
 *.o
+Executables/Protocol666
+Executables/Protocol666.dSYM/
