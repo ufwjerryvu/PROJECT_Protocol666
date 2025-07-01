@@ -1,5 +1,7 @@
 # Ignoring the DS_Store files
 .DS_Store
+*/.DS_Store
+**/.DS_Store
 
 # Ignoring the Agent file
 Agent
@@ -7,10 +9,13 @@ Agent
 # Ignoring the VSCode build folder
 .vscode
 
-# Ignoring this folder that keeps popping on An's Macbook
+# Ignoring this folder that keeps track of the build on macOS
 Design/$Relational Schema Diagram.drawio.bkp
+Build/
 
 # Ignoring all the binary executable files. 
 *.exe
 *.dll
 *.o
+Executables/Protocol666
+Executables/Protocol666.dSYM/

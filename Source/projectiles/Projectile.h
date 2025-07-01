@@ -9,7 +9,7 @@
 class Gameplay;
 
 class Projectile : virtual public Sprite, virtual public Collidable,
-            virtual private Moveable{
+            virtual public Moveable{
 private:
     Gameplay *context;
     int damage;

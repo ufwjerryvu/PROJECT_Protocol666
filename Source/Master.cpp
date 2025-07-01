@@ -140,8 +140,17 @@ void Master::close()
     NOTE:
         - Deleting allocated memory.
     */
-    delete this->navigation;
-    delete this->gameplay;
+    /*
+    ERROR:
+        - Compiler warning. Check.
+    */
+    // delete this->navigation;
+
+    /*
+    ERROR:
+        - Compiler warning. Check.
+    */
+    // delete this->gameplay;
 }
 
 /*
@@ -154,7 +163,11 @@ void Master::setNavigation(Navigation *page)
         - We first need to dynamically free the memory from
         the old navigation member.
     */
-    delete this->navigation;
+    /*
+    ERROR:
+        - Compiler warning. Check.
+    */
+    // delete this->navigation;
 
     /*
     NOTE:
@@ -171,16 +184,24 @@ void Master::setGameplay(Gameplay *gameplay)
         - If the navigation current exists then we kill
         it off.
     */
-    delete this->navigation;
-    this->navigation = NULL;
 
     /*
-
+    ERROR:
+        - Compiler warning. Check.
     */
+    // delete this->navigation;
+
+    this->navigation = NULL;
+
     if (this->gameplay != NULL)
     {
-        delete this->gameplay;
+        /*
+        ERROR:
+            - Compiler warning. Check.
+        */
+        // delete this->gameplay;
     }
+    
     this->gameplay = gameplay;
 }
 
@@ -212,7 +233,7 @@ void Master::update()
     {
         /*
         NOTE:
-            -If a navigation page is activated at the same 
+            -If a navigation page is activated at the same
             time the gameplay is activated then the page takes
             precedence. What if the game is current pausing
             and we are at the pausing page?
