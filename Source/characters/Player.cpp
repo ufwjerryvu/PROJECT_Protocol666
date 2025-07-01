@@ -88,6 +88,9 @@ bool Player::collide(vector<Ground *> &args)
 			}
 		}
 	}
+
+	bool success = true;
+	return success;
 }
 
 bool Player::collide(vector<Platform *> &args)
@@ -134,6 +137,9 @@ bool Player::collide(vector<Platform *> &args)
 			}
 		}
 	}
+	
+	bool success = true;
+	return success;
 }
 
 void Player::run()
