@@ -24,10 +24,22 @@ IMPORTING THE C STANDARD LIBRARIES
 /*
 IMPORTING THE SDL LIBRARIES
 */
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
-#include <SDL_mixer.h>
+#ifdef _WIN32
+    #include <SDL2/SDL.h>
+    #include <SDL2/SDL_image.h>
+    #include <SDL2/SDL_ttf.h>
+    #include <SDL2/SDL_mixer.h>
+#elif __APPLE__
+    #include <SDL.h>
+    #include <SDL_image.h>
+    #include <SDL_ttf.h>
+    #include <SDL_mixer.h>
+#else
+    #include <SDL2/SDL.h>
+    #include <SDL2/SDL_image.h>
+    #include <SDL2/SDL_ttf.h>
+    #include <SDL2/SDL_mixer.h>
+#endif
 
 /*
 IMPORTING THE SQLITE DATABASE MANAGEMENT LIBRARY
